@@ -1,0 +1,8 @@
+### Create a sensor
+POST http://localhost:3000/sensors/
+Content-Type: application/json
+
+{
+    "name": "Sensor 1",
+    "type": "temp"
+}
