@@ -1,23 +1,28 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { SensorsController } from './sensors.controller';
 import { SensorsService } from './sensors.service';
+import { CreateSensorDto } from './dtos/create-sensor.dto';
+import { Sensor } from './sensors.entity';
 
 describe('SensorsController', () => {
   let controller: SensorsController;
   let fakeSensorsService: Partial<SensorsService>;
 
+  const now = new Date(Date.now());
+
   beforeEach(async () => {
     fakeSensorsService = {
-      // createSensor: () => {
-      //   return Promise.resolve({
-      //     id: 1,
-      //   });
-      // },
-      // findById: (id: number) => {
-      //   return Promise.resolve({
-      //     id,
-      //   });
-      // },
+      createSensor: (createSensorDto: CreateSensorDto) => {
+        const { name, type } = createSensorDto;
+        return Promise.resolve({
+          id: 1,
+          name,
+          type,
+          active: true,
+          createdAt: now,
+          updatedAt: now,
+        } as Sensor);
+      },
     };
 
     const module: TestingModule = await Test.createTestingModule({
