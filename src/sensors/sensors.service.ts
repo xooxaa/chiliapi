@@ -6,9 +6,11 @@ import { CreateSensorDto } from './dtos/create-sensor.dto';
 
 @Injectable()
 export class SensorsService {
-  constructor(@InjectRepository(Sensor) private repo: Repository<Sensor>) {}
+  constructor(
+    @InjectRepository(Sensor) private readonly repo: Repository<Sensor>,
+  ) {}
 
-  createSensor(createSensorDto: CreateSensorDto) {
+  async createSensor(createSensorDto: CreateSensorDto) {
     const sensor = this.repo.create(createSensorDto);
     sensor.createdAt = new Date(Date.now());
     sensor.updatedAt = sensor.createdAt;
