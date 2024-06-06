@@ -7,7 +7,8 @@ export class SensorsController {
   constructor(private sensorsService: SensorsService) {}
 
   @Post()
-  createSensor(@Body() body: CreateSensorDto) {
-    this.sensorsService.createSensor(body);
+  async createSensor(@Body() body: CreateSensorDto) {
+    const sensor = await this.sensorsService.createSensor(body);
+    return sensor;
   }
 }

@@ -41,4 +41,18 @@ describe('SensorsController', () => {
   it('controller should be defined', () => {
     expect(controller).toBeDefined();
   });
+
+  it('adding a sensor returns the apropiate sensor information', async () => {
+    const sensor = await controller.createSensor({
+      name: 'Sensor 1',
+      type: 'temp',
+    });
+
+    expect(sensor.id).toEqual(1);
+    expect(sensor.name).toEqual('Sensor 1');
+    expect(sensor.type).toEqual('temp');
+    expect(sensor.active).toEqual(true);
+    expect(sensor.createdAt).toEqual(now);
+    expect(sensor.updatedAt).toEqual(now);
+  });
 });
