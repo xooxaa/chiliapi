@@ -5,6 +5,7 @@ import { Sensor } from './sensors.entity';
 import { Data } from './data.entity';
 import { CreateSensorDto } from './dtos/create-sensor.dto';
 import { UpdateSensorDto } from './dtos/update-sensor.dto';
+import { randomUUID } from 'crypto';
 
 describe('SensorsController', () => {
   let controller: SensorsController;
@@ -42,7 +43,7 @@ describe('SensorsController', () => {
   it('should create a sensor', async () => {
     const createSensorDto: CreateSensorDto = { name: 'Sensor 1', type: 'temp' };
     const mockedResponse: Sensor = {
-      id: 1,
+      id: 'aaa',
       name: 'Sensor 1',
       type: 'temp',
       active: true,
@@ -60,7 +61,7 @@ describe('SensorsController', () => {
   it('should return a list of sensors', async () => {
     const mockedResponse: Sensor[] = [
       {
-        id: 1,
+        id: 'aaa',
         name: 'Sensor 1',
         type: 'temp',
         active: true,
@@ -68,7 +69,7 @@ describe('SensorsController', () => {
         updatedAt: now,
       } as Sensor,
       {
-        id: 2,
+        id: 'bbb',
         name: 'Sensor 2',
         type: 'humidity',
         active: true,
@@ -87,7 +88,7 @@ describe('SensorsController', () => {
   it('should return a list of sensors of a given type', async () => {
     const mockedResponse: Sensor[] = [
       {
-        id: 1,
+        id: 'aaa',
         name: 'Sensor 1',
         type: 'temp',
         active: true,
@@ -95,7 +96,7 @@ describe('SensorsController', () => {
         updatedAt: now,
       } as Sensor,
       {
-        id: 2,
+        id: 'bbb',
         name: 'Sensor 2',
         type: 'temp',
         active: true,
@@ -115,7 +116,7 @@ describe('SensorsController', () => {
 
   it('should return a sensor by ID', async () => {
     const mockedResponse: Sensor = {
-      id: 1,
+      id: 'aaa',
       name: 'Sensor 1',
       type: 'temp',
       active: true,
@@ -124,16 +125,16 @@ describe('SensorsController', () => {
     } as Sensor;
 
     jest.spyOn(service, 'findSensorById').mockResolvedValue(mockedResponse);
-    const result = await controller.getSensorById('1');
+    const result = await controller.getSensorById('aaa');
 
-    expect(service.findSensorById).toHaveBeenCalledWith(1);
+    expect(service.findSensorById).toHaveBeenCalledWith('aaa');
     expect(result).toEqual(mockedResponse);
   });
 
   it('should update a sensor by ID', async () => {
     const updateSensorDto: UpdateSensorDto = { name: 'Sensor 1', type: 'temp' };
     const mockedResponse: Sensor = {
-      id: 1,
+      id: 'aaa',
       name: 'Sensor 1',
       type: 'temp',
       active: true,
@@ -142,15 +143,18 @@ describe('SensorsController', () => {
     } as Sensor;
 
     jest.spyOn(service, 'updateSensorById').mockResolvedValue(mockedResponse);
-    const result = await controller.updateSensorById('1', updateSensorDto);
+    const result = await controller.updateSensorById('aaa', updateSensorDto);
 
-    expect(service.updateSensorById).toHaveBeenCalledWith(1, updateSensorDto);
+    expect(service.updateSensorById).toHaveBeenCalledWith(
+      'aaa',
+      updateSensorDto,
+    );
     expect(result).toEqual(mockedResponse);
   });
 
   it('should delete a sensor by ID', async () => {
     const mockedResponse: Sensor = {
-      id: 1,
+      id: 'aaa',
       name: 'Sensor 1',
       type: 'temp',
       active: true,
@@ -159,9 +163,9 @@ describe('SensorsController', () => {
     } as Sensor;
 
     jest.spyOn(service, 'removeSensorById').mockResolvedValue(mockedResponse);
-    const result = await controller.deleteSensorById('1');
+    const result = await controller.deleteSensorById('aaa');
 
-    expect(service.removeSensorById).toHaveBeenCalledWith(1);
+    expect(service.removeSensorById).toHaveBeenCalledWith('aaa');
     expect(result).toEqual(mockedResponse);
   });
 });

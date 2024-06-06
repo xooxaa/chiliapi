@@ -18,7 +18,7 @@ export class SensorsService {
     return this.repo.find({ where: { type } });
   }
 
-  async findSensorById(id: number) {
+  async findSensorById(id: string) {
     if (!id) {
       return null;
     }
@@ -30,7 +30,7 @@ export class SensorsService {
     return this.repo.save(sensor);
   }
 
-  async updateSensorById(id: number, partialSensor: Partial<Sensor>) {
+  async updateSensorById(id: string, partialSensor: Partial<Sensor>) {
     const sensor = await this.findSensorById(id);
     if (!sensor) {
       throw new NotFoundException('Sensor not found');
@@ -39,7 +39,7 @@ export class SensorsService {
     return this.repo.save(sensor);
   }
 
-  async removeSensorById(id: number) {
+  async removeSensorById(id: string) {
     const sensor = await this.findSensorById(id);
     if (!sensor) {
       throw new NotFoundException('Sensor not found');

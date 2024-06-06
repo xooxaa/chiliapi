@@ -3,8 +3,8 @@ import { AfterInsert, AfterRemove, AfterUpdate, AfterLoad } from 'typeorm';
 
 @Entity()
 export class Sensor {
-  @PrimaryGeneratedColumn()
-  id: number;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
   @Column()
   name: string;

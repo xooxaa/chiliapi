@@ -28,7 +28,7 @@ export class SensorsController {
 
   @Get('/:id')
   async getSensorById(@Param('id') id: string) {
-    return await this.sensorsService.findSensorById(parseInt(id));
+    return await this.sensorsService.findSensorById(id);
   }
 
   @Post()
@@ -41,11 +41,11 @@ export class SensorsController {
     @Param('id') id: string,
     @Body() body: UpdateSensorDto,
   ) {
-    return await this.sensorsService.updateSensorById(parseInt(id), body);
+    return await this.sensorsService.updateSensorById(id, body);
   }
 
   @Delete('/:id')
   async deleteSensorById(@Param('id') id: string) {
-    return await this.sensorsService.removeSensorById(parseInt(id));
+    return await this.sensorsService.removeSensorById(id);
   }
 }

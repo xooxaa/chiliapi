@@ -6,6 +6,7 @@ import { Sensor } from './sensors.entity';
 import { Data } from './data.entity';
 import { CreateSensorDto } from './dtos/create-sensor.dto';
 import { UpdateSensorDto } from './dtos/update-sensor.dto';
+import { randomUUID } from 'crypto';
 
 describe('SensorsService', () => {
   let service: SensorsService;
@@ -43,7 +44,7 @@ describe('SensorsService', () => {
   it('should create a sensor', async () => {
     const createSensorDto: CreateSensorDto = { name: 'Sensor 1', type: 'temp' };
     const mockedResponse: Sensor = {
-      id: 1,
+      id: 'aaa',
       name: 'Sensor 1',
       type: 'temp',
       active: true,
@@ -63,7 +64,7 @@ describe('SensorsService', () => {
   it('should return a list of sensors', async () => {
     const mockedResponse: Sensor[] = [
       {
-        id: 1,
+        id: 'aaa',
         name: 'Sensor 1',
         type: 'temp',
         active: true,
@@ -71,7 +72,7 @@ describe('SensorsService', () => {
         updatedAt: now,
       } as Sensor,
       {
-        id: 2,
+        id: 'bbb',
         name: 'Sensor 2',
         type: 'humidity',
         active: true,
@@ -90,7 +91,7 @@ describe('SensorsService', () => {
   it('should return a list of sensors of a given type', async () => {
     const mockedResponse: Sensor[] = [
       {
-        id: 1,
+        id: 'aaa',
         name: 'Sensor 1',
         type: 'temp',
         active: true,
@@ -98,7 +99,7 @@ describe('SensorsService', () => {
         updatedAt: now,
       } as Sensor,
       {
-        id: 2,
+        id: 'bbb',
         name: 'Sensor 2',
         type: 'temp',
         active: true,
@@ -118,7 +119,7 @@ describe('SensorsService', () => {
 
   it('should find a sensor by ID', async () => {
     const mockedResponse: Sensor = {
-      id: 1,
+      id: 'aaa',
       name: 'Sensor 1',
       type: 'temp',
       active: true,
@@ -127,16 +128,16 @@ describe('SensorsService', () => {
     } as Sensor;
 
     jest.spyOn(sensorRepository, 'findOneBy').mockResolvedValue(mockedResponse);
-    const result = await service.findSensorById(1);
+    const result = await service.findSensorById('aaa');
 
-    expect(sensorRepository.findOneBy).toHaveBeenCalledWith({ id: 1 });
+    expect(sensorRepository.findOneBy).toHaveBeenCalledWith({ id: 'aaa' });
     expect(result).toEqual(mockedResponse);
   });
 
   it('should update a sensor by ID', async () => {
     const updateSensorDto: UpdateSensorDto = { name: 'Sensor 1', type: 'temp' };
     const mockedResponse: Sensor = {
-      id: 1,
+      id: 'aaa',
       name: 'Sensor 1',
       type: 'temp',
       active: true,
@@ -146,16 +147,16 @@ describe('SensorsService', () => {
 
     jest.spyOn(sensorRepository, 'findOneBy').mockResolvedValue(mockedResponse);
     jest.spyOn(sensorRepository, 'save').mockResolvedValue(mockedResponse);
-    const result = await service.updateSensorById(1, updateSensorDto);
+    const result = await service.updateSensorById('aaa', updateSensorDto);
 
-    expect(sensorRepository.findOneBy).toHaveBeenCalledWith({ id: 1 });
+    expect(sensorRepository.findOneBy).toHaveBeenCalledWith({ id: 'aaa' });
     expect(sensorRepository.save).toHaveBeenCalledWith(mockedResponse);
     expect(result).toEqual(mockedResponse);
   });
 
   it('should delete a sensor by ID', async () => {
     const mockedResponse: Sensor = {
-      id: 1,
+      id: 'aaa',
       name: 'Sensor 1',
       type: 'temp',
       active: true,
@@ -165,9 +166,9 @@ describe('SensorsService', () => {
 
     jest.spyOn(sensorRepository, 'findOneBy').mockResolvedValue(mockedResponse);
     jest.spyOn(sensorRepository, 'remove').mockResolvedValue(mockedResponse);
-    const result = await service.removeSensorById(1);
+    const result = await service.removeSensorById('aaa');
 
-    expect(sensorRepository.findOneBy).toHaveBeenCalledWith({ id: 1 });
+    expect(sensorRepository.findOneBy).toHaveBeenCalledWith({ id: 'aaa' });
     expect(sensorRepository.remove).toHaveBeenCalledWith(mockedResponse);
     expect(result).toEqual(mockedResponse);
   });
