@@ -1,6 +1,4 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { getRepositoryToken } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
 import { SensorsController } from './sensors.controller';
 import { SensorsService } from './sensors.service';
 import { CreateSensorDto } from './dtos/create-sensor.dto';
@@ -18,8 +16,14 @@ describe('SensorsController', () => {
       providers: [
         SensorsService,
         {
-          provide: getRepositoryToken(Sensor),
-          useClass: Repository,
+          provide: SensorsService,
+          useValue: {
+            createSensor: jest.fn(),
+            findAllSensors: jest.fn(),
+            findAllSensorsOfType: jest.fn(),
+            findSensorById: jest.fn(),
+            removeSensorById: jest.fn(),
+          },
         },
       ],
     }).compile();
@@ -32,7 +36,7 @@ describe('SensorsController', () => {
     expect(controller).toBeDefined();
   });
 
-  it('adding a sensor returns the appropriate sensor information', async () => {
+  it('should create a sensor', async () => {
     const createSensorDto: CreateSensorDto = { name: 'Sensor 1', type: 'temp' };
     const mockedResponse: Sensor = {
       id: 1,
@@ -46,12 +50,97 @@ describe('SensorsController', () => {
     jest.spyOn(service, 'createSensor').mockResolvedValue(mockedResponse);
     const result = await controller.createSensor(createSensorDto);
 
+    expect(service.createSensor).toHaveBeenCalledWith(createSensorDto);
     expect(result).toEqual(mockedResponse);
-    expect(result.id).toEqual(1);
-    expect(result.name).toEqual('Sensor 1');
-    expect(result.type).toEqual('temp');
-    expect(result.active).toEqual(true);
-    expect(result.createdAt).toEqual(now);
-    expect(result.updatedAt).toEqual(now);
+  });
+
+  it('should return a list of sensors', async () => {
+    const mockedResponse: Sensor[] = [
+      {
+        id: 1,
+        name: 'Sensor 1',
+        type: 'temp',
+        active: true,
+        createdAt: now,
+        updatedAt: now,
+      } as Sensor,
+      {
+        id: 2,
+        name: 'Sensor 2',
+        type: 'humidity',
+        active: true,
+        createdAt: now,
+        updatedAt: now,
+      } as Sensor,
+    ];
+
+    jest.spyOn(service, 'findAllSensors').mockResolvedValue(mockedResponse);
+    const result = await controller.getAllSensors();
+
+    expect(service.findAllSensors).toHaveBeenCalled();
+    expect(result).toEqual(mockedResponse);
+  });
+
+  it('should return a list of sensors of a given type', async () => {
+    const mockedResponse: Sensor[] = [
+      {
+        id: 1,
+        name: 'Sensor 1',
+        type: 'temp',
+        active: true,
+        createdAt: now,
+        updatedAt: now,
+      } as Sensor,
+      {
+        id: 2,
+        name: 'Sensor 2',
+        type: 'temp',
+        active: true,
+        createdAt: now,
+        updatedAt: now,
+      } as Sensor,
+    ];
+
+    jest
+      .spyOn(service, 'findAllSensorsOfType')
+      .mockResolvedValue(mockedResponse);
+    const result = await controller.getAllSensorsOfType({ type: 'temp' });
+
+    expect(service.findAllSensorsOfType).toHaveBeenCalledWith('temp');
+    expect(result).toEqual(mockedResponse);
+  });
+
+  it('should return a sensor by ID', async () => {
+    const mockedResponse: Sensor = {
+      id: 1,
+      name: 'Sensor 1',
+      type: 'temp',
+      active: true,
+      createdAt: now,
+      updatedAt: now,
+    } as Sensor;
+
+    jest.spyOn(service, 'findSensorById').mockResolvedValue(mockedResponse);
+    const result = await controller.getSensorById('1');
+
+    expect(service.findSensorById).toHaveBeenCalledWith(1);
+    expect(result).toEqual(mockedResponse);
+  });
+
+  it('should delete a sensor by ID', async () => {
+    const mockedResponse: Sensor = {
+      id: 1,
+      name: 'Sensor 1',
+      type: 'temp',
+      active: true,
+      createdAt: now,
+      updatedAt: now,
+    } as Sensor;
+
+    jest.spyOn(service, 'removeSensorById').mockResolvedValue(mockedResponse);
+    const result = await controller.deleteSensorById('1');
+
+    expect(service.removeSensorById).toHaveBeenCalledWith(1);
+    expect(result).toEqual(mockedResponse);
   });
 });

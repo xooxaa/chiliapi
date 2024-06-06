@@ -2,7 +2,7 @@ import { Entity, Column, PrimaryGeneratedColumn, Index } from 'typeorm';
 import { AfterInsert, AfterRemove, AfterUpdate, AfterLoad } from 'typeorm';
 
 @Entity()
-export class data {
+export class Data {
   @PrimaryGeneratedColumn()
   id: number;
 
