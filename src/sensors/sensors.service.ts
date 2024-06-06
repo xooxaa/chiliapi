@@ -30,7 +30,16 @@ export class SensorsService {
     return this.repo.save(sensor);
   }
 
-  async removeSensorById(id) {
+  async updateSensorById(id: number, partialSensor: Partial<Sensor>) {
+    const sensor = await this.findSensorById(id);
+    if (!sensor) {
+      throw new NotFoundException('Sensor not found');
+    }
+    Object.assign(sensor, partialSensor);
+    return this.repo.save(sensor);
+  }
+
+  async removeSensorById(id: number) {
     const sensor = await this.findSensorById(id);
     if (!sensor) {
       throw new NotFoundException('Sensor not found');

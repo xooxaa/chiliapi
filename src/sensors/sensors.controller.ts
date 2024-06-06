@@ -10,6 +10,7 @@ import {
 } from '@nestjs/common';
 import { SensorsService } from './sensors.service';
 import { CreateSensorDto } from './dtos/create-sensor.dto';
+import { UpdateSensorDto } from './dtos/update-sensor.dto';
 
 @Controller('sensors')
 export class SensorsController {
@@ -33,6 +34,14 @@ export class SensorsController {
   @Post()
   async createSensor(@Body() body: CreateSensorDto) {
     return await this.sensorsService.createSensor(body);
+  }
+
+  @Patch('/:id')
+  async updateSensorById(
+    @Param('id') id: string,
+    @Body() body: UpdateSensorDto,
+  ) {
+    return await this.sensorsService.updateSensorById(parseInt(id), body);
   }
 
   @Delete('/:id')

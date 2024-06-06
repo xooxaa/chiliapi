@@ -1,8 +1,10 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { SensorsController } from './sensors.controller';
 import { SensorsService } from './sensors.service';
-import { CreateSensorDto } from './dtos/create-sensor.dto';
 import { Sensor } from './sensors.entity';
+import { Data } from './data.entity';
+import { CreateSensorDto } from './dtos/create-sensor.dto';
+import { UpdateSensorDto } from './dtos/update-sensor.dto';
 
 describe('SensorsController', () => {
   let controller: SensorsController;
@@ -22,6 +24,7 @@ describe('SensorsController', () => {
             findAllSensors: jest.fn(),
             findAllSensorsOfType: jest.fn(),
             findSensorById: jest.fn(),
+            updateSensorById: jest.fn(),
             removeSensorById: jest.fn(),
           },
         },
@@ -124,6 +127,24 @@ describe('SensorsController', () => {
     const result = await controller.getSensorById('1');
 
     expect(service.findSensorById).toHaveBeenCalledWith(1);
+    expect(result).toEqual(mockedResponse);
+  });
+
+  it('should update a sensor by ID', async () => {
+    const updateSensorDto: UpdateSensorDto = { name: 'Sensor 1', type: 'temp' };
+    const mockedResponse: Sensor = {
+      id: 1,
+      name: 'Sensor 1',
+      type: 'temp',
+      active: true,
+      createdAt: now,
+      updatedAt: now,
+    } as Sensor;
+
+    jest.spyOn(service, 'updateSensorById').mockResolvedValue(mockedResponse);
+    const result = await controller.updateSensorById('1', updateSensorDto);
+
+    expect(service.updateSensorById).toHaveBeenCalledWith(1, updateSensorDto);
     expect(result).toEqual(mockedResponse);
   });
 

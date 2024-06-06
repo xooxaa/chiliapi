@@ -5,6 +5,7 @@ import { SensorsService } from './sensors.service';
 import { Sensor } from './sensors.entity';
 import { Data } from './data.entity';
 import { CreateSensorDto } from './dtos/create-sensor.dto';
+import { UpdateSensorDto } from './dtos/update-sensor.dto';
 
 describe('SensorsService', () => {
   let service: SensorsService;
@@ -80,7 +81,6 @@ describe('SensorsService', () => {
     ];
 
     jest.spyOn(sensorRepository, 'find').mockResolvedValue(mockedResponse);
-
     const result = await service.findAllSensors();
 
     expect(sensorRepository.find).toHaveBeenCalled();
@@ -127,10 +127,29 @@ describe('SensorsService', () => {
     } as Sensor;
 
     jest.spyOn(sensorRepository, 'findOneBy').mockResolvedValue(mockedResponse);
-
     const result = await service.findSensorById(1);
 
     expect(sensorRepository.findOneBy).toHaveBeenCalledWith({ id: 1 });
+    expect(result).toEqual(mockedResponse);
+  });
+
+  it('should update a sensor by ID', async () => {
+    const updateSensorDto: UpdateSensorDto = { name: 'Sensor 1', type: 'temp' };
+    const mockedResponse: Sensor = {
+      id: 1,
+      name: 'Sensor 1',
+      type: 'temp',
+      active: true,
+      createdAt: now,
+      updatedAt: now,
+    } as Sensor;
+
+    jest.spyOn(sensorRepository, 'findOneBy').mockResolvedValue(mockedResponse);
+    jest.spyOn(sensorRepository, 'save').mockResolvedValue(mockedResponse);
+    const result = await service.updateSensorById(1, updateSensorDto);
+
+    expect(sensorRepository.findOneBy).toHaveBeenCalledWith({ id: 1 });
+    expect(sensorRepository.save).toHaveBeenCalledWith(mockedResponse);
     expect(result).toEqual(mockedResponse);
   });
 
@@ -146,9 +165,9 @@ describe('SensorsService', () => {
 
     jest.spyOn(sensorRepository, 'findOneBy').mockResolvedValue(mockedResponse);
     jest.spyOn(sensorRepository, 'remove').mockResolvedValue(mockedResponse);
-
     const result = await service.removeSensorById(1);
 
+    expect(sensorRepository.findOneBy).toHaveBeenCalledWith({ id: 1 });
     expect(sensorRepository.remove).toHaveBeenCalledWith(mockedResponse);
     expect(result).toEqual(mockedResponse);
   });
