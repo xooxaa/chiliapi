@@ -4,7 +4,7 @@ Content-Type: application/json
 
 {
     "name": "Sensor 1",
-    "type": "temp"
+    "type": "temperature"
 }
 
 ### Get All Sensors
@@ -12,4 +12,4 @@ GET http://localhost:3000/sensors
 
 
 ### Get All Sensors Of Type temp
-GET http://localhost:3000/sensors/of?type=temp
+GET http://localhost:3000/sensors/of?type=temperature
