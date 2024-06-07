@@ -8,11 +8,7 @@ export class SensorTypes {
   static readonly HUMIDITY = new SensorTypes('humidity', 'Percentage');
   static readonly PRESSURE = new SensorTypes('pressure', 'Pascal');
 
-  static readonly ALL_TYPES = [
-    SensorTypes.TEMPERATURE,
-    SensorTypes.HUMIDITY,
-    SensorTypes.PRESSURE,
-  ];
+  static readonly ALL_TYPES = [SensorTypes.TEMPERATURE, SensorTypes.HUMIDITY, SensorTypes.PRESSURE];
 
   static fromType(type: string): SensorTypes {
     const found = this.ALL_TYPES.find((t) => t.type === type);

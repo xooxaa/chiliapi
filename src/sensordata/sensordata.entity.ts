@@ -1,11 +1,4 @@
-import {
-  Entity,
-  Column,
-  PrimaryGeneratedColumn,
-  ManyToOne,
-  CreateDateColumn,
-  UpdateDateColumn,
-} from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, CreateDateColumn, UpdateDateColumn } from 'typeorm';
 import { AfterInsert, AfterRemove, AfterUpdate, AfterLoad } from 'typeorm';
 import { Sensor } from '../sensors/sensors.entity';
 
@@ -14,10 +7,10 @@ export class SensorData {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column()
+  @Column({ type: 'real' })
   value: number;
 
-  @Column()
+  @Column({ type: 'real' })
   rawValue: number;
 
   @CreateDateColumn()

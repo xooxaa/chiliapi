@@ -32,16 +32,14 @@ describe('SensorDataService', () => {
     }).compile();
 
     sensorDataService = module.get<SensorDataService>(SensorDataService);
-    sensorDataRepository = module.get<Repository<SensorData>>(
-      getRepositoryToken(SensorData),
-    );
+    sensorDataRepository = module.get<Repository<SensorData>>(getRepositoryToken(SensorData));
   });
 
   it('should be defined', () => {
     expect(sensorDataService).toBeDefined();
   });
 
-  it('should create a new dataset for a given sensor', async () => {
+  it('should create new sensorData for a given sensor', async () => {
     const createSensorDataDto: CreateSensorDataDto = {
       value: 2,
       rawValue: 355.23,
@@ -53,15 +51,29 @@ describe('SensorDataService', () => {
 
     jest.spyOn(sensorDataRepository, 'create').mockReturnValue(mockedResponse);
     jest.spyOn(sensorDataRepository, 'save').mockResolvedValue(mockedResponse);
-    const result = await sensorDataService.createSensorData(
-      testSensor,
-      createSensorDataDto,
-    );
+    const result = await sensorDataService.createSensorData(testSensor, createSensorDataDto);
 
-    expect(sensorDataRepository.create).toHaveBeenCalledWith(
-      createSensorDataDto,
-    );
+    expect(sensorDataRepository.create).toHaveBeenCalledWith(createSensorDataDto);
     expect(sensorDataRepository.save).toHaveBeenCalledWith(mockedResponse);
+    expect(result).toEqual(mockedResponse);
+  });
+
+  it('should find all sensorData for a given sensor', async () => {
+    const mockedResponse: SensorData[] = [
+      {
+        value: 24.1,
+        createdAt: now,
+      } as SensorData,
+      {
+        value: 23.1,
+        createdAt: now,
+      } as SensorData,
+    ];
+
+    jest.spyOn(sensorDataRepository, 'find').mockResolvedValue(mockedResponse);
+    const result = await sensorDataService.findAllSensorData(testSensor);
+
+    expect(sensorDataRepository.find).toHaveBeenCalled();
     expect(result).toEqual(mockedResponse);
   });
 });

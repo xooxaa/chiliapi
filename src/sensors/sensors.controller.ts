@@ -1,19 +1,5 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Patch,
-  Delete,
-  Body,
-  Param,
-  Query,
-} from '@nestjs/common';
-import {
-  ApiCreatedResponse,
-  ApiFoundResponse,
-  ApiOkResponse,
-  ApiTags,
-} from '@nestjs/swagger';
+import { Controller, Get, Post, Patch, Delete, Body, Param, Query } from '@nestjs/common';
+import { ApiTags, ApiFoundResponse, ApiCreatedResponse, ApiOkResponse } from '@nestjs/swagger';
 import { Serialize } from '../interceptors/serialize.interceptor';
 import { SensorsService } from './sensors.service';
 import { SensorDto } from './dtos/sensor.dto';
@@ -68,10 +54,7 @@ export class SensorsController {
     description: 'The sensor has been successfully patched.',
     type: SensorDto,
   })
-  async updateSensorById(
-    @Param('sensorId') sensorId: string,
-    @Body() body: UpdateSensorDto,
-  ) {
+  async updateSensorById(@Param('sensorId') sensorId: string, @Body() body: UpdateSensorDto) {
     return await this.sensorsService.updateSensorById(sensorId, body);
   }
 

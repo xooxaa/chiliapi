@@ -12,10 +12,11 @@ export class SensorDataService {
     private readonly sensorDataRepo: Repository<SensorData>,
   ) {}
 
-  async createSensorData(
-    sensor: Sensor,
-    createSensorDataDto: CreateSensorDataDto,
-  ) {
+  async findAllSensorData(sensor: Sensor) {
+    return this.sensorDataRepo.find({ where: { sensor } });
+  }
+
+  async createSensorData(sensor: Sensor, createSensorDataDto: CreateSensorDataDto) {
     const sensorData = this.sensorDataRepo.create(createSensorDataDto);
     sensorData.sensor = sensor;
 

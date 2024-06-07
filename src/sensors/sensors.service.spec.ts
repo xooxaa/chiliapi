@@ -23,9 +23,7 @@ describe('SensorsService', () => {
     }).compile();
 
     sensorsService = module.get<SensorsService>(SensorsService);
-    sensorRepository = module.get<Repository<Sensor>>(
-      getRepositoryToken(Sensor),
-    );
+    sensorRepository = module.get<Repository<Sensor>>(getRepositoryToken(Sensor));
   });
 
   it('should be defined', () => {
@@ -151,10 +149,7 @@ describe('SensorsService', () => {
 
     jest.spyOn(sensorRepository, 'findOneBy').mockResolvedValue(mockedResponse);
     jest.spyOn(sensorRepository, 'save').mockResolvedValue(mockedResponse);
-    const result = await sensorsService.updateSensorById(
-      'aaa',
-      updateSensorDto,
-    );
+    const result = await sensorsService.updateSensorById('aaa', updateSensorDto);
 
     expect(sensorRepository.findOneBy).toHaveBeenCalledWith({ id: 'aaa' });
     expect(sensorRepository.save).toHaveBeenCalledWith(mockedResponse);

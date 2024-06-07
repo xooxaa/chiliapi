@@ -1,19 +1,5 @@
-import {
-  Entity,
-  PrimaryGeneratedColumn,
-  Column,
-  CreateDateColumn,
-  UpdateDateColumn,
-  OneToMany,
-} from 'typeorm';
-import {
-  BeforeInsert,
-  BeforeUpdate,
-  AfterInsert,
-  AfterRemove,
-  AfterUpdate,
-  AfterLoad,
-} from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, OneToMany } from 'typeorm';
+import { BeforeInsert, BeforeUpdate, AfterInsert, AfterRemove, AfterUpdate, AfterLoad } from 'typeorm';
 import { SensorData } from '../sensordata/sensordata.entity';
 import { SensorTypes } from './sensors.types';
 
@@ -48,9 +34,7 @@ export class Sensor {
   validateTypeAndUnit() {
     const sensorTypeInfo = SensorTypes.fromType(this.type);
     if (this.unit !== sensorTypeInfo.unit) {
-      throw new Error(
-        `Invalid unit for type ${this.type}. Expected: ${sensorTypeInfo.unit}`,
-      );
+      throw new Error(`Invalid unit for type ${this.type}. Expected: ${sensorTypeInfo.unit}`);
     }
   }
 
