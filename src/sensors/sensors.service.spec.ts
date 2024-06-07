@@ -43,11 +43,15 @@ describe('SensorsService', () => {
   });
 
   it('should create a sensor', async () => {
-    const createSensorDto: CreateSensorDto = { name: 'Sensor 1', type: 'temp' };
+    const createSensorDto: CreateSensorDto = {
+      name: 'Sensor 1',
+      type: 'temperature',
+    };
     const mockedResponse: Sensor = {
       id: 'aaa',
       name: 'Sensor 1',
-      type: 'temp',
+      type: 'temperature',
+      unit: 'Celsius',
       active: true,
       createdAt: now,
       updatedAt: now,
@@ -67,7 +71,8 @@ describe('SensorsService', () => {
       {
         id: 'aaa',
         name: 'Sensor 1',
-        type: 'temp',
+        type: 'temperature',
+        unit: 'Celsius',
         active: true,
         createdAt: now,
         updatedAt: now,
@@ -76,6 +81,7 @@ describe('SensorsService', () => {
         id: 'bbb',
         name: 'Sensor 2',
         type: 'humidity',
+        unit: 'Percentage',
         active: true,
         createdAt: now,
         updatedAt: now,
@@ -94,7 +100,8 @@ describe('SensorsService', () => {
       {
         id: 'aaa',
         name: 'Sensor 1',
-        type: 'temp',
+        type: 'temperature',
+        unit: 'Celsius',
         active: true,
         createdAt: now,
         updatedAt: now,
@@ -102,7 +109,8 @@ describe('SensorsService', () => {
       {
         id: 'bbb',
         name: 'Sensor 2',
-        type: 'temp',
+        type: 'temperature',
+        unit: 'Celsius',
         active: true,
         createdAt: now,
         updatedAt: now,
@@ -110,10 +118,10 @@ describe('SensorsService', () => {
     ];
 
     jest.spyOn(sensorRepository, 'find').mockResolvedValue(mockedResponse);
-    const result = await service.findAllSensorsOfType('temp');
+    const result = await service.findAllSensorsOfType('temperature');
 
     expect(sensorRepository.find).toHaveBeenCalledWith({
-      where: { type: 'temp' },
+      where: { type: 'temperature' },
     });
     expect(result).toEqual(mockedResponse);
   });
@@ -122,7 +130,8 @@ describe('SensorsService', () => {
     const mockedResponse: Sensor = {
       id: 'aaa',
       name: 'Sensor 1',
-      type: 'temp',
+      type: 'temperature',
+      unit: 'Celsius',
       active: true,
       createdAt: now,
       updatedAt: now,
@@ -136,11 +145,15 @@ describe('SensorsService', () => {
   });
 
   it('should update a sensor by ID', async () => {
-    const updateSensorDto: UpdateSensorDto = { name: 'Sensor 1', type: 'temp' };
+    const updateSensorDto: UpdateSensorDto = {
+      name: 'Sensor 1',
+      type: 'temperature',
+    };
     const mockedResponse: Sensor = {
       id: 'aaa',
       name: 'Sensor 1',
-      type: 'temp',
+      type: 'temperature',
+      unit: 'Celsius',
       active: true,
       createdAt: now,
       updatedAt: now,
@@ -159,7 +172,8 @@ describe('SensorsService', () => {
     const mockedResponse: Sensor = {
       id: 'aaa',
       name: 'Sensor 1',
-      type: 'temp',
+      type: 'temperature',
+      unit: 'Celsius',
       active: true,
       createdAt: now,
       updatedAt: now,

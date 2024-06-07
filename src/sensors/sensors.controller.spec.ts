@@ -2,7 +2,6 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { SensorsController } from './sensors.controller';
 import { SensorsService } from './sensors.service';
 import { Sensor } from './sensors.entity';
-import { SensorData } from '../sensordata/sensordata.entity';
 import { CreateSensorDto } from './dtos/create-sensor.dto';
 import { UpdateSensorDto } from './dtos/update-sensor.dto';
 
@@ -40,11 +39,15 @@ describe('SensorsController', () => {
   });
 
   it('should create a sensor', async () => {
-    const createSensorDto: CreateSensorDto = { name: 'Sensor 1', type: 'temp' };
+    const createSensorDto: CreateSensorDto = {
+      name: 'Sensor 1',
+      type: 'temperature',
+    };
     const mockedResponse: Sensor = {
       id: 'aaa',
       name: 'Sensor 1',
-      type: 'temp',
+      type: 'temperature',
+      unit: 'Celsius',
       active: true,
       createdAt: now,
       updatedAt: now,
@@ -62,7 +65,8 @@ describe('SensorsController', () => {
       {
         id: 'aaa',
         name: 'Sensor 1',
-        type: 'temp',
+        type: 'temperature',
+        unit: 'Celsius',
         active: true,
         createdAt: now,
         updatedAt: now,
@@ -71,6 +75,7 @@ describe('SensorsController', () => {
         id: 'bbb',
         name: 'Sensor 2',
         type: 'humidity',
+        unit: 'Percentage',
         active: true,
         createdAt: now,
         updatedAt: now,
@@ -89,7 +94,8 @@ describe('SensorsController', () => {
       {
         id: 'aaa',
         name: 'Sensor 1',
-        type: 'temp',
+        type: 'temperature',
+        unit: 'Celsius',
         active: true,
         createdAt: now,
         updatedAt: now,
@@ -97,7 +103,8 @@ describe('SensorsController', () => {
       {
         id: 'bbb',
         name: 'Sensor 2',
-        type: 'temp',
+        type: 'temperature',
+        unit: 'Celsius',
         active: true,
         createdAt: now,
         updatedAt: now,
@@ -107,9 +114,11 @@ describe('SensorsController', () => {
     jest
       .spyOn(service, 'findAllSensorsOfType')
       .mockResolvedValue(mockedResponse);
-    const result = await controller.getAllSensorsOfType({ type: 'temp' });
+    const result = await controller.getAllSensorsOfType({
+      type: 'temperature',
+    });
 
-    expect(service.findAllSensorsOfType).toHaveBeenCalledWith('temp');
+    expect(service.findAllSensorsOfType).toHaveBeenCalledWith('temperature');
     expect(result).toEqual(mockedResponse);
   });
 
@@ -117,7 +126,8 @@ describe('SensorsController', () => {
     const mockedResponse: Sensor = {
       id: 'aaa',
       name: 'Sensor 1',
-      type: 'temp',
+      type: 'temperature',
+      unit: 'Celsius',
       active: true,
       createdAt: now,
       updatedAt: now,
@@ -131,11 +141,15 @@ describe('SensorsController', () => {
   });
 
   it('should update a sensor by ID', async () => {
-    const updateSensorDto: UpdateSensorDto = { name: 'Sensor 1', type: 'temp' };
+    const updateSensorDto: UpdateSensorDto = {
+      name: 'Sensor 1',
+      type: 'temperature',
+    };
     const mockedResponse: Sensor = {
       id: 'aaa',
       name: 'Sensor 1',
-      type: 'temp',
+      type: 'temperature',
+      unit: 'Celsius',
       active: true,
       createdAt: now,
       updatedAt: now,
@@ -155,7 +169,8 @@ describe('SensorsController', () => {
     const mockedResponse: Sensor = {
       id: 'aaa',
       name: 'Sensor 1',
-      type: 'temp',
+      type: 'temperature',
+      unit: 'Celsius',
       active: true,
       createdAt: now,
       updatedAt: now,

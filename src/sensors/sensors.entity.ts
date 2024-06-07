@@ -1,6 +1,14 @@
-import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  OneToMany,
+  CreateDateColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 import { AfterInsert, AfterRemove, AfterUpdate, AfterLoad } from 'typeorm';
 import { SensorData } from '../sensordata/sensordata.entity';
+import { SensorTypeInfo } from './sensors.types';
 
 @Entity()
 export class Sensor {
@@ -13,13 +21,16 @@ export class Sensor {
   @Column()
   type: string;
 
+  @Column()
+  unit: string;
+
   @Column({ default: true })
   active: boolean;
 
-  @Column()
+  @CreateDateColumn()
   createdAt: Date;
 
-  @Column()
+  @UpdateDateColumn()
   updatedAt: Date;
 
   @OneToMany(() => SensorData, (data) => data.sensor)

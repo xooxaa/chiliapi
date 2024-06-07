@@ -4,7 +4,7 @@ Content-Type: application/json
 
 {
     "name": "Sensor 1",
-    "type": "humidity"
+    "type": "temp"
 }
 
 ### Get All Sensors

@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Sensor } from './sensors.entity';
 import { CreateSensorDto } from './dtos/create-sensor.dto';
+import { SensorTypeInfo } from './sensors.types';
 
 @Injectable()
 export class SensorsService {
@@ -26,9 +27,9 @@ export class SensorsService {
   }
 
   async createSensor(createSensorDto: CreateSensorDto) {
+    const sensorTypeInfo = SensorTypeInfo.fromType(createSensorDto.type);
     const sensor = this.repo.create(createSensorDto);
-    sensor.createdAt = new Date(Date.now());
-    sensor.updatedAt = sensor.createdAt;
+    sensor.unit = sensorTypeInfo.unit;
 
     return this.repo.save(sensor);
   }
