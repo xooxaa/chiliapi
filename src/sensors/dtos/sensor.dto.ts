@@ -11,8 +11,8 @@ export class SensorDto {
   type: string;
 
   @Expose()
-  active: boolean;
+  unit: string;
 
   @Expose()
-  unit: string;
+  active: boolean;
 }

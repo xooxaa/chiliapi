@@ -6,8 +6,8 @@ import { CreateSensorDto } from './dtos/create-sensor.dto';
 import { UpdateSensorDto } from './dtos/update-sensor.dto';
 
 describe('SensorsController', () => {
-  let controller: SensorsController;
-  let service: SensorsService;
+  let sensorsController: SensorsController;
+  let sensorsService: SensorsService;
 
   const now = new Date(Date.now());
 
@@ -30,15 +30,15 @@ describe('SensorsController', () => {
       ],
     }).compile();
 
-    controller = module.get<SensorsController>(SensorsController);
-    service = module.get<SensorsService>(SensorsService);
+    sensorsController = module.get<SensorsController>(SensorsController);
+    sensorsService = module.get<SensorsService>(SensorsService);
   });
 
   it('should be defined', () => {
-    expect(controller).toBeDefined();
+    expect(sensorsController).toBeDefined();
   });
 
-  it('should create a sensor', async () => {
+  it('should add a sensor', async () => {
     const createSensorDto: CreateSensorDto = {
       name: 'Sensor 1',
       type: 'temperature',
@@ -53,10 +53,12 @@ describe('SensorsController', () => {
       updatedAt: now,
     } as Sensor;
 
-    jest.spyOn(service, 'createSensor').mockResolvedValue(mockedResponse);
-    const result = await controller.createSensor(createSensorDto);
+    jest
+      .spyOn(sensorsService, 'createSensor')
+      .mockResolvedValue(mockedResponse);
+    const result = await sensorsController.addSensor(createSensorDto);
 
-    expect(service.createSensor).toHaveBeenCalledWith(createSensorDto);
+    expect(sensorsService.createSensor).toHaveBeenCalledWith(createSensorDto);
     expect(result).toEqual(mockedResponse);
   });
 
@@ -82,10 +84,12 @@ describe('SensorsController', () => {
       } as Sensor,
     ];
 
-    jest.spyOn(service, 'findAllSensors').mockResolvedValue(mockedResponse);
-    const result = await controller.getAllSensors();
+    jest
+      .spyOn(sensorsService, 'findAllSensors')
+      .mockResolvedValue(mockedResponse);
+    const result = await sensorsController.getAllSensors();
 
-    expect(service.findAllSensors).toHaveBeenCalled();
+    expect(sensorsService.findAllSensors).toHaveBeenCalled();
     expect(result).toEqual(mockedResponse);
   });
 
@@ -112,13 +116,15 @@ describe('SensorsController', () => {
     ];
 
     jest
-      .spyOn(service, 'findAllSensorsOfType')
+      .spyOn(sensorsService, 'findAllSensorsOfType')
       .mockResolvedValue(mockedResponse);
-    const result = await controller.getAllSensorsOfType({
+    const result = await sensorsController.getAllSensorsOfType({
       type: 'temperature',
     });
 
-    expect(service.findAllSensorsOfType).toHaveBeenCalledWith('temperature');
+    expect(sensorsService.findAllSensorsOfType).toHaveBeenCalledWith(
+      'temperature',
+    );
     expect(result).toEqual(mockedResponse);
   });
 
@@ -133,10 +139,12 @@ describe('SensorsController', () => {
       updatedAt: now,
     } as Sensor;
 
-    jest.spyOn(service, 'findSensorById').mockResolvedValue(mockedResponse);
-    const result = await controller.getSensorById('aaa');
+    jest
+      .spyOn(sensorsService, 'findSensorById')
+      .mockResolvedValue(mockedResponse);
+    const result = await sensorsController.getSensorById('aaa');
 
-    expect(service.findSensorById).toHaveBeenCalledWith('aaa');
+    expect(sensorsService.findSensorById).toHaveBeenCalledWith('aaa');
     expect(result).toEqual(mockedResponse);
   });
 
@@ -155,10 +163,15 @@ describe('SensorsController', () => {
       updatedAt: now,
     } as Sensor;
 
-    jest.spyOn(service, 'updateSensorById').mockResolvedValue(mockedResponse);
-    const result = await controller.updateSensorById('aaa', updateSensorDto);
+    jest
+      .spyOn(sensorsService, 'updateSensorById')
+      .mockResolvedValue(mockedResponse);
+    const result = await sensorsController.updateSensorById(
+      'aaa',
+      updateSensorDto,
+    );
 
-    expect(service.updateSensorById).toHaveBeenCalledWith(
+    expect(sensorsService.updateSensorById).toHaveBeenCalledWith(
       'aaa',
       updateSensorDto,
     );
@@ -176,10 +189,12 @@ describe('SensorsController', () => {
       updatedAt: now,
     } as Sensor;
 
-    jest.spyOn(service, 'removeSensorById').mockResolvedValue(mockedResponse);
-    const result = await controller.deleteSensorById('aaa');
+    jest
+      .spyOn(sensorsService, 'removeSensorById')
+      .mockResolvedValue(mockedResponse);
+    const result = await sensorsController.deleteSensorById('aaa');
 
-    expect(service.removeSensorById).toHaveBeenCalledWith('aaa');
+    expect(sensorsService.removeSensorById).toHaveBeenCalledWith('aaa');
     expect(result).toEqual(mockedResponse);
   });
 });

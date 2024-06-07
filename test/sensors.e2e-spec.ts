@@ -18,13 +18,14 @@ describe('Sensors Module', () => {
   it('creates a new sensor', () => {
     return request(app.getHttpServer())
       .post('/sensors')
-      .send({ name: 'Sensor 1', type: 'temp' })
+      .send({ name: 'Sensor 1', type: 'temperature' })
       .expect(201)
       .then((res) => {
-        const { id, name, type, active } = res.body;
+        const { id, name, type, unit, active } = res.body;
         expect(id).toBeDefined();
         expect(name).toEqual('Sensor 1');
-        expect(type).toEqual('temp');
+        expect(type).toEqual('temperature');
+        expect(unit).toEqual('Celsius');
         expect(active).toEqual(true);
       });
   });

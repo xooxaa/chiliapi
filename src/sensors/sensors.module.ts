@@ -8,5 +8,6 @@ import { SensorsService } from './sensors.service';
   imports: [TypeOrmModule.forFeature([Sensor])],
   controllers: [SensorsController],
   providers: [SensorsService],
+  exports: [SensorsService],
 })
 export class SensorsModule {}

@@ -10,6 +10,9 @@ Content-Type: application/json
 ### Get All Sensors
 GET http://localhost:3000/sensors
 
+### Get Sensors By Id
+GET http://localhost:3000/sensors/6bc32e86-744b-4068-85c5-0382e559f80e
+
 
 ### Get All Sensors Of Type temp
 GET http://localhost:3000/sensors/of?type=temperature

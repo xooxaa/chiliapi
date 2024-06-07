@@ -3,15 +3,12 @@ import { getRepositoryToken } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { SensorsService } from './sensors.service';
 import { Sensor } from './sensors.entity';
-import { SensorData } from '../sensordata/sensordata.entity';
 import { CreateSensorDto } from './dtos/create-sensor.dto';
 import { UpdateSensorDto } from './dtos/update-sensor.dto';
 
 describe('SensorsService', () => {
-  let service: SensorsService;
+  let sensorsService: SensorsService;
   let sensorRepository: Repository<Sensor>;
-  let dataRepository: Repository<SensorData>;
-
   const now = new Date(Date.now());
 
   beforeEach(async () => {
@@ -22,24 +19,17 @@ describe('SensorsService', () => {
           provide: getRepositoryToken(Sensor),
           useClass: Repository,
         },
-        {
-          provide: getRepositoryToken(SensorData),
-          useClass: Repository,
-        },
       ],
     }).compile();
 
-    service = module.get<SensorsService>(SensorsService);
+    sensorsService = module.get<SensorsService>(SensorsService);
     sensorRepository = module.get<Repository<Sensor>>(
       getRepositoryToken(Sensor),
-    );
-    dataRepository = module.get<Repository<SensorData>>(
-      getRepositoryToken(SensorData),
     );
   });
 
   it('should be defined', () => {
-    expect(service).toBeDefined();
+    expect(sensorsService).toBeDefined();
   });
 
   it('should create a sensor', async () => {
@@ -59,7 +49,7 @@ describe('SensorsService', () => {
 
     jest.spyOn(sensorRepository, 'create').mockReturnValue(mockedResponse);
     jest.spyOn(sensorRepository, 'save').mockResolvedValue(mockedResponse);
-    const result = await service.createSensor(createSensorDto);
+    const result = await sensorsService.createSensor(createSensorDto);
 
     expect(sensorRepository.create).toHaveBeenCalledWith(createSensorDto);
     expect(sensorRepository.save).toHaveBeenCalledWith(mockedResponse);
@@ -89,7 +79,7 @@ describe('SensorsService', () => {
     ];
 
     jest.spyOn(sensorRepository, 'find').mockResolvedValue(mockedResponse);
-    const result = await service.findAllSensors();
+    const result = await sensorsService.findAllSensors();
 
     expect(sensorRepository.find).toHaveBeenCalled();
     expect(result).toEqual(mockedResponse);
@@ -118,7 +108,7 @@ describe('SensorsService', () => {
     ];
 
     jest.spyOn(sensorRepository, 'find').mockResolvedValue(mockedResponse);
-    const result = await service.findAllSensorsOfType('temperature');
+    const result = await sensorsService.findAllSensorsOfType('temperature');
 
     expect(sensorRepository.find).toHaveBeenCalledWith({
       where: { type: 'temperature' },
@@ -138,7 +128,7 @@ describe('SensorsService', () => {
     } as Sensor;
 
     jest.spyOn(sensorRepository, 'findOneBy').mockResolvedValue(mockedResponse);
-    const result = await service.findSensorById('aaa');
+    const result = await sensorsService.findSensorById('aaa');
 
     expect(sensorRepository.findOneBy).toHaveBeenCalledWith({ id: 'aaa' });
     expect(result).toEqual(mockedResponse);
@@ -161,7 +151,10 @@ describe('SensorsService', () => {
 
     jest.spyOn(sensorRepository, 'findOneBy').mockResolvedValue(mockedResponse);
     jest.spyOn(sensorRepository, 'save').mockResolvedValue(mockedResponse);
-    const result = await service.updateSensorById('aaa', updateSensorDto);
+    const result = await sensorsService.updateSensorById(
+      'aaa',
+      updateSensorDto,
+    );
 
     expect(sensorRepository.findOneBy).toHaveBeenCalledWith({ id: 'aaa' });
     expect(sensorRepository.save).toHaveBeenCalledWith(mockedResponse);
@@ -181,7 +174,7 @@ describe('SensorsService', () => {
 
     jest.spyOn(sensorRepository, 'findOneBy').mockResolvedValue(mockedResponse);
     jest.spyOn(sensorRepository, 'remove').mockResolvedValue(mockedResponse);
-    const result = await service.removeSensorById('aaa');
+    const result = await sensorsService.removeSensorById('aaa');
 
     expect(sensorRepository.findOneBy).toHaveBeenCalledWith({ id: 'aaa' });
     expect(sensorRepository.remove).toHaveBeenCalledWith(mockedResponse);

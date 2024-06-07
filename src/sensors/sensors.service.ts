@@ -8,30 +8,30 @@ import { SensorTypes } from './sensors.types';
 @Injectable()
 export class SensorsService {
   constructor(
-    @InjectRepository(Sensor) private readonly repo: Repository<Sensor>,
+    @InjectRepository(Sensor) private readonly sensorRepo: Repository<Sensor>,
   ) {}
 
   async findAllSensors() {
-    return this.repo.find();
+    return this.sensorRepo.find();
   }
 
   async findAllSensorsOfType(type: string) {
-    return this.repo.find({ where: { type } });
+    return this.sensorRepo.find({ where: { type } });
   }
 
   async findSensorById(id: string) {
     if (!id) {
       return null;
     }
-    return this.repo.findOneBy({ id });
+    return this.sensorRepo.findOneBy({ id });
   }
 
   async createSensor(createSensorDto: CreateSensorDto) {
     const sensorTypeInfo = SensorTypes.fromType(createSensorDto.type);
-    const sensor = this.repo.create(createSensorDto);
+    const sensor = this.sensorRepo.create(createSensorDto);
     sensor.unit = sensorTypeInfo.unit;
 
-    return this.repo.save(sensor);
+    return this.sensorRepo.save(sensor);
   }
 
   async updateSensorById(id: string, partialSensor: Partial<Sensor>) {
@@ -40,9 +40,8 @@ export class SensorsService {
       throw new NotFoundException('Sensor not found');
     }
     Object.assign(sensor, partialSensor);
-    sensor.updatedAt = new Date(Date.now());
 
-    return this.repo.save(sensor);
+    return this.sensorRepo.save(sensor);
   }
 
   async removeSensorById(id: string) {
@@ -50,6 +49,6 @@ export class SensorsService {
     if (!sensor) {
       throw new NotFoundException('Sensor not found');
     }
-    return this.repo.remove(sensor);
+    return this.sensorRepo.remove(sensor);
   }
 }

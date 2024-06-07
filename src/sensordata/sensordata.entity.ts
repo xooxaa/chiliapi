@@ -27,7 +27,7 @@ export class SensorData {
   updatedAt: Date;
 
   @ManyToOne(() => Sensor, (sensor) => sensor.data)
-  sensor: Sensor[];
+  sensor: Sensor;
 
   @AfterInsert()
   logInsert() {

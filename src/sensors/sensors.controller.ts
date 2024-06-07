@@ -32,7 +32,7 @@ export class SensorsController {
   }
 
   @Post()
-  async createSensor(@Body() body: CreateSensorDto) {
+  async addSensor(@Body() body: CreateSensorDto) {
     return await this.sensorsService.createSensor(body);
   }
 
