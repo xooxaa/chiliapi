@@ -7,6 +7,7 @@ import { TypeOrmConfigService } from './config/typeorm.config';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { SensorsModule } from './sensors/sensors.module';
+import { SensordataModule } from './sensordata/sensordata.module';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { SensorsModule } from './sensors/sensors.module';
       useClass: TypeOrmConfigService,
     }),
     SensorsModule,
+    SensordataModule,
   ],
   controllers: [AppController],
   providers: [AppService],

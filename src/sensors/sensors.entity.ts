@@ -1,6 +1,6 @@
 import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
 import { AfterInsert, AfterRemove, AfterUpdate, AfterLoad } from 'typeorm';
-import { SensorData } from './data.entity';
+import { SensorData } from '../sensordata/sensordata.entity';
 
 @Entity()
 export class Sensor {
