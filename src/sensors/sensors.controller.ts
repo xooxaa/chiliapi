@@ -12,13 +12,16 @@ import {
   ApiCreatedResponse,
   ApiFoundResponse,
   ApiOkResponse,
+  ApiTags,
 } from '@nestjs/swagger';
 import { Serialize } from '../interceptors/serialize.interceptor';
 import { SensorsService } from './sensors.service';
 import { SensorDto } from './dtos/sensor.dto';
 import { CreateSensorDto } from './dtos/create-sensor.dto';
 import { UpdateSensorDto } from './dtos/update-sensor.dto';
+import { GetSensorByTypeDto } from './dtos/get-sensor-by.dto';
 
+@ApiTags('sensors')
 @Controller('sensors')
 @Serialize(SensorDto)
 export class SensorsController {
@@ -38,7 +41,7 @@ export class SensorsController {
     description: 'Sensors have been successfully found.',
     type: SensorDto,
   })
-  async getAllSensorsOfType(@Query() query: any) {
+  async getAllSensorsOfType(@Query() query: GetSensorByTypeDto) {
     return await this.sensorsService.findAllSensorsOfType(query.type);
   }
 

@@ -1,11 +1,12 @@
 import { Controller, Get, Post, Body, Param } from '@nestjs/common';
-import { ApiCreatedResponse } from '@nestjs/swagger';
+import { ApiCreatedResponse, ApiTags } from '@nestjs/swagger';
 import { Serialize } from '../interceptors/serialize.interceptor';
 import { SensorsService } from '../sensors/sensors.service';
 import { SensorDataService } from './sensordata.service';
 import { CreateSensorDataDto } from './dtos/create-sensordata.dto';
 import { SensorDataDto } from './dtos/sensordata.dto';
 
+@ApiTags('sensordata')
 @Controller('sensordata')
 @Serialize(SensorDataDto)
 export class SensorDataController {
