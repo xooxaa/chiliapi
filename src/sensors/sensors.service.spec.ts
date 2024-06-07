@@ -3,15 +3,14 @@ import { getRepositoryToken } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { SensorsService } from './sensors.service';
 import { Sensor } from './sensors.entity';
-import { Data } from './data.entity';
+import { SensorData } from './data.entity';
 import { CreateSensorDto } from './dtos/create-sensor.dto';
 import { UpdateSensorDto } from './dtos/update-sensor.dto';
-import { randomUUID } from 'crypto';
 
 describe('SensorsService', () => {
   let service: SensorsService;
   let sensorRepository: Repository<Sensor>;
-  let dataRepository: Repository<Data>;
+  let dataRepository: Repository<SensorData>;
 
   const now = new Date(Date.now());
 
@@ -24,7 +23,7 @@ describe('SensorsService', () => {
           useClass: Repository,
         },
         {
-          provide: getRepositoryToken(Data),
+          provide: getRepositoryToken(SensorData),
           useClass: Repository,
         },
       ],
@@ -34,7 +33,9 @@ describe('SensorsService', () => {
     sensorRepository = module.get<Repository<Sensor>>(
       getRepositoryToken(Sensor),
     );
-    dataRepository = module.get<Repository<Data>>(getRepositoryToken(Data));
+    dataRepository = module.get<Repository<SensorData>>(
+      getRepositoryToken(SensorData),
+    );
   });
 
   it('should be defined', () => {

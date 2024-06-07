@@ -27,6 +27,9 @@ export class SensorsService {
 
   async createSensor(createSensorDto: CreateSensorDto) {
     const sensor = this.repo.create(createSensorDto);
+    sensor.createdAt = new Date(Date.now());
+    sensor.updatedAt = sensor.createdAt;
+
     return this.repo.save(sensor);
   }
 
@@ -36,6 +39,8 @@ export class SensorsService {
       throw new NotFoundException('Sensor not found');
     }
     Object.assign(sensor, partialSensor);
+    sensor.updatedAt = new Date(Date.now());
+
     return this.repo.save(sensor);
   }
 

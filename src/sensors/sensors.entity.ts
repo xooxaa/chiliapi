@@ -1,5 +1,6 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
 import { AfterInsert, AfterRemove, AfterUpdate, AfterLoad } from 'typeorm';
+import { SensorData } from './data.entity';
 
 @Entity()
 export class Sensor {
@@ -20,6 +21,9 @@ export class Sensor {
 
   @Column()
   updatedAt: Date;
+
+  @OneToMany(() => SensorData, (data) => data.sensor)
+  data: SensorData[];
 
   @AfterInsert()
   logInsert() {

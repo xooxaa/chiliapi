@@ -2,10 +2,9 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { SensorsController } from './sensors.controller';
 import { SensorsService } from './sensors.service';
 import { Sensor } from './sensors.entity';
-import { Data } from './data.entity';
+import { SensorData } from './data.entity';
 import { CreateSensorDto } from './dtos/create-sensor.dto';
 import { UpdateSensorDto } from './dtos/update-sensor.dto';
-import { randomUUID } from 'crypto';
 
 describe('SensorsController', () => {
   let controller: SensorsController;
