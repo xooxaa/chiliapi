@@ -10,6 +10,15 @@ describe('SensorDataService', () => {
   let sensorDataService: SensorDataService;
   let sensorDataRepository: Repository<SensorData>;
   const now = new Date(Date.now());
+  const testSensor: Sensor = {
+    id: 'aaa',
+    name: 'Sensor 1',
+    type: 'temperature',
+    unit: 'Celsius',
+    active: true,
+    createdAt: now,
+    updatedAt: now,
+  } as Sensor;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -32,7 +41,7 @@ describe('SensorDataService', () => {
     expect(sensorDataService).toBeDefined();
   });
 
-  it('should add data to a sensor', async () => {
+  it('should create a new dataset for a given sensor', async () => {
     const createSensorDataDto: CreateSensorDataDto = {
       value: 2,
       rawValue: 355.23,
@@ -41,20 +50,11 @@ describe('SensorDataService', () => {
       value: 231,
       createdAt: now,
     } as SensorData;
-    const sensor: Sensor = {
-      id: 'aaa',
-      name: 'Sensor 1',
-      type: 'temperature',
-      unit: 'Celsius',
-      active: true,
-      createdAt: now,
-      updatedAt: now,
-    } as Sensor;
 
     jest.spyOn(sensorDataRepository, 'create').mockReturnValue(mockedResponse);
     jest.spyOn(sensorDataRepository, 'save').mockResolvedValue(mockedResponse);
     const result = await sensorDataService.createSensorData(
-      sensor,
+      testSensor,
       createSensorDataDto,
     );
 
