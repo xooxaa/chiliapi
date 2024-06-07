@@ -1,7 +1,11 @@
-import { IsNumber } from 'class-validator';
+import { IsNumber, IsString } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
-export class CreateSensorDataDto {
+export class UpdateSensorDataDto {
+  @ApiProperty()
+  @IsString()
+  id: string;
+
   @ApiProperty()
   @IsNumber()
   value: number;

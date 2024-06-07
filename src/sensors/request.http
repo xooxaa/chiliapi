@@ -16,3 +16,15 @@ GET http://localhost:3000/sensors/6bc32e86-744b-4068-85c5-0382e559f80e
 
 ### Get All Sensors Of Type temp
 GET http://localhost:3000/sensors/of?type=temperature
+
+### Patch a sensor
+PATCH http://localhost:3000/sensors/6bc32e86-744b-4068-85c5-0382e559f80e
+Content-Type: application/json
+
+{
+    "name": "Sensor 2",
+    "type": "temperature"
+}
+
+### Delete a sensor
+DELETE http://localhost:3000/sensors/439db3d3-46ac-4123-8b2a-dc0a4e167680

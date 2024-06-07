@@ -1,0 +1,24 @@
+### Create a sensor
+POST http://localhost:3000/sensors
+Content-Type: application/json
+
+{
+    "name": "Sensor 1",
+    "type": "temperature"
+}
+
+### Add a new Data to a sensor
+POST http://localhost:3000/sensordata/6bc32e86-744b-4068-85c5-0382e559f80e
+Content-Type: application/json
+
+{
+    "value": 22,
+    "rawValue": 642.32
+}
+
+### Get Sensors By Id
+GET http://localhost:3000/sensors/6bc32e86-744b-4068-85c5-0382e559f80e
+
+
+### Get All Sensors Of Type temp
+GET http://localhost:3000/sensors/of?type=temperature
