@@ -7,7 +7,7 @@ import { CreateSensorDataDto } from './dtos/create-sensordata.dto';
 import { SensorDataDto } from './dtos/sensordata.dto';
 
 @ApiTags('sensordata')
-@Controller('sensordata')
+@Controller('sensors/:sensorID/data')
 @Serialize(SensorDataDto)
 export class SensorDataController {
   constructor(
@@ -15,17 +15,17 @@ export class SensorDataController {
     private sensorDataService: SensorDataService,
   ) {}
 
-  @Get('/:sensorID')
+  @Get('')
   @ApiFoundResponse({
-    description: 'Sensors have been successfully found.',
-    type: SensorDataDto,
+    description: 'The SensorData have been successfully found for the given sensor.',
+    type: [SensorDataDto],
   })
   async getAllSensorData(@Param('sensorId') sensorId: string) {
     const sensor = await this.sensorsService.findSensorById(sensorId);
     return await this.sensorDataService.findAllSensorData(sensor);
   }
 
-  @Post('/:sensorId')
+  @Post('')
   @ApiCreatedResponse({
     description: 'The sensordata has been successfully added to the sensor.',
     type: SensorDataDto,

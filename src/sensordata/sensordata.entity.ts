@@ -10,7 +10,7 @@ export class SensorData {
   @Column({ type: 'real' })
   value: number;
 
-  @Column({ type: 'real' })
+  @Column({ type: 'real', nullable: true })
   rawValue: number;
 
   @CreateDateColumn()

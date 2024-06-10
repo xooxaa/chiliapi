@@ -8,14 +8,13 @@ Content-Type: application/json
 }
 
 ### Add new SensorData to a Sensor
-POST http://localhost:3000/sensordata/6bc32e86-744b-4068-85c5-0382e559f80e
+POST http://localhost:3000/sensors/4a82c030-dfb3-4191-8a8e-936a705e8a89/data
 Content-Type: application/json
 
 {
-    "value": 24.5,
-    "rawValue": 642.32
+    "value": 24.5
 }
 
 ### Find all SensorData for a given Sensor
-GET http://localhost:3000/sensordata/6bc32e86-744b-4068-85c5-0382e559f80e
+GET http://localhost:3000/sensors/4a82c030-dfb3-4191-8a8e-936a705e8a89/data
 

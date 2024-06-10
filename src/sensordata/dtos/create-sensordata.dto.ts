@@ -1,4 +1,4 @@
-import { IsNumber } from 'class-validator';
+import { IsNumber, IsOptional } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class CreateSensorDataDto {
@@ -7,6 +7,7 @@ export class CreateSensorDataDto {
   value: number;
 
   @ApiProperty()
+  @IsOptional()
   @IsNumber()
   rawValue: number;
 }

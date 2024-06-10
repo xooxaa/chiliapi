@@ -16,7 +16,7 @@ export class SensorsController {
   @Get()
   @ApiFoundResponse({
     description: 'Sensors have been successfully found.',
-    type: SensorDto,
+    type: [SensorDto],
   })
   async getAllSensors() {
     return await this.sensorsService.findAllSensors();
@@ -25,7 +25,7 @@ export class SensorsController {
   @Get('/of')
   @ApiFoundResponse({
     description: 'Sensors have been successfully found.',
-    type: SensorDto,
+    type: [SensorDto],
   })
   async getAllSensorsOfType(@Query() query: GetSensorByTypeDto) {
     return await this.sensorsService.findAllSensorsOfType(query.type);
