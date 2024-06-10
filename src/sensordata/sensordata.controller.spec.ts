@@ -39,6 +39,7 @@ describe('SensordataController', () => {
             createSensorData: jest.fn(),
             findAllSensorData: jest.fn(),
             updateSensorDataById: jest.fn(),
+            removeSensorDataById: jest.fn(),
           },
         },
       ],
@@ -108,6 +109,24 @@ describe('SensordataController', () => {
     const result = await sensorDataController.updateSensorDataById(testSensor.id, updateSensorDataDto);
 
     expect(sensorDataService.updateSensorDataById).toHaveBeenCalledWith(testSensor.id, updateSensorDataDto);
+    expect(result).toEqual(mockedResponse);
+  });
+
+  it('should delete sensordata by ID for a given sensor', async () => {
+    const sensorDataId = 'zzz';
+    const mockedResponse: SensorData = {
+      id: sensorDataId,
+      value: 24.1,
+      createdAt: now,
+      sensor: {
+        id: 'aaa',
+      },
+    } as SensorData;
+
+    jest.spyOn(sensorDataService, 'removeSensorDataById').mockResolvedValue(mockedResponse);
+    const result = await sensorDataController.deleteSensorDataById(testSensor.id, sensorDataId);
+
+    expect(sensorDataService.removeSensorDataById).toHaveBeenCalledWith(testSensor.id, sensorDataId);
     expect(result).toEqual(mockedResponse);
   });
 });

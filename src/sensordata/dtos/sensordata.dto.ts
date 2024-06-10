@@ -6,11 +6,15 @@ export class SensorDataDto {
   @Expose()
   id: string;
 
-  @Expose()
   @ApiProperty()
+  @Expose()
   value: number;
 
-  @Expose()
   @ApiProperty()
+  @Expose()
   rawValue: number;
+
+  @ApiProperty()
+  @Expose()
+  createdAt: Date;
 }

@@ -87,16 +87,12 @@ describe('SensorDataService', () => {
     const mockedResponseBeforeUpdate: SensorData = {
       value: 24.1,
       createdAt: now,
-      sensor: {
-        id: 'aaa',
-      },
+      sensorId: 'aaa',
     } as SensorData;
     const mockedResponseAfterUpdate: SensorData = {
       value: 22.1,
       createdAt: now,
-      sensor: {
-        id: 'aaa',
-      },
+      sensorId: 'aaa',
     } as SensorData;
 
     jest.spyOn(sensorDataRepository, 'findOneBy').mockResolvedValue(mockedResponseBeforeUpdate);
@@ -106,5 +102,23 @@ describe('SensorDataService', () => {
     expect(sensorDataRepository.findOneBy).toHaveBeenCalledWith({ id: updateSensorDataDto.id });
     expect(sensorDataRepository.save).toHaveBeenCalledWith(mockedResponseBeforeUpdate);
     expect(result).toEqual(mockedResponseAfterUpdate);
+  });
+
+  it('should delete sensorData by ID for a given sensor', async () => {
+    const sensorDataId = 'zzz';
+    const mockedResponse: SensorData = {
+      id: sensorDataId,
+      value: 24.1,
+      createdAt: now,
+      sensorId: 'aaa',
+    } as SensorData;
+
+    jest.spyOn(sensorDataRepository, 'findOneBy').mockResolvedValue(mockedResponse);
+    jest.spyOn(sensorDataRepository, 'remove').mockResolvedValue(mockedResponse);
+    const result = await sensorDataService.removeSensorDataById(testSensor.id, sensorDataId);
+
+    expect(sensorDataRepository.findOneBy).toHaveBeenCalledWith({ id: sensorDataId });
+    expect(sensorDataRepository.remove).toHaveBeenCalledWith(mockedResponse);
+    expect(result).toEqual(mockedResponse);
   });
 });

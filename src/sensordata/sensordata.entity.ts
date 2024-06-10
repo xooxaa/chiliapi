@@ -19,7 +19,10 @@ export class SensorData {
   @UpdateDateColumn()
   updatedAt: Date;
 
-  @ManyToOne(() => Sensor, (sensor) => sensor.data)
+  @Column()
+  sensorId: string;
+
+  @ManyToOne(() => Sensor, (sensor) => sensor.sensorData)
   sensor: Sensor;
 
   @AfterInsert()

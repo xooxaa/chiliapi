@@ -17,6 +17,14 @@ export class SensorDataService {
     return this.sensorDataRepo.find({ where: { sensor } });
   }
 
+  async findCurrentSensorData(sensorId: string) {
+    return this.sensorDataRepo
+      .createQueryBuilder('sensorData')
+      .where('sensorId = :sensorId', { sensorId })
+      .orderBy('sensorData.createdAt', 'DESC')
+      .getOne();
+  }
+
   async findSensorDataById(sensorDataId: string) {
     return this.sensorDataRepo.findOneBy({ id: sensorDataId });
   }
@@ -33,11 +41,23 @@ export class SensorDataService {
     if (!sensorData) {
       throw new NotFoundException('SensorData not found');
     }
-    if (sensorData.sensor.id !== sensorId) {
+    if (sensorData.sensorId !== sensorId) {
       throw new ConflictException('SensorData does not belong to Sensor');
     }
     Object.assign(sensorData, partialSensorData);
 
     return this.sensorDataRepo.save(sensorData);
+  }
+
+  async removeSensorDataById(sensorId: string, sensorDataId: string) {
+    const sensorData = await this.findSensorDataById(sensorDataId);
+    if (!sensorData) {
+      throw new NotFoundException('SensorData not found');
+    }
+    if (sensorData.sensorId !== sensorId) {
+      throw new ConflictException('SensorData does not belong to Sensor');
+    }
+
+    return this.sensorDataRepo.remove(sensorData);
   }
 }

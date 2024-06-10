@@ -26,8 +26,8 @@ export class Sensor {
   @UpdateDateColumn()
   updatedAt: Date;
 
-  @OneToMany(() => SensorData, (data) => data.sensor)
-  data: SensorData[];
+  @OneToMany(() => SensorData, (sensorData) => sensorData.sensor)
+  sensorData: SensorData[];
 
   @BeforeInsert()
   @BeforeUpdate()

@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Patch, Body, Param } from '@nestjs/common';
+import { Controller, Get, Post, Patch, Delete, Body, Param } from '@nestjs/common';
 import { ApiTags, ApiFoundResponse, ApiCreatedResponse, ApiOkResponse } from '@nestjs/swagger';
 import { Serialize } from '../interceptors/serialize.interceptor';
 import { SensorsService } from '../sensors/sensors.service';
@@ -8,7 +8,7 @@ import { CreateSensorDataDto } from './dtos/create-sensordata.dto';
 import { UpdateSensorDataDto } from './dtos/update-sensordata.dto';
 
 @ApiTags('sensordata')
-@Controller('sensors/:sensorID/data')
+@Controller('sensors/:sensorId/data')
 @Serialize(SensorDataDto)
 export class SensorDataController {
   constructor(
@@ -24,6 +24,15 @@ export class SensorDataController {
   async getAllSensorData(@Param('sensorId') sensorId: string) {
     const sensor = await this.sensorsService.findSensorById(sensorId);
     return await this.sensorDataService.findAllSensorData(sensor);
+  }
+
+  @Get('/current')
+  @ApiFoundResponse({
+    description: 'The SensorData have been successfully found for the given sensor.',
+    type: SensorDataDto,
+  })
+  async getCurrentSensorData(@Param('sensorId') sensorId: string) {
+    return await this.sensorDataService.findCurrentSensorData(sensorId);
   }
 
   @Post('')
@@ -43,5 +52,14 @@ export class SensorDataController {
   })
   async updateSensorDataById(@Param('sensorId') sensorId: string, @Body() body: UpdateSensorDataDto) {
     return await this.sensorDataService.updateSensorDataById(sensorId, body);
+  }
+
+  @Delete('/:sensorDataId')
+  @ApiOkResponse({
+    description: 'The sensordata has been successfully deleted.',
+    type: SensorDataDto,
+  })
+  async deleteSensorDataById(@Param('sensorId') sensorId: string, @Param('sensorDataId') sensorDataId: string) {
+    return await this.sensorDataService.removeSensorDataById(sensorId, sensorDataId);
   }
 }
