@@ -1,10 +1,11 @@
-import { Controller, Get, Post, Body, Param } from '@nestjs/common';
+import { Controller, Get, Post, Patch, Body, Param } from '@nestjs/common';
 import { ApiTags, ApiFoundResponse, ApiCreatedResponse, ApiOkResponse } from '@nestjs/swagger';
 import { Serialize } from '../interceptors/serialize.interceptor';
 import { SensorsService } from '../sensors/sensors.service';
 import { SensorDataService } from './sensordata.service';
-import { CreateSensorDataDto } from './dtos/create-sensordata.dto';
 import { SensorDataDto } from './dtos/sensordata.dto';
+import { CreateSensorDataDto } from './dtos/create-sensordata.dto';
+import { UpdateSensorDataDto } from './dtos/update-sensordata.dto';
 
 @ApiTags('sensordata')
 @Controller('sensors/:sensorID/data')
@@ -33,5 +34,14 @@ export class SensorDataController {
   async addSensorData(@Param('sensorId') sensorId: string, @Body() body: CreateSensorDataDto) {
     const sensor = await this.sensorsService.findSensorById(sensorId);
     return await this.sensorDataService.createSensorData(sensor, body);
+  }
+
+  @Patch('')
+  @ApiOkResponse({
+    description: 'The sensordata has been successfully patched.',
+    type: SensorDataDto,
+  })
+  async updateSensorDataById(@Param('sensorId') sensorId: string, @Body() body: UpdateSensorDataDto) {
+    return await this.sensorDataService.updateSensorDataById(sensorId, body);
   }
 }

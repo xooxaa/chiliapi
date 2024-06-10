@@ -5,6 +5,7 @@ import { SensorDataService } from './sensordata.service';
 import { Sensor } from '../sensors/sensors.entity';
 import { SensorData } from './sensordata.entity';
 import { CreateSensorDataDto } from './dtos/create-sensordata.dto';
+import { UpdateSensorDataDto } from './dtos/update-sensordata.dto';
 
 describe('SensorDataService', () => {
   let sensorDataService: SensorDataService;
@@ -75,5 +76,35 @@ describe('SensorDataService', () => {
 
     expect(sensorDataRepository.find).toHaveBeenCalled();
     expect(result).toEqual(mockedResponse);
+  });
+
+  it('should update sensorData by ID for a given sensor', async () => {
+    const updateSensorDataDto: UpdateSensorDataDto = {
+      id: 'zzz',
+      value: 22.1,
+      rawValue: 355.23,
+    };
+    const mockedResponseBeforeUpdate: SensorData = {
+      value: 24.1,
+      createdAt: now,
+      sensor: {
+        id: 'aaa',
+      },
+    } as SensorData;
+    const mockedResponseAfterUpdate: SensorData = {
+      value: 22.1,
+      createdAt: now,
+      sensor: {
+        id: 'aaa',
+      },
+    } as SensorData;
+
+    jest.spyOn(sensorDataRepository, 'findOneBy').mockResolvedValue(mockedResponseBeforeUpdate);
+    jest.spyOn(sensorDataRepository, 'save').mockResolvedValue(mockedResponseAfterUpdate);
+    const result = await sensorDataService.updateSensorDataById(testSensor.id, updateSensorDataDto);
+
+    expect(sensorDataRepository.findOneBy).toHaveBeenCalledWith({ id: updateSensorDataDto.id });
+    expect(sensorDataRepository.save).toHaveBeenCalledWith(mockedResponseBeforeUpdate);
+    expect(result).toEqual(mockedResponseAfterUpdate);
   });
 });
