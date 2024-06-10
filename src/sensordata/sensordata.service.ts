@@ -17,7 +17,7 @@ export class SensorDataService {
     return this.sensorDataRepo.find({ where: { sensor } });
   }
 
-  async findCurrentSensorData(sensorId: string) {
+  async findLatestSensorData(sensorId: string) {
     return this.sensorDataRepo
       .createQueryBuilder('sensorData')
       .where('sensorId = :sensorId', { sensorId })

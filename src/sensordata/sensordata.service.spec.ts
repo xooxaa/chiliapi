@@ -78,6 +78,26 @@ describe('SensorDataService', () => {
     expect(result).toEqual(mockedResponse);
   });
 
+  it('should find the latest sensorData for a given sensor', async () => {
+    const mockedResponse: SensorData = {
+      id: 'zzz',
+      value: 24.1,
+      createdAt: now,
+      sensorId: 'aaa',
+    } as SensorData;
+
+    const createQueryBuilderMock = {
+      where: jest.fn().mockReturnThis(),
+      orderBy: jest.fn().mockReturnThis(),
+      getOne: jest.fn().mockResolvedValue(mockedResponse),
+    };
+
+    jest.spyOn(sensorDataRepository, 'createQueryBuilder').mockImplementation(() => createQueryBuilderMock as any);
+    const result = await sensorDataService.findLatestSensorData(testSensor.id);
+
+    expect(result).toEqual(mockedResponse);
+  });
+
   it('should update sensorData by ID for a given sensor', async () => {
     const updateSensorDataDto: UpdateSensorDataDto = {
       id: 'zzz',

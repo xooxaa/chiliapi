@@ -38,6 +38,7 @@ describe('SensordataController', () => {
           useValue: {
             createSensorData: jest.fn(),
             findAllSensorData: jest.fn(),
+            findLatestSensorData: jest.fn(),
             updateSensorDataById: jest.fn(),
             removeSensorDataById: jest.fn(),
           },
@@ -91,6 +92,19 @@ describe('SensordataController', () => {
 
     expect(sensorsService.findSensorById).toHaveBeenCalledWith(testSensor.id);
     expect(sensorDataService.findAllSensorData).toHaveBeenCalledWith(testSensor);
+    expect(result).toEqual(mockedResponse);
+  });
+
+  it('should find the latest sensorData for a given sensor', async () => {
+    const mockedResponse: SensorData = {
+      value: 24.1,
+      createdAt: now,
+    } as SensorData;
+
+    jest.spyOn(sensorDataService, 'findLatestSensorData').mockResolvedValue(mockedResponse);
+    const result = await sensorDataController.getLatestSensorData(testSensor.id);
+
+    expect(sensorDataService.findLatestSensorData).toHaveBeenCalledWith(testSensor.id);
     expect(result).toEqual(mockedResponse);
   });
 

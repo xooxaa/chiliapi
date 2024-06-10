@@ -26,13 +26,13 @@ export class SensorDataController {
     return await this.sensorDataService.findAllSensorData(sensor);
   }
 
-  @Get('/current')
+  @Get('/latest')
   @ApiFoundResponse({
     description: 'The SensorData have been successfully found for the given sensor.',
     type: SensorDataDto,
   })
-  async getCurrentSensorData(@Param('sensorId') sensorId: string) {
-    return await this.sensorDataService.findCurrentSensorData(sensorId);
+  async getLatestSensorData(@Param('sensorId') sensorId: string) {
+    return await this.sensorDataService.findLatestSensorData(sensorId);
   }
 
   @Post('')
