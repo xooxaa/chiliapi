@@ -10,11 +10,21 @@ export class SensorsService {
   constructor(@InjectRepository(Sensor) private readonly sensorRepo: Repository<Sensor>) {}
 
   async findAllSensors() {
-    return this.sensorRepo.find();
+    const sensors = await this.sensorRepo.find();
+    if (sensors.length === 0) {
+      throw new NotFoundException('No sensors found');
+    }
+
+    return sensors;
   }
 
   async findAllSensorsOfType(type: string) {
-    return this.sensorRepo.find({ where: { type } });
+    const sensors = await this.sensorRepo.find({ where: { type } });
+    if (sensors.length === 0) {
+      throw new NotFoundException('No sensors found');
+    }
+
+    return sensors;
   }
 
   async findSensorById(sensorId: string) {
@@ -22,7 +32,12 @@ export class SensorsService {
       return null;
     }
 
-    return this.sensorRepo.findOneBy({ id: sensorId });
+    const sensor = await this.sensorRepo.findOneBy({ id: sensorId });
+    if (!sensor) {
+      throw new NotFoundException('Sensor not found');
+    }
+
+    return sensor;
   }
 
   async createSensor(createSensorDto: CreateSensorDto) {
@@ -35,9 +50,6 @@ export class SensorsService {
 
   async updateSensorById(sensorId: string, partialSensor: Partial<Sensor>) {
     const sensor = await this.findSensorById(sensorId);
-    if (!sensor) {
-      throw new NotFoundException('Sensor not found');
-    }
     Object.assign(sensor, partialSensor);
 
     return this.sensorRepo.save(sensor);
@@ -45,9 +57,7 @@ export class SensorsService {
 
   async removeSensorById(sensorId: string) {
     const sensor = await this.findSensorById(sensorId);
-    if (!sensor) {
-      throw new NotFoundException('Sensor not found');
-    }
+
     return this.sensorRepo.remove(sensor);
   }
 }

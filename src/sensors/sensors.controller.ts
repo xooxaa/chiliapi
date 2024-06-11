@@ -41,12 +41,7 @@ export class SensorsController {
     description: 'Sensor not found.',
   })
   async getSensorById(@Param('sensorId') sensorId: string) {
-    const sensor = await this.sensorsService.findSensorById(sensorId);
-    if (!sensor) {
-      throw new NotFoundException('Sensor not found');
-    }
-
-    return sensor;
+    return await this.sensorsService.findSensorById(sensorId);
   }
 
   @Post()

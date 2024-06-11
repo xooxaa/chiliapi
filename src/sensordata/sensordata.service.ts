@@ -45,7 +45,12 @@ export class SensorDataService {
   }
 
   async findSensorDataById(sensorDataId: string) {
-    return this.sensorDataRepo.findOneBy({ id: sensorDataId });
+    const sensorData = await this.sensorDataRepo.findOneBy({ id: sensorDataId });
+    if (!sensorData) {
+      throw new NotFoundException('SensorData not found');
+    }
+
+    return sensorData;
   }
 
   async createSensorData(sensor: Sensor, createSensorDataDto: CreateSensorDataDto) {
@@ -56,27 +61,24 @@ export class SensorDataService {
   }
 
   async updateSensorDataById(sensorId: string, partialSensorData: UpdateSensorDataDto) {
-    const sensorData = await this.findSensorDataById(partialSensorData.id);
-    if (!sensorData) {
-      throw new NotFoundException('SensorData not found');
-    }
-    if (sensorData.sensorId !== sensorId) {
-      throw new ConflictException('SensorData does not belong to Sensor');
-    }
+    const sensorData = await this.getSensorDataAndCheckSensorId(partialSensorData.id, sensorId);
     Object.assign(sensorData, partialSensorData);
 
     return this.sensorDataRepo.save(sensorData);
   }
 
   async removeSensorDataById(sensorId: string, sensorDataId: string) {
+    const sensorData = await this.getSensorDataAndCheckSensorId(sensorDataId, sensorId);
+
+    return this.sensorDataRepo.remove(sensorData);
+  }
+
+  private async getSensorDataAndCheckSensorId(sensorDataId: string, sensorId: string) {
     const sensorData = await this.findSensorDataById(sensorDataId);
-    if (!sensorData) {
-      throw new NotFoundException('SensorData not found');
-    }
     if (sensorData.sensorId !== sensorId) {
       throw new ConflictException('SensorData does not belong to Sensor');
     }
 
-    return this.sensorDataRepo.remove(sensorData);
+    return sensorData;
   }
 }
