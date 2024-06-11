@@ -1,5 +1,6 @@
 import { Controller, Get, Post, Patch, Delete, Body, Param, Query } from '@nestjs/common';
-import { ApiTags, ApiFoundResponse, ApiCreatedResponse, ApiOkResponse } from '@nestjs/swagger';
+import { NotFoundException } from '@nestjs/common';
+import { ApiTags, ApiCreatedResponse, ApiOkResponse, ApiNotFoundResponse } from '@nestjs/swagger';
 import { Serialize } from '../interceptors/serialize.interceptor';
 import { SensorsService } from './sensors.service';
 import { SensorDto } from './dtos/sensor.dto';
@@ -14,7 +15,7 @@ export class SensorsController {
   constructor(private sensorsService: SensorsService) {}
 
   @Get()
-  @ApiFoundResponse({
+  @ApiOkResponse({
     description: 'Sensors have been successfully found.',
     type: [SensorDto],
   })
@@ -23,7 +24,7 @@ export class SensorsController {
   }
 
   @Get('/of')
-  @ApiFoundResponse({
+  @ApiOkResponse({
     description: 'Sensors have been successfully found.',
     type: [SensorDto],
   })
@@ -32,12 +33,20 @@ export class SensorsController {
   }
 
   @Get('/:sensorId')
-  @ApiFoundResponse({
+  @ApiOkResponse({
     description: 'Sensor has been successfully found.',
     type: SensorDto,
   })
+  @ApiNotFoundResponse({
+    description: 'Sensor not found.',
+  })
   async getSensorById(@Param('sensorId') sensorId: string) {
-    return await this.sensorsService.findSensorById(sensorId);
+    const sensor = await this.sensorsService.findSensorById(sensorId);
+    if (!sensor) {
+      throw new NotFoundException('Sensor not found');
+    }
+
+    return sensor;
   }
 
   @Post()

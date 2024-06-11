@@ -2,9 +2,9 @@ import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { TypeOrmModuleOptions, TypeOrmOptionsFactory } from '@nestjs/typeorm';
 
-function nodeEnvIsTest() {
-  return process.env.NODE_ENV === 'test' ? true : false;
-}
+// function nodeEnvIsTest() {
+//   return process.env.NODE_ENV === 'test' ? true : false;
+// }
 
 @Injectable()
 export class TypeOrmConfigService implements TypeOrmOptionsFactory {
