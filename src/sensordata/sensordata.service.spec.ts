@@ -17,8 +17,6 @@ describe('SensorDataService', () => {
     type: 'temperature',
     unit: 'Celsius',
     active: true,
-    createdAt: now,
-    updatedAt: now,
   } as Sensor;
 
   beforeEach(async () => {
@@ -44,6 +42,7 @@ describe('SensorDataService', () => {
     const createSensorDataDto: CreateSensorDataDto = {
       value: 2,
       rawValue: 355.23,
+      timestamp: now,
     };
     const mockedResponse: SensorData = {
       value: 231,
@@ -103,15 +102,16 @@ describe('SensorDataService', () => {
       id: 'zzz',
       value: 22.1,
       rawValue: 355.23,
+      timestamp: now,
     };
     const mockedResponseBeforeUpdate: SensorData = {
       value: 24.1,
-      createdAt: now,
+      timestamp: now,
       sensorId: 'aaa',
     } as SensorData;
     const mockedResponseAfterUpdate: SensorData = {
       value: 22.1,
-      createdAt: now,
+      timestamp: now,
       sensorId: 'aaa',
     } as SensorData;
 
@@ -129,7 +129,7 @@ describe('SensorDataService', () => {
     const mockedResponse: SensorData = {
       id: sensorDataId,
       value: 24.1,
-      createdAt: now,
+      timestamp: now,
       sensorId: 'aaa',
     } as SensorData;
 

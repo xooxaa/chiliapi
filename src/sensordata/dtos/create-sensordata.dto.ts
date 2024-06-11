@@ -1,4 +1,4 @@
-import { IsNumber, IsOptional } from 'class-validator';
+import { IsDate, IsNumber, IsOptional } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class CreateSensorDataDto {
@@ -10,4 +10,8 @@ export class CreateSensorDataDto {
   @IsOptional()
   @IsNumber()
   rawValue: number;
+
+  @ApiProperty()
+  @IsDate()
+  timestamp: Date;
 }

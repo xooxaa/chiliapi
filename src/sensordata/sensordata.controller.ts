@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Patch, Delete, Body, Param } from '@nestjs/common';
+import { Controller, Get, Post, Patch, Delete, Body, Param, Query } from '@nestjs/common';
 import { ApiTags, ApiFoundResponse, ApiCreatedResponse, ApiOkResponse } from '@nestjs/swagger';
 import { Serialize } from '../interceptors/serialize.interceptor';
 import { SensorsService } from '../sensors/sensors.service';
@@ -6,6 +6,7 @@ import { SensorDataService } from './sensordata.service';
 import { SensorDataDto } from './dtos/sensordata.dto';
 import { CreateSensorDataDto } from './dtos/create-sensordata.dto';
 import { UpdateSensorDataDto } from './dtos/update-sensordata.dto';
+import { GetSensorDataByIntervalDto } from './dtos/get-sensor-data-by.dto';
 
 @ApiTags('sensordata')
 @Controller('sensors/:sensorId/data')
@@ -18,17 +19,17 @@ export class SensorDataController {
 
   @Get('')
   @ApiFoundResponse({
-    description: 'The SensorData have been successfully found for the given sensor.',
+    description: 'The sensordata has been successfully found for the given sensor.',
     type: [SensorDataDto],
   })
-  async getAllSensorData(@Param('sensorId') sensorId: string) {
+  async getSensorData(@Param('sensorId') sensorId: string, @Query() interval: GetSensorDataByIntervalDto) {
     const sensor = await this.sensorsService.findSensorById(sensorId);
     return await this.sensorDataService.findAllSensorData(sensor);
   }
 
   @Get('/latest')
   @ApiFoundResponse({
-    description: 'The SensorData have been successfully found for the given sensor.',
+    description: 'The latest sensordata has been successfully found for the given sensor.',
     type: SensorDataDto,
   })
   async getLatestSensorData(@Param('sensorId') sensorId: string) {

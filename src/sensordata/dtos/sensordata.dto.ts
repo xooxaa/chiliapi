@@ -16,5 +16,5 @@ export class SensorDataDto {
 
   @ApiProperty()
   @Expose()
-  createdAt: Date;
+  timestamp: Date;
 }

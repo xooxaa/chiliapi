@@ -41,8 +41,6 @@ describe('SensorsService', () => {
       type: 'temperature',
       unit: 'Celsius',
       active: true,
-      createdAt: now,
-      updatedAt: now,
     } as Sensor;
 
     jest.spyOn(sensorRepository, 'create').mockReturnValue(mockedResponse);
@@ -62,8 +60,6 @@ describe('SensorsService', () => {
         type: 'temperature',
         unit: 'Celsius',
         active: true,
-        createdAt: now,
-        updatedAt: now,
       } as Sensor,
       {
         id: 'bbb',
@@ -71,8 +67,6 @@ describe('SensorsService', () => {
         type: 'humidity',
         unit: 'Percentage',
         active: true,
-        createdAt: now,
-        updatedAt: now,
       } as Sensor,
     ];
 
@@ -91,8 +85,6 @@ describe('SensorsService', () => {
         type: 'temperature',
         unit: 'Celsius',
         active: true,
-        createdAt: now,
-        updatedAt: now,
       } as Sensor,
       {
         id: 'bbb',
@@ -100,8 +92,6 @@ describe('SensorsService', () => {
         type: 'temperature',
         unit: 'Celsius',
         active: true,
-        createdAt: now,
-        updatedAt: now,
       } as Sensor,
     ];
 
@@ -121,8 +111,6 @@ describe('SensorsService', () => {
       type: 'temperature',
       unit: 'Celsius',
       active: true,
-      createdAt: now,
-      updatedAt: now,
     } as Sensor;
 
     jest.spyOn(sensorRepository, 'findOneBy').mockResolvedValue(mockedResponse);
@@ -143,8 +131,6 @@ describe('SensorsService', () => {
       type: 'temperature',
       unit: 'Celsius',
       active: true,
-      createdAt: now,
-      updatedAt: now,
     } as Sensor;
 
     jest.spyOn(sensorRepository, 'findOneBy').mockResolvedValue(mockedResponse);
@@ -163,8 +149,6 @@ describe('SensorsService', () => {
       type: 'temperature',
       unit: 'Celsius',
       active: true,
-      createdAt: now,
-      updatedAt: now,
     } as Sensor;
 
     jest.spyOn(sensorRepository, 'findOneBy').mockResolvedValue(mockedResponse);

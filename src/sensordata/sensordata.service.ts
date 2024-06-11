@@ -17,11 +17,15 @@ export class SensorDataService {
     return this.sensorDataRepo.find({ where: { sensor } });
   }
 
+  async findAllSensorDataInInterval(sensor: Sensor) {
+    return this.sensorDataRepo.find({ where: { sensor } });
+  }
+
   async findLatestSensorData(sensorId: string) {
     return this.sensorDataRepo
       .createQueryBuilder('sensorData')
       .where('sensorId = :sensorId', { sensorId })
-      .orderBy('sensorData.createdAt', 'DESC')
+      .orderBy('sensorData.timestamp', 'DESC')
       .getOne();
   }
 

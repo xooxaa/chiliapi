@@ -5,6 +5,7 @@ import { SensorDataService } from './sensordata.service';
 import { Sensor } from '../sensors/sensors.entity';
 import { SensorData } from './sensordata.entity';
 import { CreateSensorDataDto } from './dtos/create-sensordata.dto';
+import { GetSensorDataByIntervalDto } from './dtos/get-sensor-data-by.dto';
 
 describe('SensordataController', () => {
   let sensorDataController: SensorDataController;
@@ -18,8 +19,6 @@ describe('SensordataController', () => {
     type: 'temperature',
     unit: 'Celsius',
     active: true,
-    createdAt: now,
-    updatedAt: now,
   } as Sensor;
 
   beforeEach(async () => {
@@ -59,10 +58,11 @@ describe('SensordataController', () => {
     const createSensorDataDto: CreateSensorDataDto = {
       value: 2,
       rawValue: 355.23,
+      timestamp: now,
     };
     const mockedResponse: SensorData = {
       value: 231,
-      createdAt: now,
+      timestamp: now,
     } as SensorData;
 
     jest.spyOn(sensorsService, 'findSensorById').mockResolvedValue(testSensor);
@@ -78,17 +78,17 @@ describe('SensordataController', () => {
     const mockedResponse: SensorData[] = [
       {
         value: 24.1,
-        createdAt: now,
+        timestamp: now,
       } as SensorData,
       {
         value: 23.1,
-        createdAt: now,
+        timestamp: now,
       } as SensorData,
     ];
 
     jest.spyOn(sensorsService, 'findSensorById').mockResolvedValue(testSensor);
     jest.spyOn(sensorDataService, 'findAllSensorData').mockResolvedValue(mockedResponse);
-    const result = await sensorDataController.getAllSensorData(testSensor.id);
+    const result = await sensorDataController.getSensorData(testSensor.id, {} as GetSensorDataByIntervalDto);
 
     expect(sensorsService.findSensorById).toHaveBeenCalledWith(testSensor.id);
     expect(sensorDataService.findAllSensorData).toHaveBeenCalledWith(testSensor);
@@ -98,7 +98,7 @@ describe('SensordataController', () => {
   it('should find the latest sensorData for a given sensor', async () => {
     const mockedResponse: SensorData = {
       value: 24.1,
-      createdAt: now,
+      timestamp: now,
     } as SensorData;
 
     jest.spyOn(sensorDataService, 'findLatestSensorData').mockResolvedValue(mockedResponse);
@@ -113,10 +113,11 @@ describe('SensordataController', () => {
       id: 'zzz',
       value: 23,
       rawValue: 355.23,
+      timestamp: now,
     };
     const mockedResponse: SensorData = {
       value: 231,
-      createdAt: now,
+      timestamp: now,
     } as SensorData;
 
     jest.spyOn(sensorDataService, 'updateSensorDataById').mockResolvedValue(mockedResponse);
@@ -131,7 +132,7 @@ describe('SensordataController', () => {
     const mockedResponse: SensorData = {
       id: sensorDataId,
       value: 24.1,
-      createdAt: now,
+      timestamp: now,
       sensor: {
         id: 'aaa',
       },

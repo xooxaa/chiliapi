@@ -13,6 +13,9 @@ export class SensorData {
   @Column({ type: 'real', nullable: true })
   rawValue: number;
 
+  @Column()
+  timestamp: Date;
+
   @CreateDateColumn()
   createdAt: Date;
 
