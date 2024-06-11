@@ -6,18 +6,18 @@ export class UpdateSensorDataDto {
   @IsString()
   id: string;
 
-  @ApiProperty()
+  @ApiProperty({ required: false })
   @IsOptional()
   @IsNumber()
-  value: number;
+  value?: number;
 
-  @ApiProperty()
+  @ApiProperty({ required: false })
   @IsOptional()
   @IsNumber()
-  rawValue: number;
+  rawValue?: number;
 
-  @ApiProperty()
+  @ApiProperty({ required: false })
   @IsOptional()
   @IsDate()
-  timestamp: Date;
+  timestamp?: Date;
 }

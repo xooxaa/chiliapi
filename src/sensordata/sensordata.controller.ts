@@ -24,7 +24,7 @@ export class SensorDataController {
   })
   async getSensorData(@Param('sensorId') sensorId: string, @Query() interval: GetSensorDataByIntervalDto) {
     const sensor = await this.sensorsService.findSensorById(sensorId);
-    return await this.sensorDataService.findAllSensorData(sensor);
+    return await this.sensorDataService.findAllSensorDataInInterval(sensor.id, interval);
   }
 
   @Get('/latest')

@@ -1,4 +1,4 @@
-### Create a Sensor
+### Create a sensor
 POST http://localhost:3000/sensors
 Content-Type: application/json
 
@@ -7,16 +7,20 @@ Content-Type: application/json
     "type": "temperature"
 }
 
-### Add new SensorData to a Sensor
-POST http://localhost:3000/sensors/d1585bd5-b7fe-43ed-9eef-d9ddc81bd02d/data
+### Add new sensordata to a sensor
+POST http://localhost:3000/sensors/b05d86c6-301f-4fb3-8f11-91a38d9bfd23/data
 Content-Type: application/json
 
 {
-    "value": 22.5
+    "value": 22.5,
+    "timestamp": "2023-07-11T08:13:56.000Z"
 }
 
-### Find all SensorData for a given Sensor
-GET http://localhost:3000/sensors/20d04170-fa87-4ff9-a154-30422050dbe4/data/current
+### Find all sensordata for a given sensor
+GET http://localhost:3000/sensors/b05d86c6-301f-4fb3-8f11-91a38d9bfd23/data?start=2024-01-01T00:00:00Z
 
-### Delete SensorData
-DELETE http://localhost:3000/sensors/20d04170-fa87-4ff9-a154-30422050dbe4/data/3665698d-5ad1-41cf-be1e-7bdcca4388d1
+### Find latest sensordata for a given sensor
+GET http://localhost:3000/sensors/b05d86c6-301f-4fb3-8f11-91a38d9bfd23/data/latest
+
+### Delete sensordata
+DELETE http://localhost:3000/sensors/b05d86c6-301f-4fb3-8f11-91a38d9bfd23/data/b7a07a17-0188-49fc-840d-57b9e55785f5

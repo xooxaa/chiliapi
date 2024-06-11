@@ -5,6 +5,7 @@ import { Sensor } from '../sensors/sensors.entity';
 import { SensorData } from './sensordata.entity';
 import { CreateSensorDataDto } from './dtos/create-sensordata.dto';
 import { UpdateSensorDataDto } from './dtos/update-sensordata.dto';
+import { GetSensorDataByIntervalDto } from './dtos/get-sensor-data-by.dto';
 
 @Injectable()
 export class SensorDataService {
@@ -17,8 +18,22 @@ export class SensorDataService {
     return this.sensorDataRepo.find({ where: { sensor } });
   }
 
-  async findAllSensorDataInInterval(sensor: Sensor) {
-    return this.sensorDataRepo.find({ where: { sensor } });
+  async findAllSensorDataInInterval(sensorId: string, interval: GetSensorDataByIntervalDto) {
+    const { start, end } = interval;
+
+    const queryBuilder = this.sensorDataRepo
+      .createQueryBuilder('sensorData')
+      .where('sensorId = :sensorId', { sensorId });
+
+    if (start && end) {
+      queryBuilder.andWhere('sensorData.timestamp BETWEEN :start AND :end', { start, end });
+    } else if (start) {
+      queryBuilder.andWhere('sensorData.timestamp >= :start', { start });
+    } else if (end) {
+      queryBuilder.andWhere('sensorData.timestamp <= :end', { end });
+    }
+
+    return queryBuilder.orderBy('sensorData.timestamp', 'ASC').getMany();
   }
 
   async findLatestSensorData(sensorId: string) {

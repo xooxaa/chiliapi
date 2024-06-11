@@ -1,12 +1,14 @@
-import { IsDate } from 'class-validator';
+import { IsDate, IsDateString, IsOptional } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class GetSensorDataByIntervalDto {
-  @ApiProperty()
-  @IsDate()
-  start: Date;
+  @ApiProperty({ required: false })
+  @IsOptional()
+  @IsDateString()
+  start?: Date;
 
-  @ApiProperty()
-  @IsDate()
-  end: Date;
+  @ApiProperty({ required: false })
+  @IsOptional()
+  @IsDateString()
+  end?: Date;
 }

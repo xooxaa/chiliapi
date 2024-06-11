@@ -37,6 +37,7 @@ describe('SensordataController', () => {
           useValue: {
             createSensorData: jest.fn(),
             findAllSensorData: jest.fn(),
+            findAllSensorDataInInterval: jest.fn(),
             findLatestSensorData: jest.fn(),
             updateSensorDataById: jest.fn(),
             removeSensorDataById: jest.fn(),
@@ -75,6 +76,7 @@ describe('SensordataController', () => {
   });
 
   it('should find all sensorData for a given sensor', async () => {
+    const interval = {} as GetSensorDataByIntervalDto;
     const mockedResponse: SensorData[] = [
       {
         value: 24.1,
@@ -87,11 +89,11 @@ describe('SensordataController', () => {
     ];
 
     jest.spyOn(sensorsService, 'findSensorById').mockResolvedValue(testSensor);
-    jest.spyOn(sensorDataService, 'findAllSensorData').mockResolvedValue(mockedResponse);
-    const result = await sensorDataController.getSensorData(testSensor.id, {} as GetSensorDataByIntervalDto);
+    jest.spyOn(sensorDataService, 'findAllSensorDataInInterval').mockResolvedValue(mockedResponse);
+    const result = await sensorDataController.getSensorData(testSensor.id, interval);
 
     expect(sensorsService.findSensorById).toHaveBeenCalledWith(testSensor.id);
-    expect(sensorDataService.findAllSensorData).toHaveBeenCalledWith(testSensor);
+    expect(sensorDataService.findAllSensorDataInInterval).toHaveBeenCalledWith(testSensor.id, interval);
     expect(result).toEqual(mockedResponse);
   });
 

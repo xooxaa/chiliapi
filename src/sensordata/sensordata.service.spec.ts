@@ -6,6 +6,7 @@ import { Sensor } from '../sensors/sensors.entity';
 import { SensorData } from './sensordata.entity';
 import { CreateSensorDataDto } from './dtos/create-sensordata.dto';
 import { UpdateSensorDataDto } from './dtos/update-sensordata.dto';
+import { GetSensorDataByIntervalDto } from './dtos/get-sensor-data-by.dto';
 
 describe('SensorDataService', () => {
   let sensorDataService: SensorDataService;
@@ -77,6 +78,35 @@ describe('SensorDataService', () => {
     expect(result).toEqual(mockedResponse);
   });
 
+  it('should find all sensorData within a given interval for a given sensor', async () => {
+    const interval = {} as GetSensorDataByIntervalDto;
+    const mockedResponse: SensorData[] = [
+      {
+        value: 24.1,
+        createdAt: now,
+      } as SensorData,
+      {
+        value: 23.1,
+        createdAt: now,
+      } as SensorData,
+    ];
+
+    const createQueryBuilderMock = {
+      where: jest.fn().mockReturnThis(),
+      andWhere: jest.fn().mockReturnThis(),
+      orderBy: jest.fn().mockReturnThis(),
+      getMany: jest.fn().mockResolvedValue(mockedResponse),
+    };
+
+    jest.spyOn(sensorDataRepository, 'createQueryBuilder').mockImplementation(() => createQueryBuilderMock as any);
+    const result = await sensorDataService.findAllSensorDataInInterval(testSensor.id, interval);
+
+    expect(createQueryBuilderMock.where).toHaveBeenCalledWith('sensorId = :sensorId', { sensorId: 'aaa' });
+    expect(createQueryBuilderMock.orderBy).toHaveBeenCalledWith('sensorData.timestamp', 'ASC');
+    expect(createQueryBuilderMock.getMany).toHaveBeenCalled();
+    expect(result).toEqual(mockedResponse);
+  });
+
   it('should find the latest sensorData for a given sensor', async () => {
     const mockedResponse: SensorData = {
       id: 'zzz',
@@ -94,6 +124,9 @@ describe('SensorDataService', () => {
     jest.spyOn(sensorDataRepository, 'createQueryBuilder').mockImplementation(() => createQueryBuilderMock as any);
     const result = await sensorDataService.findLatestSensorData(testSensor.id);
 
+    expect(createQueryBuilderMock.where).toHaveBeenCalledWith('sensorId = :sensorId', { sensorId: 'aaa' });
+    expect(createQueryBuilderMock.orderBy).toHaveBeenCalledWith('sensorData.timestamp', 'DESC');
+    expect(createQueryBuilderMock.getOne).toHaveBeenCalled();
     expect(result).toEqual(mockedResponse);
   });
 
