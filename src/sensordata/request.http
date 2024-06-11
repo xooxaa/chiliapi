@@ -16,7 +16,7 @@ Content-Type: application/json
     "timestamp": "2023-07-11T08:13:56.000Z"
 }
 
-### Find all sensordata for a given sensor
+### Find all sensordata within a given interval for a given sensor
 GET http://localhost:3000/sensors/b05d86c6-301f-4fb3-8f11-91a38d9bfd23/data?start=2024-01-01T00:00:00Z
 
 ### Find latest sensordata for a given sensor
