@@ -6,9 +6,9 @@ import { TypeOrmConfigService } from './config/typeorm.config';
 
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { StationsModule } from './stations/stations.module';
 import { SensorsModule } from './sensors/sensors.module';
 import { SensorDataModule } from './sensordata/sensordata.module';
-import { StationsModule } from './stations/stations.module';
 
 @Module({
   imports: [
@@ -19,9 +19,9 @@ import { StationsModule } from './stations/stations.module';
     TypeOrmModule.forRootAsync({
       useClass: TypeOrmConfigService,
     }),
+    StationsModule,
     SensorsModule,
     SensorDataModule,
-    StationsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

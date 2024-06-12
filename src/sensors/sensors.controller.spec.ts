@@ -9,8 +9,6 @@ describe('SensorsController', () => {
   let sensorsController: SensorsController;
   let sensorsService: SensorsService;
 
-  const now = new Date(Date.now());
-
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [SensorsController],

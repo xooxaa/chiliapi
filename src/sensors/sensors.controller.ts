@@ -21,17 +21,6 @@ export class SensorsController {
     return await this.sensorsService.findAllSensorsOfType(type);
   }
 
-  // @Get('/of')
-  // @ApiOkResponse({
-  //   description: 'Sensors have been successfully found.',
-  //   type: [SensorDto],
-  // })
-  // async getAllSensorsOfType(@Query('type') type?: string) {
-  //   console.log(type);
-
-  //   return await this.sensorsService.findAllSensorsOfType(type);
-  // }
-
   @Get('/:sensorId')
   @ApiOkResponse({
     description: 'Sensor has been successfully found.',
