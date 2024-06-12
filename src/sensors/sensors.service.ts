@@ -9,12 +9,18 @@ import { SensorTypes } from './sensors.types';
 export class SensorsService {
   constructor(@InjectRepository(Sensor) private readonly sensorRepo: Repository<Sensor>) {}
 
-  async findAllSensors() {
-    return await this.sensorRepo.find();
-  }
+  // async findAllSensors() {
+  //   return await this.sensorRepo.find();
+  // }
 
-  async findAllSensorsOfType(type: string) {
-    return await this.sensorRepo.find({ where: { type } });
+  async findAllSensorsOfType(type?: string) {
+    const queryBuilder = this.sensorRepo.createQueryBuilder('sensorData');
+
+    if (type) {
+      queryBuilder.where('type = :type', { type });
+    }
+
+    return queryBuilder.getMany();
   }
 
   async findSensorById(sensorId: string) {

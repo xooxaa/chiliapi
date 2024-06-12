@@ -78,7 +78,7 @@ describe('Sensors Module', () => {
       .send({ name: 'Humidity Sensor 1', type: 'humidity' })
       .expect(201);
 
-    const response = await request(app.getHttpServer()).get('/sensors/of?type=temperature').expect(200);
+    const response = await request(app.getHttpServer()).get('/sensors?type=temperature').expect(200);
 
     const sensors = response.body;
     expect(sensors.length).toBeGreaterThan(0);

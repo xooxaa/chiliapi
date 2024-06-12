@@ -20,7 +20,6 @@ describe('SensorsController', () => {
           provide: SensorsService,
           useValue: {
             createSensor: jest.fn(),
-            findAllSensors: jest.fn(),
             findAllSensorsOfType: jest.fn(),
             findSensorById: jest.fn(),
             updateSensorById: jest.fn(),
@@ -76,10 +75,10 @@ describe('SensorsController', () => {
       } as Sensor,
     ];
 
-    jest.spyOn(sensorsService, 'findAllSensors').mockResolvedValue(mockedResponse);
-    const result = await sensorsController.getAllSensors();
+    jest.spyOn(sensorsService, 'findAllSensorsOfType').mockResolvedValue(mockedResponse);
+    const result = await sensorsController.getAllSensorsOfType();
 
-    expect(sensorsService.findAllSensors).toHaveBeenCalled();
+    expect(sensorsService.findAllSensorsOfType).toHaveBeenCalled();
     expect(result).toEqual(mockedResponse);
   });
 
@@ -102,9 +101,7 @@ describe('SensorsController', () => {
     ];
 
     jest.spyOn(sensorsService, 'findAllSensorsOfType').mockResolvedValue(mockedResponse);
-    const result = await sensorsController.getAllSensorsOfType({
-      type: 'temperature',
-    });
+    const result = await sensorsController.getAllSensorsOfType('temperature');
 
     expect(sensorsService.findAllSensorsOfType).toHaveBeenCalledWith('temperature');
     expect(result).toEqual(mockedResponse);

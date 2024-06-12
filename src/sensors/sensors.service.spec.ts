@@ -70,10 +70,15 @@ describe('SensorsService', () => {
       } as Sensor,
     ];
 
-    jest.spyOn(sensorRepository, 'find').mockResolvedValue(mockedResponse);
-    const result = await sensorsService.findAllSensors();
+    const createQueryBuilderMock = {
+      where: jest.fn().mockReturnThis(),
+      getMany: jest.fn().mockResolvedValue(mockedResponse),
+    };
 
-    expect(sensorRepository.find).toHaveBeenCalled();
+    jest.spyOn(sensorRepository, 'createQueryBuilder').mockImplementation(() => createQueryBuilderMock as any);
+    const result = await sensorsService.findAllSensorsOfType();
+
+    expect(createQueryBuilderMock.getMany).toHaveBeenCalled();
     expect(result).toEqual(mockedResponse);
   });
 
@@ -95,12 +100,16 @@ describe('SensorsService', () => {
       } as Sensor,
     ];
 
-    jest.spyOn(sensorRepository, 'find').mockResolvedValue(mockedResponse);
+    const createQueryBuilderMock = {
+      where: jest.fn().mockReturnThis(),
+      getMany: jest.fn().mockResolvedValue(mockedResponse),
+    };
+
+    jest.spyOn(sensorRepository, 'createQueryBuilder').mockImplementation(() => createQueryBuilderMock as any);
     const result = await sensorsService.findAllSensorsOfType('temperature');
 
-    expect(sensorRepository.find).toHaveBeenCalledWith({
-      where: { type: 'temperature' },
-    });
+    expect(createQueryBuilderMock.where).toHaveBeenCalledWith('type = :type', { type: 'temperature' });
+    expect(createQueryBuilderMock.getMany).toHaveBeenCalled();
     expect(result).toEqual(mockedResponse);
   });
 

@@ -5,7 +5,6 @@ import { SensorsService } from './sensors.service';
 import { SensorDto } from './dtos/sensor.dto';
 import { CreateSensorDto } from './dtos/create-sensor.dto';
 import { UpdateSensorDto } from './dtos/update-sensor.dto';
-import { GetSensorByTypeDto } from './dtos/get-sensor-by.dto';
 
 @ApiTags('sensors')
 @Controller('sensors')
@@ -18,18 +17,20 @@ export class SensorsController {
     description: 'Sensors have been successfully found.',
     type: [SensorDto],
   })
-  async getAllSensors() {
-    return await this.sensorsService.findAllSensors();
+  async getAllSensorsOfType(@Query('type') type?: string) {
+    return await this.sensorsService.findAllSensorsOfType(type);
   }
 
-  @Get('/of')
-  @ApiOkResponse({
-    description: 'Sensors have been successfully found.',
-    type: [SensorDto],
-  })
-  async getAllSensorsOfType(@Query() query: GetSensorByTypeDto) {
-    return await this.sensorsService.findAllSensorsOfType(query.type);
-  }
+  // @Get('/of')
+  // @ApiOkResponse({
+  //   description: 'Sensors have been successfully found.',
+  //   type: [SensorDto],
+  // })
+  // async getAllSensorsOfType(@Query('type') type?: string) {
+  //   console.log(type);
+
+  //   return await this.sensorsService.findAllSensorsOfType(type);
+  // }
 
   @Get('/:sensorId')
   @ApiOkResponse({
