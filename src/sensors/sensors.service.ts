@@ -10,28 +10,14 @@ export class SensorsService {
   constructor(@InjectRepository(Sensor) private readonly sensorRepo: Repository<Sensor>) {}
 
   async findAllSensors() {
-    const sensors = await this.sensorRepo.find();
-    if (sensors.length === 0) {
-      throw new NotFoundException('No sensors found');
-    }
-
-    return sensors;
+    return await this.sensorRepo.find();
   }
 
   async findAllSensorsOfType(type: string) {
-    const sensors = await this.sensorRepo.find({ where: { type } });
-    if (sensors.length === 0) {
-      throw new NotFoundException('No sensors found');
-    }
-
-    return sensors;
+    return await this.sensorRepo.find({ where: { type } });
   }
 
   async findSensorById(sensorId: string) {
-    if (!sensorId) {
-      return null;
-    }
-
     const sensor = await this.sensorRepo.findOneBy({ id: sensorId });
     if (!sensor) {
       throw new NotFoundException('Sensor not found');
@@ -41,8 +27,8 @@ export class SensorsService {
   }
 
   async createSensor(createSensorDto: CreateSensorDto) {
-    const sensorTypeInfo = SensorTypes.fromType(createSensorDto.type);
     const sensor = this.sensorRepo.create(createSensorDto);
+    const sensorTypeInfo = SensorTypes.fromType(createSensorDto.type);
     sensor.unit = sensorTypeInfo.unit;
 
     return this.sensorRepo.save(sensor);
@@ -50,6 +36,10 @@ export class SensorsService {
 
   async updateSensorById(sensorId: string, partialSensor: Partial<Sensor>) {
     const sensor = await this.findSensorById(sensorId);
+    if (partialSensor.type) {
+      const sensorTypeInfo = SensorTypes.fromType(partialSensor.type);
+      sensor.unit = sensorTypeInfo.unit;
+    }
     Object.assign(sensor, partialSensor);
 
     return this.sensorRepo.save(sensor);

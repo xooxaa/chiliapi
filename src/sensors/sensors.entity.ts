@@ -1,3 +1,4 @@
+import { BadRequestException } from '@nestjs/common';
 import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, OneToMany } from 'typeorm';
 import { BeforeInsert, BeforeUpdate, AfterInsert, AfterRemove, AfterUpdate, AfterLoad } from 'typeorm';
 import { SensorData } from '../sensordata/sensordata.entity';
@@ -29,14 +30,14 @@ export class Sensor {
   @OneToMany(() => SensorData, (sensorData) => sensorData.sensor)
   sensorData: SensorData[];
 
-  @BeforeInsert()
-  @BeforeUpdate()
-  validateTypeAndUnit() {
-    const sensorTypeInfo = SensorTypes.fromType(this.type);
-    if (this.unit !== sensorTypeInfo.unit) {
-      throw new Error(`Invalid unit for type ${this.type}. Expected: ${sensorTypeInfo.unit}`);
-    }
-  }
+  // @BeforeInsert()
+  // @BeforeUpdate()
+  // validateTypeAndUnit() {
+  //   const sensorTypeInfo = SensorTypes.fromType(this.type);
+  //   if (this.unit !== sensorTypeInfo.unit) {
+  //     throw new BadRequestException(`Invalid unit for type ${this.type}. Expected: ${sensorTypeInfo.unit}`);
+  //   }
+  // }
 
   @AfterInsert()
   logInsert() {

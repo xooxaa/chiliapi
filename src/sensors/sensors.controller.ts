@@ -1,5 +1,4 @@
 import { Controller, Get, Post, Patch, Delete, Body, Param, Query } from '@nestjs/common';
-import { NotFoundException } from '@nestjs/common';
 import { ApiTags, ApiCreatedResponse, ApiOkResponse, ApiNotFoundResponse } from '@nestjs/swagger';
 import { Serialize } from '../interceptors/serialize.interceptor';
 import { SensorsService } from './sensors.service';

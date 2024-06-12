@@ -1,3 +1,5 @@
+import { BadRequestException } from '@nestjs/common';
+
 export class SensorTypes {
   constructor(
     public readonly type: string,
@@ -13,7 +15,7 @@ export class SensorTypes {
   static fromType(type: string): SensorTypes {
     const found = this.ALL_TYPES.find((t) => t.type === type);
     if (!found) {
-      throw new Error(`Invalid sensor type: ${type}`);
+      throw new BadRequestException(`Invalid sensor type: ${type}`);
     }
     return found;
   }

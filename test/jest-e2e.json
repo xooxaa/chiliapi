@@ -9,6 +9,6 @@
   "coverageDirectory": "<rootDir>/test/coverage-e2e",
   "collectCoverageFrom": ["<rootDir>/src/**/*.(t|j)s"],
   "coveragePathIgnorePatterns": ["/node_modules/", "main.ts", ".*.module.ts", ".dto.ts", ".spec.ts"],
-  "coverageReporters": ["json", "text"],
+  "coverageReporters": ["text"],
   "setupFilesAfterEnv": ["<rootDir>/test/setup-e2e.ts"]
 }
