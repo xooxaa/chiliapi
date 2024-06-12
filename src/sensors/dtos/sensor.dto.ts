@@ -21,4 +21,8 @@ export class SensorDto {
   @ApiProperty()
   @Expose()
   active: boolean;
+
+  @ApiProperty()
+  @Expose()
+  createdAt: Date;
 }

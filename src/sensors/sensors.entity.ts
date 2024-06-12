@@ -1,8 +1,17 @@
 import { BadRequestException } from '@nestjs/common';
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, OneToMany } from 'typeorm';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  CreateDateColumn,
+  UpdateDateColumn,
+  OneToMany,
+  ManyToOne,
+} from 'typeorm';
 import { BeforeInsert, BeforeUpdate, AfterInsert, AfterRemove, AfterUpdate, AfterLoad } from 'typeorm';
 import { SensorData } from '../sensordata/sensordata.entity';
 import { SensorTypes } from './sensors.types';
+import { Station } from '../stations/stations.entity';
 
 @Entity()
 export class Sensor {
@@ -26,6 +35,12 @@ export class Sensor {
 
   @UpdateDateColumn({ type: 'date' })
   updatedAt: Date;
+
+  @Column({ nullable: true })
+  stationId: string;
+
+  @ManyToOne(() => Station, (station) => station.sensors)
+  station: Station;
 
   @OneToMany(() => SensorData, (sensorData) => sensorData.sensor)
   sensorData: SensorData[];
