@@ -42,8 +42,6 @@ export class SensorDataService {
 
   async findSensorDataById(sensorDataId: string) {
     const sensorData = await this.sensorDataRepo.findOneBy({ id: sensorDataId });
-    console.log(sensorData);
-
     if (!sensorData) {
       throw new NotFoundException('SensorData not found');
     }
@@ -54,7 +52,6 @@ export class SensorDataService {
   async createSensorData(sensor: Sensor, createSensorDataDto: CreateSensorDataDto) {
     const sensorData = this.sensorDataRepo.create(createSensorDataDto);
     sensorData.sensor = sensor;
-    console.log(sensorData);
 
     return this.sensorDataRepo.save(sensorData);
   }
