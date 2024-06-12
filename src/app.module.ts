@@ -8,6 +8,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { SensorsModule } from './sensors/sensors.module';
 import { SensorDataModule } from './sensordata/sensordata.module';
+import { StationsModule } from './stations/stations.module';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { SensorDataModule } from './sensordata/sensordata.module';
     }),
     SensorsModule,
     SensorDataModule,
+    StationsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
