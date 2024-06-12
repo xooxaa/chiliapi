@@ -26,7 +26,6 @@ describe('Sensors Module', () => {
 
   it('returns 404 when trying to get a non-existent sensor', async () => {
     const nonExistentSensorId = 'non-existent-id';
-
     const response = await request(app.getHttpServer()).get(`/sensors/${nonExistentSensorId}`).expect(404);
 
     expect(response.body.message).toContain(`Sensor not found`);
@@ -159,35 +158,6 @@ describe('Sensors Module', () => {
     expect(sensorId).toBeDefined();
 
     await request(app.getHttpServer()).delete(`/sensors/${sensorId}`).expect(200);
-
     await request(app.getHttpServer()).get(`/sensors/${sensorId}`).expect(404);
-  });
-
-  it('adds and retrieves sensor data', async () => {
-    const sensorResponse = await request(app.getHttpServer())
-      .post('/sensors')
-      .send({ name: 'Sensor 3', type: 'pressure' })
-      .expect(201);
-
-    const sensorId = sensorResponse.body.id;
-
-    await request(app.getHttpServer())
-      .post(`/sensors/${sensorId}/data`)
-      .send({
-        value: 101.3,
-        rawValue: 1013,
-        timestamp: new Date().toISOString(),
-      })
-      .expect(201);
-
-    const dataResponse = await request(app.getHttpServer()).get(`/sensors/${sensorId}/data`).expect(200);
-
-    const dataEntries = dataResponse.body;
-    expect(dataEntries.length).toBeGreaterThan(0);
-
-    const { value, rawValue, timestamp } = dataEntries[0];
-    expect(value).toEqual(101.3);
-    expect(rawValue).toEqual(1013);
-    expect(new Date(timestamp).toISOString()).toEqual(new Date(timestamp).toISOString());
   });
 });

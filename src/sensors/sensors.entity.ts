@@ -21,10 +21,10 @@ export class Sensor {
   @Column({ default: true })
   active: boolean;
 
-  @CreateDateColumn()
+  @CreateDateColumn({ type: 'date' })
   createdAt: Date;
 
-  @UpdateDateColumn()
+  @UpdateDateColumn({ type: 'date' })
   updatedAt: Date;
 
   @OneToMany(() => SensorData, (sensorData) => sensorData.sensor)

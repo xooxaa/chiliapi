@@ -1,4 +1,4 @@
-import { IsDate, IsDateString, IsOptional } from 'class-validator';
+import { IsDateString, IsOptional } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class GetSensorDataByIntervalDto {

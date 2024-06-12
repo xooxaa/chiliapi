@@ -13,13 +13,13 @@ export class SensorData {
   @Column({ type: 'real', nullable: true })
   rawValue: number;
 
-  @Column()
+  @Column({ type: 'date' })
   timestamp: Date;
 
-  @CreateDateColumn()
+  @CreateDateColumn({ type: 'date' })
   createdAt: Date;
 
-  @UpdateDateColumn()
+  @UpdateDateColumn({ type: 'date' })
   updatedAt: Date;
 
   @Column()

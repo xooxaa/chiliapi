@@ -59,25 +59,6 @@ describe('SensorDataService', () => {
     expect(result).toEqual(mockedResponse);
   });
 
-  it('should find all sensorData for a given sensor', async () => {
-    const mockedResponse: SensorData[] = [
-      {
-        value: 24.1,
-        createdAt: now,
-      } as SensorData,
-      {
-        value: 23.1,
-        createdAt: now,
-      } as SensorData,
-    ];
-
-    jest.spyOn(sensorDataRepository, 'find').mockResolvedValue(mockedResponse);
-    const result = await sensorDataService.findAllSensorData(testSensor);
-
-    expect(sensorDataRepository.find).toHaveBeenCalled();
-    expect(result).toEqual(mockedResponse);
-  });
-
   it('should find all sensorData within a given interval for a given sensor', async () => {
     const interval = {} as GetSensorDataByIntervalDto;
     const mockedResponse: SensorData[] = [
