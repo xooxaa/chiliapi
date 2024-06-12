@@ -36,7 +36,6 @@ describe('SensordataController', () => {
           provide: SensorDataService,
           useValue: {
             createSensorData: jest.fn(),
-            findAllSensorData: jest.fn(),
             findAllSensorDataInInterval: jest.fn(),
             findLatestSensorData: jest.fn(),
             updateSensorDataById: jest.fn(),

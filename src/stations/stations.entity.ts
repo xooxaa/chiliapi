@@ -13,10 +13,10 @@ export class Station {
   @Column()
   description: string;
 
-  @Column()
+  @Column({ type: 'real', nullable: true })
   latitude: number;
 
-  @Column()
+  @Column({ type: 'real', nullable: true })
   longitude: number;
 
   @Column({ default: true })

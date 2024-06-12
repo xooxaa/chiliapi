@@ -8,7 +8,7 @@ Content-Type: application/json
 }
 
 ### Add new sensordata to a sensor
-POST http://localhost:3000/sensors/13fff911-2c24-4a29-afe2-2dfd87540dbc/data
+POST http://localhost:3000/sensors/9a5534f9-5ad8-4775-8202-b15e0d3e2720/data
 Content-Type: application/json
 
 {
