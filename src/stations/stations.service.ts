@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Station } from './stations.entity';
 import { CreateStationDto } from './dtos/create-station.dto';
+import { UpdateStationDto } from './dtos/update-station.dto';
 
 @Injectable()
 export class StationsService {
@@ -39,9 +40,9 @@ export class StationsService {
     return this.stationRepo.save(station);
   }
 
-  async updateStationById(stationId: string, partialStation: Partial<Station>) {
+  async updateStationById(stationId: string, updateStation: UpdateStationDto) {
     const station = await this.findStationById(stationId);
-    Object.assign(station, partialStation);
+    Object.assign(station, updateStation);
 
     return this.stationRepo.save(station);
   }

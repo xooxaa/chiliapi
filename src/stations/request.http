@@ -1,0 +1,24 @@
+### Create a station
+POST http://localhost:3000/stations
+Content-Type: application/json
+
+{
+    "name": "Station 1",
+    "description": "My Station 1"
+}
+
+### Create a sensor
+POST http://localhost:3000/sensors
+Content-Type: application/json
+
+{
+    "name": "Sensor 3",
+    "type": "temperature",
+    "stationId": "609c4b22-afe0-4fff-8358-5ee3ce94de65"
+}
+
+### Get all sensors for a station
+GET http://localhost:3000/stations/609c4b22-afe0-4fff-8358-5ee3ce94de65/sensors
+
+
+### Station ID: 609c4b22-afe0-4fff-8358-5ee3ce94de65

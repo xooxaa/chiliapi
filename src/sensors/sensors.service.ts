@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Sensor } from './sensors.entity';
 import { CreateSensorDto } from './dtos/create-sensor.dto';
+import { UpdateSensorDto } from './dtos/update-sensor.dto';
 import { SensorTypes } from './sensors.types';
 
 @Injectable()
@@ -11,7 +12,6 @@ export class SensorsService {
 
   async findAllSensorsOfType(type?: string) {
     const queryBuilder = this.sensorRepo.createQueryBuilder('sensorData');
-
     if (type) {
       queryBuilder.where('type = :type', { type });
     }
@@ -33,20 +33,16 @@ export class SensorsService {
     const sensorTypeInfo = SensorTypes.fromType(createSensorDto.type);
     sensor.unit = sensorTypeInfo.unit;
 
-    if (createSensorDto.stationId) {
-      //find station and link it to the sensor
-    }
-
     return this.sensorRepo.save(sensor);
   }
 
-  async updateSensorById(sensorId: string, partialSensor: Partial<Sensor>) {
+  async updateSensorById(sensorId: string, updateSensor: UpdateSensorDto) {
     const sensor = await this.findSensorById(sensorId);
-    if (partialSensor.type) {
-      const sensorTypeInfo = SensorTypes.fromType(partialSensor.type);
+    if (updateSensor.type) {
+      const sensorTypeInfo = SensorTypes.fromType(updateSensor.type);
       sensor.unit = sensorTypeInfo.unit;
     }
-    Object.assign(sensor, partialSensor);
+    Object.assign(sensor, updateSensor);
 
     return this.sensorRepo.save(sensor);
   }

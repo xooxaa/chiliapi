@@ -55,9 +55,9 @@ export class SensorDataService {
     return this.sensorDataRepo.save(sensorData);
   }
 
-  async updateSensorDataById(sensorId: string, partialSensorData: UpdateSensorDataDto) {
-    const sensorData = await this.getSensorDataAndCheckSensorId(partialSensorData.id, sensorId);
-    Object.assign(sensorData, partialSensorData);
+  async updateSensorDataById(sensorId: string, updateSensorData: UpdateSensorDataDto) {
+    const sensorData = await this.getSensorDataAndCheckSensorId(updateSensorData.id, sensorId);
+    Object.assign(sensorData, updateSensorData);
 
     return this.sensorDataRepo.save(sensorData);
   }
