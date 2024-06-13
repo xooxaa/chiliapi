@@ -65,12 +65,10 @@ describe('SensordataController', () => {
       timestamp: now,
     } as SensorData;
 
-    jest.spyOn(sensorsService, 'findSensorById').mockResolvedValue(testSensor);
     jest.spyOn(sensorDataService, 'createSensorData').mockResolvedValue(mockedResponse);
     const result = await sensorDataController.addSensorData(testSensor.id, createSensorDataDto);
 
-    expect(sensorsService.findSensorById).toHaveBeenCalledWith(testSensor.id);
-    expect(sensorDataService.createSensorData).toHaveBeenCalledWith(testSensor, createSensorDataDto);
+    expect(sensorDataService.createSensorData).toHaveBeenCalledWith(testSensor.id, createSensorDataDto);
     expect(result).toEqual(mockedResponse);
   });
 
@@ -87,11 +85,9 @@ describe('SensordataController', () => {
       } as SensorData,
     ];
 
-    jest.spyOn(sensorsService, 'findSensorById').mockResolvedValue(testSensor);
     jest.spyOn(sensorDataService, 'findAllSensorDataInInterval').mockResolvedValue(mockedResponse);
     const result = await sensorDataController.getSensorData(testSensor.id, interval);
 
-    expect(sensorsService.findSensorById).toHaveBeenCalledWith(testSensor.id);
     expect(sensorDataService.findAllSensorDataInInterval).toHaveBeenCalledWith(testSensor.id, interval);
     expect(result).toEqual(mockedResponse);
   });

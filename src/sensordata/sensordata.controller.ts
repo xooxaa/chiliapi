@@ -1,7 +1,7 @@
-import { Controller, Get, Post, Patch, Delete, Body, Param, Query } from '@nestjs/common';
+import { Controller, Get, Post, Patch, Delete, Body, Param, Query, UseInterceptors } from '@nestjs/common';
 import { ApiTags, ApiFoundResponse, ApiCreatedResponse, ApiOkResponse } from '@nestjs/swagger';
 import { Serialize } from '../interceptors/serialize.interceptor';
-import { SensorsService } from '../sensors/sensors.service';
+import { SensorExists } from '../interceptors/sensor-exists.interceptor';
 import { SensorDataService } from './sensordata.service';
 import { SensorDataDto } from './dtos/sensordata.dto';
 import { CreateSensorDataDto } from './dtos/create-sensordata.dto';
@@ -11,11 +11,9 @@ import { GetSensorDataByIntervalDto } from './dtos/get-sensor-data-by.dto';
 @ApiTags('sensordata')
 @Controller('sensors/:sensorId/data')
 @Serialize(SensorDataDto)
+@UseInterceptors(SensorExists)
 export class SensorDataController {
-  constructor(
-    private sensorsService: SensorsService,
-    private sensorDataService: SensorDataService,
-  ) {}
+  constructor(private sensorDataService: SensorDataService) {}
 
   @Get('')
   @ApiFoundResponse({
@@ -23,8 +21,7 @@ export class SensorDataController {
     type: [SensorDataDto],
   })
   async getSensorData(@Param('sensorId') sensorId: string, @Query() interval: GetSensorDataByIntervalDto) {
-    const sensor = await this.sensorsService.findSensorById(sensorId);
-    return await this.sensorDataService.findAllSensorDataInInterval(sensor.id, interval);
+    return await this.sensorDataService.findAllSensorDataInInterval(sensorId, interval);
   }
 
   @Get('/latest')
@@ -42,8 +39,7 @@ export class SensorDataController {
     type: SensorDataDto,
   })
   async addSensorData(@Param('sensorId') sensorId: string, @Body() body: CreateSensorDataDto) {
-    const sensor = await this.sensorsService.findSensorById(sensorId);
-    return await this.sensorDataService.createSensorData(sensor, body);
+    return await this.sensorDataService.createSensorData(sensorId, body);
   }
 
   @Patch('')

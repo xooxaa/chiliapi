@@ -1,5 +1,5 @@
-import { IsString } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
+import { IsOptional, IsString } from 'class-validator';
 
 export class CreateSensorDto {
   @ApiProperty()
@@ -9,4 +9,9 @@ export class CreateSensorDto {
   @ApiProperty()
   @IsString()
   type: string;
+
+  @ApiProperty({ required: false })
+  @IsOptional()
+  @IsString()
+  stationId?: string;
 }

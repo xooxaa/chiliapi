@@ -49,9 +49,9 @@ export class SensorDataService {
     return sensorData;
   }
 
-  async createSensorData(sensor: Sensor, createSensorDataDto: CreateSensorDataDto) {
+  async createSensorData(sensorId: string, createSensorDataDto: CreateSensorDataDto) {
     const sensorData = this.sensorDataRepo.create(createSensorDataDto);
-    sensorData.sensor = sensor;
+    sensorData.sensorId = sensorId;
 
     return this.sensorDataRepo.save(sensorData);
   }

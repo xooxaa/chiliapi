@@ -52,7 +52,7 @@ describe('SensorDataService', () => {
 
     jest.spyOn(sensorDataRepository, 'create').mockReturnValue(mockedResponse);
     jest.spyOn(sensorDataRepository, 'save').mockResolvedValue(mockedResponse);
-    const result = await sensorDataService.createSensorData(testSensor, createSensorDataDto);
+    const result = await sensorDataService.createSensorData(testSensor.id, createSensorDataDto);
 
     expect(sensorDataRepository.create).toHaveBeenCalledWith(createSensorDataDto);
     expect(sensorDataRepository.save).toHaveBeenCalledWith(mockedResponse);

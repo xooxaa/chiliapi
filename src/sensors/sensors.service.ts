@@ -9,10 +9,6 @@ import { SensorTypes } from './sensors.types';
 export class SensorsService {
   constructor(@InjectRepository(Sensor) private readonly sensorRepo: Repository<Sensor>) {}
 
-  // async findAllSensors() {
-  //   return await this.sensorRepo.find();
-  // }
-
   async findAllSensorsOfType(type?: string) {
     const queryBuilder = this.sensorRepo.createQueryBuilder('sensorData');
 
@@ -36,6 +32,10 @@ export class SensorsService {
     const sensor = this.sensorRepo.create(createSensorDto);
     const sensorTypeInfo = SensorTypes.fromType(createSensorDto.type);
     sensor.unit = sensorTypeInfo.unit;
+
+    if (createSensorDto.stationId) {
+      //find station and link it to the sensor
+    }
 
     return this.sensorRepo.save(sensor);
   }

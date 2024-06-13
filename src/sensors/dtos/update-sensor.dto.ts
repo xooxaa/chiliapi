@@ -11,4 +11,9 @@ export class UpdateSensorDto {
   @IsOptional()
   @IsString()
   type?: string;
+
+  @ApiProperty({ required: false })
+  @IsOptional()
+  @IsString()
+  stationId?: string;
 }
