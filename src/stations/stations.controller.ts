@@ -5,6 +5,7 @@ import { StationsService } from './stations.service';
 import { StationDto } from './dtos/station.dto';
 import { CreateStationDto } from './dtos/create-station.dto';
 import { UpdateStationDto } from './dtos/update-station.dto';
+import { SensorDto } from '../sensors/dtos/sensor.dto';
 
 @ApiTags('stations')
 @Controller('stations')
@@ -31,6 +32,18 @@ export class StationsController {
   })
   async getStationById(@Param('stationId') stationId: string) {
     return await this.stationService.findStationById(stationId);
+  }
+
+  @Get('/:stationId/sensors')
+  @ApiOkResponse({
+    description: 'The stations sensors has been successfully found.',
+    type: [SensorDto],
+  })
+  @ApiNotFoundResponse({
+    description: 'Station not found.',
+  })
+  async getSensorsByStationId(@Param('stationId') stationId: string) {
+    return await this.stationService.findSensorsByStationId(stationId);
   }
 
   @Post()

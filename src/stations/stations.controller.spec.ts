@@ -2,6 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { StationsController } from './stations.controller';
 import { StationsService } from './stations.service';
 import { Station } from './stations.entity';
+import { Sensor } from '../sensors/sensors.entity';
 import { CreateStationDto } from './dtos/create-station.dto';
 import { UpdateStationDto } from './dtos/update-station.dto';
 
@@ -20,6 +21,7 @@ describe('StationsController', () => {
             createStation: jest.fn(),
             findAllStations: jest.fn(),
             findStationById: jest.fn(),
+            findSensorsByStationId: jest.fn(),
             updateStationById: jest.fn(),
             removeStationById: jest.fn(),
           },
@@ -89,6 +91,31 @@ describe('StationsController', () => {
     const result = await stationsController.getStationById('aaa');
 
     expect(stationsService.findStationById).toHaveBeenCalledWith('aaa');
+    expect(result).toEqual(mockedResponse);
+  });
+
+  it('should return a list of sensors for a given stations', async () => {
+    const mockedResponse: Sensor[] = [
+      {
+        id: 'rrr',
+        name: 'Sensor 1',
+        type: 'temperature',
+        unit: 'Celsius',
+        active: true,
+      } as Sensor,
+      {
+        id: 'sss',
+        name: 'Sensor 2',
+        type: 'temperature',
+        unit: 'Celsius',
+        active: true,
+      } as Sensor,
+    ];
+
+    jest.spyOn(stationsService, 'findSensorsByStationId').mockResolvedValue(mockedResponse);
+    const result = await stationsController.getSensorsByStationId('aaa');
+
+    expect(stationsService.findSensorsByStationId).toHaveBeenCalledWith('aaa');
     expect(result).toEqual(mockedResponse);
   });
 

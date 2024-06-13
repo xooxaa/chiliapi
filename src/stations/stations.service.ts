@@ -21,6 +21,18 @@ export class StationsService {
     return station;
   }
 
+  async findSensorsByStationId(stationId: string) {
+    const station = await this.stationRepo.findOne({
+      where: { id: stationId },
+      relations: ['sensors'],
+    });
+    if (!station) {
+      throw new NotFoundException('Station not found');
+    }
+
+    return station.sensors;
+  }
+
   async createStation(createStationDto: CreateStationDto) {
     const station = this.stationRepo.create(createStationDto);
 

@@ -3,6 +3,7 @@ import { getRepositoryToken } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { StationsService } from './stations.service';
 import { Station } from './stations.entity';
+import { Sensor } from '../sensors/sensors.entity';
 import { CreateStationDto } from './dtos/create-station.dto';
 import { UpdateStationDto } from './dtos/update-station.dto';
 
@@ -86,6 +87,37 @@ describe('StationsService', () => {
 
     expect(stationRepository.findOneBy).toHaveBeenCalledWith({ id: 'aaa' });
     expect(result).toEqual(mockedResponse);
+  });
+
+  it('should return a list of sensors for a given stations', async () => {
+    const mockedResponse: Station = {
+      id: 'aaa',
+      name: 'Station 1',
+      description: 'Station 1',
+      active: true,
+      sensors: [
+        {
+          id: 'rrr',
+          name: 'Sensor 1',
+          type: 'temperature',
+          unit: 'Celsius',
+          active: true,
+        } as Sensor,
+        {
+          id: 'sss',
+          name: 'Sensor 2',
+          type: 'temperature',
+          unit: 'Celsius',
+          active: true,
+        } as Sensor,
+      ],
+    } as Station;
+
+    jest.spyOn(stationRepository, 'findOne').mockResolvedValue(mockedResponse);
+    const result = await stationsService.findSensorsByStationId('aaa');
+
+    expect(stationRepository.findOne).toHaveBeenCalled();
+    expect(result).toEqual(mockedResponse.sensors);
   });
 
   it('should update a station by ID', async () => {
