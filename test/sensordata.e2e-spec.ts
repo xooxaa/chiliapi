@@ -15,6 +15,13 @@ describe('SensorData Module', () => {
     await app.init();
   });
 
+  it('returns 404 when attempting to find non-existent sensor', async () => {
+    const sensorId = 'non-existent-sensor';
+    const response = await request(app.getHttpServer()).get(`/sensors/${sensorId}/data/`).expect(404);
+
+    expect(response.body.message).toContain(`Sensor not found`);
+  });
+
   it('returns an empty list if no sensordata was found for a given sensor', async () => {
     const sensorResponse = await request(app.getHttpServer())
       .post('/sensors')

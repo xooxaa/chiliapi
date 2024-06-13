@@ -9,12 +9,7 @@ export class SensorExists implements NestInterceptor {
   async intercept(context: ExecutionContext, next: CallHandler): Promise<Observable<any>> {
     const request = context.switchToHttp().getRequest();
     const sensorId = request.params.sensorId;
-
-    const sensorExists = await this.sensorsService.findSensorById(sensorId);
-
-    if (!sensorExists) {
-      throw new NotFoundException(`Sensor with ID ${sensorId} not found`);
-    }
+    await this.sensorsService.findSensorById(sensorId);
 
     return next.handle();
   }
