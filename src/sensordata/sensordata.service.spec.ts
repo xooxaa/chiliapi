@@ -37,6 +37,7 @@ describe('SensorDataService', () => {
 
   it('should be defined', () => {
     expect(sensorDataService).toBeDefined();
+    expect(sensorDataRepository).toBeDefined();
   });
 
   it('should create new sensorData for a given sensor', async () => {

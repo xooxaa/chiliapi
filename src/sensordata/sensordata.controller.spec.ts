@@ -52,6 +52,8 @@ describe('SensordataController', () => {
 
   it('should be defined', () => {
     expect(sensorDataController).toBeDefined();
+    expect(sensorsService).toBeDefined();
+    expect(sensorDataService).toBeDefined();
   });
 
   it('should add data to a sensor', async () => {

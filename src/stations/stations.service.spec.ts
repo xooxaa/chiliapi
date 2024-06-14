@@ -28,6 +28,7 @@ describe('StationsService', () => {
 
   it('should be defined', () => {
     expect(stationsService).toBeDefined();
+    expect(stationRepository).toBeDefined();
   });
 
   it('should create a station', async () => {

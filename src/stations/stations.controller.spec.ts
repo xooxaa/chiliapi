@@ -35,6 +35,7 @@ describe('StationsController', () => {
 
   it('should be defined', () => {
     expect(stationsController).toBeDefined();
+    expect(stationsService).toBeDefined();
   });
 
   it('should add a station', async () => {
