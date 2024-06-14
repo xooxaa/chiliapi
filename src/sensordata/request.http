@@ -8,7 +8,7 @@ Content-Type: application/json
 }
 
 ### Add new sensordata to a sensor
-POST http://localhost:3000/sensors/9a5534f9-5ad8-4775-8202-b15e0d3e2720/data
+POST http://localhost:3000/sensors/7717c969-5b3d-42a4-9131-fb2852978ea4/data
 Content-Type: application/json
 
 {
@@ -17,15 +17,20 @@ Content-Type: application/json
 }
 
 ### Find all sensordata within a given interval for a given sensor
-GET http://localhost:3000/sensors/288be7f8-7a69-4337-baa5-01bbea0fbc94/data?start=2024-07-11T08:12:00Z
+GET http://localhost:3000/sensors/7717c969-5b3d-42a4-9131-fb2852978ea4/data?start=2024-07-11T08:12:00Z
 
 ### Find latest sensordata for a given sensor
-GET http://localhost:3000/sensors/7872064b-f9a0-4e53-bd16-c8c35b894ce8/data/latest
-
-### Find sensordata by id
-GET http://localhost:3000/sensors/288be7f8-7a69-4337-baa5-01bbea0fbc94/data/a05abe2c-ce59-48ab-a042-9abc55876a10
-
+GET http://localhost:3000/sensors/7717c969-5b3d-42a4-9131-fb2852978ea4/data/latest
 
 ### Delete sensordata
-DELETE http://localhost:3000/sensors/7872064b-f9a0-4e53-bd16-c8c35b894ce8/data/dcc2a15f-f9fc-4a1a-9409-e791eeade91c
+DELETE http://localhost:3000/sensors/7717c969-5b3d-42a4-9131-fb2852978ea4/data/e6c14b15-05ee-46f1-8343-8b914ed3144f
 
+### Update sensordata
+PATCH http://localhost:3000/sensors/7717c969-5b3d-42a4-9131-fb2852978ea4/data/
+Content-Type: application/json
+
+{
+    "id": "e6c14b15-05ee-46f1-8343-8b914ed3144f",
+    "value": 23.5,
+    "timestamp": "2024-07-11T08:13:56.000Z"
+}

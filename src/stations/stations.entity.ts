@@ -33,21 +33,21 @@ export class Station {
 
   @AfterInsert()
   logInsert() {
-    console.log('Inserted Sensor with id', this.id);
+    console.log('Inserted Station with id', this.id);
   }
 
   @AfterLoad()
   logLoad() {
-    console.log('Found Sensor with id', this.id);
+    console.log('Found Station with id', this.id);
   }
 
   @AfterUpdate()
   logUpdate() {
-    console.log('Updated Sensor with id', this.id);
+    console.log('Updated Station with id', this.id);
   }
 
   @AfterRemove()
   logRemove() {
-    console.log('Removed Sensor with id', this.id);
+    console.log('Removed Station with id', this.id);
   }
 }

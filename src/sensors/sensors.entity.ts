@@ -56,21 +56,21 @@ export class Sensor {
 
   @AfterInsert()
   logInsert() {
-    console.log('Inserted Sensor with id', this.id);
+    console.log('Inserted SensorData with id', this.id);
   }
 
   @AfterLoad()
   logLoad() {
-    console.log('Found Sensor with id', this.id);
+    console.log('Found SensorData with id', this.id);
   }
 
   @AfterUpdate()
   logUpdate() {
-    console.log('Updated Sensor with id', this.id);
+    console.log('Updated SensorData with id', this.id);
   }
 
   @AfterRemove()
   logRemove() {
-    console.log('Removed Sensor with id', this.id);
+    console.log('Removed SensorData with id', this.id);
   }
 }
