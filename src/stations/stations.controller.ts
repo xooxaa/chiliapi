@@ -9,11 +9,11 @@ import { SensorDto } from '../sensors/dtos/sensor.dto';
 
 @ApiTags('stations')
 @Controller('stations')
-@Serialize(StationDto)
 export class StationsController {
   constructor(private stationService: StationsService) {}
 
   @Get()
+  @Serialize(StationDto)
   @ApiOkResponse({
     description: 'Stations have been successfully found.',
     type: [StationDto],
@@ -23,6 +23,7 @@ export class StationsController {
   }
 
   @Get('/:stationId')
+  @Serialize(StationDto)
   @ApiOkResponse({
     description: 'Station has been successfully found.',
     type: StationDto,
@@ -35,6 +36,7 @@ export class StationsController {
   }
 
   @Get('/:stationId/sensors')
+  @Serialize(SensorDto)
   @ApiOkResponse({
     description: 'The stations sensors has been successfully found.',
     type: [SensorDto],
@@ -47,6 +49,7 @@ export class StationsController {
   }
 
   @Post()
+  @Serialize(StationDto)
   @ApiCreatedResponse({
     description: 'The station has been successfully created.',
     type: StationDto,
@@ -56,6 +59,7 @@ export class StationsController {
   }
 
   @Patch('/:stationId')
+  @Serialize(StationDto)
   @ApiOkResponse({
     description: 'The station has been successfully patched.',
     type: StationDto,
@@ -65,6 +69,7 @@ export class StationsController {
   }
 
   @Delete('/:stationId')
+  @Serialize(StationDto)
   @ApiOkResponse({
     description: 'The station has been successfully deleted.',
     type: StationDto,
