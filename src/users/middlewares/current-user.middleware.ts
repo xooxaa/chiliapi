@@ -17,7 +17,7 @@ export class CurrentUserMiddleware implements NestMiddleware {
   async use(req: Request, res: Response, next: NextFunction) {
     const { userId } = req.session || {};
     if (userId) {
-      const user = await this.usersService.findOne(userId);
+      const user = await this.usersService.findUserById(userId);
       req.CurrentUser = user;
     }
 

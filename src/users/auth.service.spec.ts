@@ -1,15 +1,15 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { UsersController } from './users.controller';
+import { AuthService } from './auth.service';
 import { UsersService } from './users.service';
 
-describe('UsersController', () => {
-  let usersController: UsersController;
+describe('AuthService', () => {
+  let authService: AuthService;
   let usersService: UsersService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      controllers: [UsersController],
       providers: [
+        AuthService,
         UsersService,
         {
           provide: UsersService,
@@ -24,11 +24,11 @@ describe('UsersController', () => {
       ],
     }).compile();
 
-    usersController = module.get<UsersController>(UsersController);
+    authService = module.get<AuthService>(AuthService);
     usersService = module.get<UsersService>(UsersService);
   });
 
-  it('should be defined', () => {
-    expect(usersController).toBeDefined();
+  it('should be defined', async () => {
+    expect(authService).toBeDefined();
   });
 });

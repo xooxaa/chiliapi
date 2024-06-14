@@ -1,4 +1,4 @@
-import { IsNumber, IsOptional, IsString } from 'class-validator';
+import { IsNumber, IsOptional, IsString, IsLatitude, IsLongitude } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class CreateStationDto {
@@ -13,11 +13,11 @@ export class CreateStationDto {
 
   @ApiProperty({ required: false })
   @IsOptional()
-  @IsNumber()
+  @IsLatitude()
   latitude?: number;
 
   @ApiProperty({ required: false })
   @IsOptional()
-  @IsNumber()
+  @IsLongitude()
   longitude?: number;
 }
