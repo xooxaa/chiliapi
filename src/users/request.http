@@ -1,0 +1,39 @@
+### Who Am I
+GET http://localhost:3000/auth/whoami
+
+
+### Sign out current user
+POST http://localhost:3000/auth/signout
+
+### Create a new User
+PUT http://localhost:3000/auth/signup
+Content-Type: application/json
+
+{
+    "email": "Three@some.user",
+    "password": "aaa"
+}
+
+### Signin a registered User
+POST http://localhost:3000/auth/signin
+Content-Type: application/json
+
+{
+    "email": "Three@some.user",
+    "password": "aaa"
+}
+
+### Find a user with a given ID
+GET http://localhost:3000/auth/68f77579-2872-49d8-b7a9-67a6b459bc30
+
+
+### Remove a user with a given ID
+DELETE http://localhost:3000/auth/68f77579-2872-49d8-b7a9-67a6b459bc30
+
+### Update a user with a given ID
+PATCH http://localhost:3000/auth/68f77579-2872-49d8-b7a9-67a6b459bc30
+Content-Type: application/json
+
+{
+    "password": "aaa"
+}

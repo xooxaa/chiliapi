@@ -1,6 +1,6 @@
 import { Controller, Get, Post, Put, Patch, Delete, Session, Body, Param, Query } from '@nestjs/common';
 import { UseGuards, NotFoundException } from '@nestjs/common';
-import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
+import { ApiCreatedResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { Serialize } from '../interceptors/serialize.interceptor';
 import { AuthGuard } from '../guards/auth.guard';
 import { UserDto } from './dtos/user.dto';
@@ -9,6 +9,7 @@ import { CurrentUser } from './decorators/current-user.decorator';
 import { UsersService } from './users.service';
 import { AuthService } from './auth.service';
 import { CreateUserDto } from './dtos/create-user.dto';
+import { SigninUserDto } from './dtos/signin-user.dto';
 import { UpdateUserDto } from './dtos/update-user.dto';
 
 @ApiTags('users')
@@ -26,50 +27,78 @@ export class UsersController {
     description: 'User has been successfully found.',
     type: UserDto,
   })
-  whoAmI(@CurrentUser() user: User) {
+  async whoAmI(@CurrentUser() user: User) {
     return user;
   }
 
   @Put('/signup')
-  async createUser(@Body() body: CreateUserDto, @Session() session: any) {
-    const user = await this.authService.signup(body.email, body.password);
+  @ApiOkResponse({
+    description: 'The user has been successfully signed up.',
+    type: UserDto,
+  })
+  async createUser(@Body() createUserDto: CreateUserDto, @Session() session: any) {
+    const user = await this.authService.signup(createUserDto);
     session.userId = user.id;
+
     return user;
   }
 
   @Post('/signin')
-  async signin(@Body() body: CreateUserDto, @Session() session: any) {
-    const user = await this.authService.signin(body.email, body.password);
+  @ApiCreatedResponse({
+    description: 'The user has been successfully signed in.',
+    type: UserDto,
+  })
+  async signin(@Body() signinUserDto: SigninUserDto, @Session() session: any) {
+    const user = await this.authService.signin(signinUserDto);
     session.userId = user.id;
+
     return user;
   }
 
   @Post('/signout')
-  signout(@Session() session: any) {
+  @ApiCreatedResponse({
+    description: 'The user has been successfully signed out.',
+    type: null,
+  })
+  async signout(@Session() session: any) {
     session.userId = null;
   }
 
-  @Get('/:id')
-  async findUser(@Param('id') id: string) {
-    const user = await this.usersService.findUserById(parseInt(id));
+  @Get('/:userId')
+  @ApiOkResponse({
+    description: 'The user has been successfully found.',
+    type: UserDto,
+  })
+  async findUserById(@Param('userId') userId: string) {
+    const user = await this.usersService.findUserById(userId);
     if (!user) {
-      throw new NotFoundException('user not found');
+      throw new NotFoundException('User not found');
     }
+
     return user;
   }
 
-  @Get()
-  findUserByEmail(@Query('email') email: string) {
-    return this.usersService.findUserByEmail(email);
+  @Patch('/:userId')
+  @ApiOkResponse({
+    description: 'The user has been successfully patched.',
+    type: UserDto,
+  })
+  async updateUserById(@Param('userId') userId: string, @Body() updateUserDto: UpdateUserDto) {
+    const { password } = updateUserDto;
+    if (password) {
+      const hashedPassword = await this.authService.hashAndSaltPassword(password);
+      updateUserDto = { ...updateUserDto, password: hashedPassword };
+    }
+
+    return this.usersService.updateUserById(userId, updateUserDto);
   }
 
-  @Patch('/:id')
-  updateUser(@Param('id') id: string, @Body() body: UpdateUserDto) {
-    return this.usersService.updateUserById(parseInt(id), body);
-  }
-
-  @Delete('/:id')
-  removeUser(@Param('id') id: string) {
-    return this.usersService.removeUserById(parseInt(id));
+  @Delete('/:userId')
+  @ApiOkResponse({
+    description: 'The user has been successfully deleted.',
+    type: UserDto,
+  })
+  async removeUserById(@Param('userId') userId: string) {
+    return this.usersService.removeUserById(userId);
   }
 }

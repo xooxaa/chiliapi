@@ -40,9 +40,9 @@ export class StationsService {
     return this.stationRepo.save(station);
   }
 
-  async updateStationById(stationId: string, updateStation: UpdateStationDto) {
+  async updateStationById(stationId: string, updateStationDto: UpdateStationDto) {
     const station = await this.findStationById(stationId);
-    Object.assign(station, updateStation);
+    Object.assign(station, updateStationDto);
 
     return this.stationRepo.save(station);
   }

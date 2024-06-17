@@ -39,15 +39,6 @@ export class SensorDataService {
       .getOne();
   }
 
-  async findSensorDataById(sensorDataId: string) {
-    const sensorData = await this.sensorDataRepo.findOneBy({ id: sensorDataId });
-    if (!sensorData) {
-      throw new NotFoundException('SensorData not found');
-    }
-
-    return sensorData;
-  }
-
   async createSensorData(sensorId: string, createSensorDataDto: CreateSensorDataDto) {
     const sensorData = this.sensorDataRepo.create(createSensorDataDto);
     sensorData.sensorId = sensorId;
@@ -72,6 +63,15 @@ export class SensorDataService {
     const sensorData = await this.findSensorDataById(sensorDataId);
     if (sensorData.sensorId !== sensorId) {
       throw new ConflictException('SensorData does not belong to Sensor');
+    }
+
+    return sensorData;
+  }
+
+  private async findSensorDataById(sensorDataId: string) {
+    const sensorData = await this.sensorDataRepo.findOneBy({ id: sensorDataId });
+    if (!sensorData) {
+      throw new NotFoundException('SensorData not found');
     }
 
     return sensorData;
