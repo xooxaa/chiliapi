@@ -21,23 +21,13 @@ export class UsersController {
     private usersService: UsersService,
   ) {}
 
-  @Get('/whoami')
-  @UseGuards(AuthGuard)
-  @ApiOkResponse({
-    description: 'User has been successfully found.',
-    type: UserDto,
-  })
-  async whoAmI(@CurrentUser() user: User) {
-    return user;
-  }
-
   @Put('/signup')
   @ApiOkResponse({
     description: 'The user has been successfully signed up.',
     type: UserDto,
   })
-  async createUser(@Body() createUserDto: CreateUserDto, @Session() session: any) {
-    const user = await this.authService.signup(createUserDto);
+  async signupUser(@Body() createUserDto: CreateUserDto, @Session() session: any) {
+    const user = await this.authService.signupUser(createUserDto);
     session.userId = user.id;
 
     return user;
@@ -48,8 +38,8 @@ export class UsersController {
     description: 'The user has been successfully signed in.',
     type: UserDto,
   })
-  async signin(@Body() signinUserDto: SigninUserDto, @Session() session: any) {
-    const user = await this.authService.signin(signinUserDto);
+  async signinUser(@Body() signinUserDto: SigninUserDto, @Session() session: any) {
+    const user = await this.authService.signinUser(signinUserDto);
     session.userId = user.id;
 
     return user;
@@ -60,7 +50,7 @@ export class UsersController {
     description: 'The user has been successfully signed out.',
     type: null,
   })
-  async signout(@Session() session: any) {
+  async signoutUser(@Session() session: any) {
     session.userId = null;
   }
 

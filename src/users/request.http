@@ -10,7 +10,7 @@ PUT http://localhost:3000/auth/signup
 Content-Type: application/json
 
 {
-    "email": "Three@some.user",
+    "email": "Threee@some.user",
     "password": "aaa"
 }
 

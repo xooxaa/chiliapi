@@ -11,7 +11,7 @@ const scrypt = promisify(_scrypt);
 export class AuthService {
   constructor(private usersService: UsersService) {}
 
-  async signup(createUserDto: CreateUserDto) {
+  async signupUser(createUserDto: CreateUserDto) {
     const { email, password } = createUserDto;
     const user = await this.usersService.findUserByEmail(email);
     if (user) {
@@ -22,11 +22,11 @@ export class AuthService {
     return this.usersService.createUser({ email, password: hashedPassword });
   }
 
-  async signin(signinUserDto: SigninUserDto) {
+  async signinUser(signinUserDto: SigninUserDto) {
     const { email, password } = signinUserDto;
     const user = await this.usersService.findUserByEmail(email);
     if (!user) {
-      throw new NotFoundException('User not found');
+      throw new BadRequestException('Bad credentials');
     }
 
     const [salt, storedHash] = user.password.split('.');

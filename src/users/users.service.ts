@@ -10,12 +10,7 @@ export class UsersService {
   constructor(@InjectRepository(User) private userRepo: Repository<User>) {}
 
   async findUserByEmail(email: string) {
-    const user = this.userRepo.findOneBy({ email });
-    if (!user) {
-      throw new NotFoundException('User not found');
-    }
-
-    return user;
+    return this.userRepo.findOneBy({ email });
   }
 
   async findUserById(userId: string) {
