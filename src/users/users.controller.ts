@@ -1,10 +1,9 @@
 import { Controller, Get, Post, Put, Patch, Delete, Session, Body, Param, Query } from '@nestjs/common';
-import { UseGuards, NotFoundException } from '@nestjs/common';
+import { UseGuards } from '@nestjs/common';
 import { ApiCreatedResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { Serialize } from '../interceptors/serialize.interceptor';
 import { AuthGuard } from '../guards/auth.guard';
 import { UserDto } from './dtos/user.dto';
-import { User } from './users.entity';
 import { CurrentUser } from './decorators/current-user.decorator';
 import { UsersService } from './users.service';
 import { AuthService } from './auth.service';
@@ -55,6 +54,7 @@ export class UsersController {
   }
 
   @Get('/:userId')
+  @UseGuards(AuthGuard)
   @ApiOkResponse({
     description: 'The user has been successfully found.',
     type: UserDto,

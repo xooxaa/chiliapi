@@ -87,8 +87,11 @@ describe('Users Module', () => {
     const userId = userResponse.body.id;
     expect(userId).toBeDefined();
 
+    const cookie = userResponse.get('Set-Cookie');
+
     await request(app.getHttpServer())
       .get(`/auth/${userId}`)
+      .set('Cookie', cookie)
       .expect(200)
       .then((res) => {
         const { id, email } = res.body;
@@ -98,10 +101,17 @@ describe('Users Module', () => {
   });
 
   it('returns a 404 if a user cannot be found by id', async () => {
+    const userResponse = await request(app.getHttpServer())
+      .put('/auth/signup')
+      .send({ email: 'seven@some.user', password: 'p9gtB§P$%T$54gbG§$dgbT$%' })
+      .expect(200);
+
+    const cookie = userResponse.get('Set-Cookie');
     const nonExistentUserId = 'non-existent-id';
 
     await request(app.getHttpServer())
       .get(`/auth/${nonExistentUserId}`)
+      .set('Cookie', cookie)
       .expect(404)
       .then((res) => {
         expect(res.body.message).toContain(`User not found`);
@@ -137,6 +147,6 @@ describe('Users Module', () => {
     expect(userId).toBeDefined();
 
     await request(app.getHttpServer()).delete(`/auth/${userId}`).expect(200);
-    await request(app.getHttpServer()).get(`/auth/${userId}`).expect(404);
+    await request(app.getHttpServer()).get(`/auth/${userId}`).expect(403);
   });
 });
