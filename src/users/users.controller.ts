@@ -60,12 +60,7 @@ export class UsersController {
     type: UserDto,
   })
   async findUserById(@Param('userId') userId: string) {
-    const user = await this.usersService.findUserById(userId);
-    if (!user) {
-      throw new NotFoundException('User not found');
-    }
-
-    return user;
+    return await this.usersService.findUserById(userId);
   }
 
   @Patch('/:userId')

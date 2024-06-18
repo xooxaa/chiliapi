@@ -1,7 +1,6 @@
 ### Who Am I
 GET http://localhost:3000/auth/whoami
 
-
 ### Sign out current user
 POST http://localhost:3000/auth/signout
 
