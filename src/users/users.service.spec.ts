@@ -32,6 +32,7 @@ describe('UsersService', () => {
 
   it('should create a user', async () => {
     const createUserDto: CreateUserDto = {
+      name: 'User One',
       email: 'one@some.user',
       password: 'abcde',
     };
@@ -52,6 +53,7 @@ describe('UsersService', () => {
   it('should find a user by ID', async () => {
     const mockedResponse: User = {
       id: 'aaa',
+      name: 'User One',
       email: 'one@some.user',
     } as User;
 
@@ -65,6 +67,7 @@ describe('UsersService', () => {
   it('should find a user by email', async () => {
     const mockedResponse: User = {
       id: 'aaa',
+      name: 'User One',
       email: 'one@some.user',
     } as User;
 
@@ -77,11 +80,12 @@ describe('UsersService', () => {
 
   it('should update a user by ID', async () => {
     const updateUserDto: UpdateUserDto = {
-      email: 'two@some.user',
+      name: 'User Two',
       password: 'abcde',
     };
     const mockedResponse: User = {
       id: 'bbb',
+      name: 'User Two',
       email: 'two@some.user',
     } as User;
 
@@ -97,6 +101,7 @@ describe('UsersService', () => {
   it('should delete a user by ID', async () => {
     const mockedResponse: User = {
       id: 'ccc',
+      name: 'User Three',
       email: 'three@some.user',
     } as User;
 

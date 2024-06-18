@@ -18,7 +18,7 @@ describe('Users Module', () => {
   it('signs up a new user', async () => {
     await request(app.getHttpServer())
       .put(`/auth/signup`)
-      .send({ email: 'one@some.user', password: 'hfg7#ÄL3fngfh487(Rgfd347T&/D§F&/F' })
+      .send({ name: 'User One', email: 'one@some.user', password: 'hfg7#ÄL3fngfh487(Rgfd347T&/D§F&/F' })
       .expect(200)
       .then((res) => {
         const { id, email } = res.body;
@@ -30,7 +30,7 @@ describe('Users Module', () => {
   it('returns a 400 when trying to register with an email already in use', async () => {
     await request(app.getHttpServer())
       .put(`/auth/signup`)
-      .send({ email: 'one@some.user', password: 'hfg7#ÄL3fngfh487(Rgfd347T&/D§F&/F' })
+      .send({ name: 'User One', email: 'one@some.user', password: 'hfg7#ÄL3fngfh487(Rgfd347T&/D§F&/F' })
       .expect(400)
       .then((res) => {
         expect(res.body.message).toContain(`Email already in use`);
@@ -43,8 +43,9 @@ describe('Users Module', () => {
       .send({ email: 'one@some.user', password: 'hfg7#ÄL3fngfh487(Rgfd347T&/D§F&/F' })
       .expect(201)
       .then((res) => {
-        const { id, email } = res.body;
+        const { id, name, email } = res.body;
         expect(id).toBeDefined();
+        expect(name).toEqual('User One');
         expect(email).toEqual('one@some.user');
       });
   });
@@ -81,7 +82,7 @@ describe('Users Module', () => {
   it('gets a user by id', async () => {
     const userResponse = await request(app.getHttpServer())
       .put('/auth/signup')
-      .send({ email: 'two@some.user', password: 'p9gtB§P$%T$54gbG§$dgbT$%' })
+      .send({ name: 'User Two', email: 'two@some.user', password: 'p9gtB§P$%T$54gbG§$dgbT$%' })
       .expect(200);
 
     const userId = userResponse.body.id;
@@ -94,8 +95,9 @@ describe('Users Module', () => {
       .set('Cookie', cookie)
       .expect(200)
       .then((res) => {
-        const { id, email } = res.body;
+        const { id, name, email } = res.body;
         expect(id).toEqual(userId);
+        expect(name).toEqual('User Two');
         expect(email).toEqual('two@some.user');
       });
   });
@@ -103,7 +105,7 @@ describe('Users Module', () => {
   it('returns a 404 if a user cannot be found by id', async () => {
     const userResponse = await request(app.getHttpServer())
       .put('/auth/signup')
-      .send({ email: 'seven@some.user', password: 'p9gtB§P$%T$54gbG§$dgbT$%' })
+      .send({ name: 'User Seven', email: 'seven@some.user', password: 'p9gtB§P$%T$54gbG§$dgbT$%' })
       .expect(200);
 
     const cookie = userResponse.get('Set-Cookie');
@@ -121,7 +123,7 @@ describe('Users Module', () => {
   it('updates a user', async () => {
     const userResponse = await request(app.getHttpServer())
       .put('/auth/signup')
-      .send({ email: 'three@some.user', password: 'jw3r§DADhtg4§goj(%$GHT/§$' })
+      .send({ name: 'User Three', email: 'three@some.user', password: 'jw3r§DADhtg4§goj(%$GHT/§$' })
       .expect(200);
 
     const userId = userResponse.body.id;
@@ -132,15 +134,16 @@ describe('Users Module', () => {
       .send({ email: 'three@some.user', password: 'hht9grej57w3HFÖ_hfu34/D' })
       .expect(200);
 
-    const { id, email } = updatedUserResponse.body;
+    const { id, name, email } = updatedUserResponse.body;
     expect(id).toEqual(userId);
+    expect(name).toEqual('User Three');
     expect(email).toEqual('three@some.user');
   });
 
   it('deletes a user', async () => {
     const userResponse = await request(app.getHttpServer())
       .put('/auth/signup')
-      .send({ email: 'four@some.user', password: 'gtjg8953HFJ())43tü49' })
+      .send({ name: 'User Four', email: 'four@some.user', password: 'gtjg8953HFJ())43tü49' })
       .expect(200);
 
     const userId = userResponse.body.id;

@@ -1,4 +1,4 @@
-import { BadRequestException, NotFoundException, Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { randomBytes, scrypt as _scrypt } from 'crypto';
 import { promisify } from 'util';
@@ -19,7 +19,7 @@ export class AuthService {
     }
     const hashedPassword = await this.hashAndSaltPassword(password);
 
-    return this.usersService.createUser({ email, password: hashedPassword });
+    return this.usersService.createUser({ ...createUserDto, password: hashedPassword });
   }
 
   async signinUser(signinUserDto: SigninUserDto) {

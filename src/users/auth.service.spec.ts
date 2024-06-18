@@ -34,11 +34,13 @@ describe('AuthService', () => {
 
   it('should signup a new user', async () => {
     const createUserDto: CreateUserDto = {
+      name: 'User One',
       email: 'one@some.user',
       password: 'abcde',
     };
     const mockedResponse: User = {
       id: 'aaa',
+      name: 'User One',
       email: 'one@some.user',
     } as User;
 
@@ -60,6 +62,7 @@ describe('AuthService', () => {
     const hashedPassword = await authService.hashAndSaltPassword(password);
     const mockedResponse: User = {
       id: 'aaa',
+      name: 'User One',
       email: 'one@some.user',
       password: hashedPassword,
     } as User;

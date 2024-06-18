@@ -53,11 +53,13 @@ describe('UsersController', () => {
   it('should signup a new user', async () => {
     const session = { userId: -1 };
     const createUserDto: CreateUserDto = {
+      name: 'User One',
       email: 'one@some.user',
       password: 'abcde',
     };
     const mockedResponse: User = {
       id: 'aaa',
+      name: 'User One',
       email: 'one@some.user',
     } as User;
 
@@ -76,6 +78,7 @@ describe('UsersController', () => {
     };
     const mockedResponse: User = {
       id: 'aaa',
+      name: 'User One',
       email: 'one@some.user',
     } as User;
 
@@ -96,6 +99,7 @@ describe('UsersController', () => {
   it('should return a user by ID', async () => {
     const mockedResponse: User = {
       id: 'aaa',
+      name: 'User One',
       email: 'one@some.user',
     } as User;
 
@@ -108,13 +112,14 @@ describe('UsersController', () => {
 
   it('should update a station by ID', async () => {
     const updateUserDto: UpdateUserDto = {
-      email: 'one@some.user',
+      name: 'User One',
       password: 'abcde',
     };
     const hashedPassword = 'hf874f93.gf873gf783g8f3gzg8t3iu2g87';
 
     const mockedResponse: User = {
       id: 'aaa',
+      name: 'User One',
       email: 'one@some.user',
     } as User;
 
@@ -123,7 +128,7 @@ describe('UsersController', () => {
     const result = await usersController.updateUserById('aaa', updateUserDto);
 
     expect(usersService.updateUserById).toHaveBeenCalledWith('aaa', {
-      email: updateUserDto.email,
+      name: updateUserDto.name,
       password: hashedPassword,
     });
     expect(result).toEqual(mockedResponse);
@@ -132,6 +137,7 @@ describe('UsersController', () => {
   it('should delete a station by ID', async () => {
     const mockedResponse: User = {
       id: 'aaa',
+      name: 'User One',
       email: 'one@some.user',
     } as User;
 
