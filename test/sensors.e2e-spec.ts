@@ -1,22 +1,27 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
-import * as request from 'supertest';
 import { AppModule } from './../src/app.module';
+import { customRequest, signUpTestUser } from './request.utils';
 
 describe('Sensors Module', () => {
   let app: INestApplication;
 
-  beforeEach(async () => {
+  beforeAll(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
       imports: [AppModule],
     }).compile();
 
     app = moduleFixture.createNestApplication();
     await app.init();
+    await signUpTestUser(app, 'the@sensor.user');
+  });
+
+  afterAll(async () => {
+    await app.close();
   });
 
   it('returns an empty list if no sensors are in the database', async () => {
-    await request(app.getHttpServer())
+    await customRequest(app)
       .get(`/sensors/`)
       .expect(200)
       .then((res) => {
@@ -26,13 +31,13 @@ describe('Sensors Module', () => {
 
   it('returns 404 when trying to get a non-existent sensor', async () => {
     const nonExistentSensorId = 'non-existent-id';
-    const response = await request(app.getHttpServer()).get(`/sensors/${nonExistentSensorId}`).expect(404);
+    const response = await customRequest(app).get(`/sensors/${nonExistentSensorId}`).expect(404);
 
     expect(response.body.message).toContain(`Sensor not found`);
   });
 
   it('creates a new sensor', () => {
-    return request(app.getHttpServer())
+    return customRequest(app)
       .post('/sensors')
       .send({ name: 'Sensor 1', type: 'temperature' })
       .expect(201)
@@ -47,9 +52,9 @@ describe('Sensors Module', () => {
   });
 
   it('retrieves all sensors', async () => {
-    await request(app.getHttpServer()).post('/sensors').send({ name: 'Sensor 2', type: 'humidity' }).expect(201);
+    await customRequest(app).post('/sensors').send({ name: 'Sensor 2', type: 'humidity' }).expect(201);
 
-    const response = await request(app.getHttpServer()).get('/sensors').expect(200);
+    const response = await customRequest(app).get('/sensors').expect(200);
 
     const sensors = response.body;
     expect(sensors.length).toBeGreaterThan(0);
@@ -63,22 +68,13 @@ describe('Sensors Module', () => {
   });
 
   it('retrieves all sensors of a given type', async () => {
-    await request(app.getHttpServer())
-      .post('/sensors')
-      .send({ name: 'Temperature Sensor 1', type: 'temperature' })
-      .expect(201);
+    await customRequest(app).post('/sensors').send({ name: 'Temperature Sensor 1', type: 'temperature' }).expect(201);
 
-    await request(app.getHttpServer())
-      .post('/sensors')
-      .send({ name: 'Temperature Sensor 2', type: 'temperature' })
-      .expect(201);
+    await customRequest(app).post('/sensors').send({ name: 'Temperature Sensor 2', type: 'temperature' }).expect(201);
 
-    await request(app.getHttpServer())
-      .post('/sensors')
-      .send({ name: 'Humidity Sensor 1', type: 'humidity' })
-      .expect(201);
+    await customRequest(app).post('/sensors').send({ name: 'Humidity Sensor 1', type: 'humidity' }).expect(201);
 
-    const response = await request(app.getHttpServer()).get('/sensors?type=temperature').expect(200);
+    const response = await customRequest(app).get('/sensors?type=temperature').expect(200);
 
     const sensors = response.body;
     expect(sensors.length).toBeGreaterThan(0);
@@ -95,7 +91,7 @@ describe('Sensors Module', () => {
   it('returns 400 when trying to create a sensor with an unsupported type', async () => {
     const unsupportedSensorType = 'unsupported-type';
 
-    const response = await request(app.getHttpServer())
+    const response = await customRequest(app)
       .post('/sensors')
       .send({ name: 'Unsupported Sensor', type: unsupportedSensorType })
       .expect(400);
@@ -104,7 +100,7 @@ describe('Sensors Module', () => {
   });
 
   it('updates a sensor', async () => {
-    const sensorResponse = await request(app.getHttpServer())
+    const sensorResponse = await customRequest(app)
       .post('/sensors')
       .send({ name: 'Sensor 4', type: 'temperature' })
       .expect(201);
@@ -112,7 +108,7 @@ describe('Sensors Module', () => {
     const sensorId = sensorResponse.body.id;
     expect(sensorId).toBeDefined();
 
-    const updatedSensorResponse = await request(app.getHttpServer())
+    const updatedSensorResponse = await customRequest(app)
       .patch(`/sensors/${sensorId}`)
       .send({ name: 'Updated Sensor 4', type: 'temperature' })
       .expect(200);
@@ -132,7 +128,7 @@ describe('Sensors Module', () => {
   });
 
   it('returns 400 when trying to update a sensor to an unsupported type', async () => {
-    const createResponse = await request(app.getHttpServer())
+    const createResponse = await customRequest(app)
       .post('/sensors')
       .send({ name: 'Valid Sensor', type: 'temperature' })
       .expect(201);
@@ -140,7 +136,7 @@ describe('Sensors Module', () => {
     const { id: sensorId } = createResponse.body;
 
     const unsupportedSensorType = 'unsupported-type';
-    const updateResponse = await request(app.getHttpServer())
+    const updateResponse = await customRequest(app)
       .patch(`/sensors/${sensorId}`)
       .send({ name: 'Updated Sensor', type: unsupportedSensorType })
       .expect(400);
@@ -149,7 +145,7 @@ describe('Sensors Module', () => {
   });
 
   it('deletes a sensor', async () => {
-    const sensorResponse = await request(app.getHttpServer())
+    const sensorResponse = await customRequest(app)
       .post('/sensors')
       .send({ name: 'Sensor 5', type: 'humidity' })
       .expect(201);
@@ -157,7 +153,7 @@ describe('Sensors Module', () => {
     const sensorId = sensorResponse.body.id;
     expect(sensorId).toBeDefined();
 
-    await request(app.getHttpServer()).delete(`/sensors/${sensorId}`).expect(200);
-    await request(app.getHttpServer()).get(`/sensors/${sensorId}`).expect(404);
+    await customRequest(app).delete(`/sensors/${sensorId}`).expect(200);
+    await customRequest(app).get(`/sensors/${sensorId}`).expect(404);
   });
 });

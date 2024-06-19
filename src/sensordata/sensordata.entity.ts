@@ -13,6 +13,7 @@ export class SensorData {
   @Column({ type: 'real', nullable: true })
   rawValue: number;
 
+  //TODO make indexed
   @Column({ type: 'date' })
   timestamp: Date;
 
@@ -22,11 +23,11 @@ export class SensorData {
   @UpdateDateColumn({ type: 'date' })
   updatedAt: Date;
 
-  @Column()
-  sensorId: string;
-
   @ManyToOne(() => Sensor, (sensor) => sensor.sensorData)
   sensor: Sensor;
+
+  @Column()
+  sensorId: string;
 
   @AfterInsert()
   logInsert() {

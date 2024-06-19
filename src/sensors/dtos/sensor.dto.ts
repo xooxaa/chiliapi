@@ -29,4 +29,8 @@ export class SensorDto {
   @ApiProperty()
   @Expose()
   stationId: string;
+
+  @ApiProperty()
+  @Expose()
+  userId: string;
 }

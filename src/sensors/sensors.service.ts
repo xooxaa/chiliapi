@@ -5,6 +5,7 @@ import { Sensor } from './sensors.entity';
 import { CreateSensorDto } from './dtos/create-sensor.dto';
 import { UpdateSensorDto } from './dtos/update-sensor.dto';
 import { SensorTypes } from './sensors.types';
+import { User } from '../users/users.entity';
 
 @Injectable()
 export class SensorsService {
@@ -28,10 +29,11 @@ export class SensorsService {
     return sensor;
   }
 
-  async createSensor(createSensorDto: CreateSensorDto) {
+  async createSensor(createSensorDto: CreateSensorDto, user: User) {
     const sensor = this.sensorRepo.create(createSensorDto);
     const sensorTypeInfo = SensorTypes.fromType(createSensorDto.type);
     sensor.unit = sensorTypeInfo.unit;
+    sensor.userId = user.id;
 
     return this.sensorRepo.save(sensor);
   }

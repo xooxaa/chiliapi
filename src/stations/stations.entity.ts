@@ -1,6 +1,15 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, OneToMany } from 'typeorm';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  CreateDateColumn,
+  UpdateDateColumn,
+  OneToMany,
+  ManyToOne,
+} from 'typeorm';
 import { AfterInsert, AfterRemove, AfterUpdate, AfterLoad } from 'typeorm';
 import { Sensor } from '../sensors/sensors.entity';
+import { User } from '../users/users.entity';
 
 @Entity()
 export class Station {
@@ -19,6 +28,9 @@ export class Station {
   @Column({ type: 'real', nullable: true })
   longitude: number;
 
+  @Column({ default: false })
+  public: boolean;
+
   @Column({ default: true })
   active: boolean;
 
@@ -30,6 +42,12 @@ export class Station {
 
   @OneToMany(() => Sensor, (sensor) => sensor.station)
   sensors: Sensor[];
+
+  @Column()
+  userId: string;
+
+  @ManyToOne(() => User, (user) => user.stations)
+  user: User;
 
   @AfterInsert()
   logInsert() {

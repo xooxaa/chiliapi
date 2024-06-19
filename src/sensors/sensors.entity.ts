@@ -9,9 +9,10 @@ import {
   ManyToOne,
 } from 'typeorm';
 import { BeforeInsert, BeforeUpdate, AfterInsert, AfterRemove, AfterUpdate, AfterLoad } from 'typeorm';
-import { SensorData } from '../sensordata/sensordata.entity';
 import { SensorTypes } from './sensors.types';
+import { SensorData } from '../sensordata/sensordata.entity';
 import { Station } from '../stations/stations.entity';
+import { User } from '../users/users.entity';
 
 @Entity()
 export class Sensor {
@@ -36,14 +37,20 @@ export class Sensor {
   @UpdateDateColumn({ type: 'date' })
   updatedAt: Date;
 
-  @Column({ nullable: true })
-  stationId: string;
-
   @ManyToOne(() => Station, (station) => station.sensors)
   station: Station;
 
+  @Column({ nullable: true })
+  stationId: string;
+
   @OneToMany(() => SensorData, (sensorData) => sensorData.sensor)
   sensorData: SensorData[];
+
+  @ManyToOne(() => User, (user) => user.sensors)
+  user: User;
+
+  @Column()
+  userId: string;
 
   // @BeforeInsert()
   // @BeforeUpdate()

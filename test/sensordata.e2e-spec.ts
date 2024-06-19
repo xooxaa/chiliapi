@@ -2,39 +2,45 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
 import * as request from 'supertest';
 import { AppModule } from '../src/app.module';
+import { customRequest, signUpTestUser } from './request.utils';
 
 describe('SensorData Module', () => {
   let app: INestApplication;
 
-  beforeEach(async () => {
+  beforeAll(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
       imports: [AppModule],
     }).compile();
 
     app = moduleFixture.createNestApplication();
     await app.init();
+    await signUpTestUser(app, 'the@sensordata.user');
+  });
+
+  afterAll(async () => {
+    await app.close();
   });
 
   it('returns 404 when attempting to find non-existent sensor', async () => {
     const sensorId = 'non-existent-sensor';
-    const response = await request(app.getHttpServer()).get(`/sensors/${sensorId}/data/`).expect(404);
+    const response = await customRequest(app).get(`/sensors/${sensorId}/data/`).expect(404);
 
     expect(response.body.message).toContain(`Sensor not found`);
   });
 
   it('returns an empty list if no sensordata was found for a given sensor', async () => {
-    const sensorResponse = await request(app.getHttpServer())
+    const sensorResponse = await customRequest(app)
       .post('/sensors')
       .send({ name: 'Sensor 1', type: 'temperature' })
       .expect(201);
 
     const sensorId = sensorResponse.body.id;
-    const dataResponse = await request(app.getHttpServer()).get(`/sensors/${sensorId}/data`).expect(200);
+    const dataResponse = await customRequest(app).get(`/sensors/${sensorId}/data`).expect(200);
     expect(dataResponse.body.length).toEqual(0);
   });
 
   it('returns 404 when attempting to find non-existent sensor data', async () => {
-    const sensorResponse = await request(app.getHttpServer())
+    const sensorResponse = await customRequest(app)
       .post('/sensors')
       .send({ name: 'Sensor 2', type: 'temperature' })
       .expect(201);
@@ -42,21 +48,19 @@ describe('SensorData Module', () => {
     const sensorId = sensorResponse.body.id;
 
     const nonExistentDataId = 'non-existent-id';
-    const response = await request(app.getHttpServer())
-      .delete(`/sensors/${sensorId}/data/${nonExistentDataId}`)
-      .expect(404);
+    const response = await customRequest(app).delete(`/sensors/${sensorId}/data/${nonExistentDataId}`).expect(404);
 
     expect(response.body.message).toContain(`SensorData not found`);
   });
 
   it('adds and retrieves sensordata', async () => {
-    const sensorResponse = await request(app.getHttpServer())
+    const sensorResponse = await customRequest(app)
       .post('/sensors')
       .send({ name: 'Sensor 3', type: 'pressure' })
       .expect(201);
 
     const sensorId = sensorResponse.body.id;
-    await request(app.getHttpServer())
+    await customRequest(app)
       .post(`/sensors/${sensorId}/data`)
       .send({
         value: 101.3,
@@ -65,7 +69,7 @@ describe('SensorData Module', () => {
       })
       .expect(201);
 
-    const dataResponse = await request(app.getHttpServer()).get(`/sensors/${sensorId}/data`).expect(200);
+    const dataResponse = await customRequest(app).get(`/sensors/${sensorId}/data`).expect(200);
     const dataEntries = dataResponse.body;
     expect(dataEntries.length).toBe(1);
 
@@ -76,7 +80,7 @@ describe('SensorData Module', () => {
   });
 
   it('adds and retrieves the latest sensordata', async () => {
-    const sensorResponse = await request(app.getHttpServer())
+    const sensorResponse = await customRequest(app)
       .post('/sensors')
       .send({ name: 'Sensor 4', type: 'pressure' })
       .expect(201);
@@ -84,7 +88,7 @@ describe('SensorData Module', () => {
     const sensorId = sensorResponse.body.id;
 
     const firstTimestamp = new Date();
-    await request(app.getHttpServer())
+    await customRequest(app)
       .post(`/sensors/${sensorId}/data`)
       .send({
         value: 101.3,
@@ -94,7 +98,7 @@ describe('SensorData Module', () => {
       .expect(201);
 
     const secondTimestamp = new Date(firstTimestamp.getTime() + 1000);
-    await request(app.getHttpServer())
+    await customRequest(app)
       .post(`/sensors/${sensorId}/data`)
       .send({
         value: 102.5,
@@ -103,12 +107,12 @@ describe('SensorData Module', () => {
       })
       .expect(201);
 
-    const dataResponse = await request(app.getHttpServer()).get(`/sensors/${sensorId}/data`).expect(200);
+    const dataResponse = await customRequest(app).get(`/sensors/${sensorId}/data`).expect(200);
 
     const dataEntries = dataResponse.body;
     expect(dataEntries.length).toBe(2);
 
-    const latestDataResponse = await request(app.getHttpServer()).get(`/sensors/${sensorId}/data/latest`).expect(200);
+    const latestDataResponse = await customRequest(app).get(`/sensors/${sensorId}/data/latest`).expect(200);
 
     const latestData = latestDataResponse.body;
     expect(latestData.value).toEqual(102.5);
@@ -117,7 +121,7 @@ describe('SensorData Module', () => {
   });
 
   it('adds and retrieves sensordata within a given interval', async () => {
-    const sensorResponse = await request(app.getHttpServer())
+    const sensorResponse = await customRequest(app)
       .post('/sensors')
       .send({ name: 'Sensor 5', type: 'humidity' })
       .expect(201);
@@ -126,7 +130,7 @@ describe('SensorData Module', () => {
     const now = new Date();
     const past = new Date(now.getTime() - 60 * 60 * 1000);
     const future = new Date(now.getTime() + 60 * 60 * 1000);
-    await request(app.getHttpServer())
+    await customRequest(app)
       .post(`/sensors/${sensorId}/data`)
       .send({
         value: 95.0,
@@ -135,7 +139,7 @@ describe('SensorData Module', () => {
       })
       .expect(201);
 
-    await request(app.getHttpServer())
+    await customRequest(app)
       .post(`/sensors/${sensorId}/data`)
       .send({
         value: 85.0,
@@ -144,7 +148,7 @@ describe('SensorData Module', () => {
       })
       .expect(201);
 
-    await request(app.getHttpServer())
+    await customRequest(app)
       .post(`/sensors/${sensorId}/data`)
       .send({
         value: 75.0,
@@ -155,20 +159,14 @@ describe('SensorData Module', () => {
 
     const start = new Date(now.getTime() - 30 * 60 * 1000).toISOString();
     const end = new Date(now.getTime() + 30 * 60 * 1000).toISOString();
-    const dataResponseStartEnd = await request(app.getHttpServer())
+    const dataResponseStartEnd = await customRequest(app)
       .get(`/sensors/${sensorId}/data`)
       .query({ start, end })
       .expect(200);
 
-    const dataResponseStart = await request(app.getHttpServer())
-      .get(`/sensors/${sensorId}/data`)
-      .query({ start })
-      .expect(200);
+    const dataResponseStart = await customRequest(app).get(`/sensors/${sensorId}/data`).query({ start }).expect(200);
 
-    const dataResponseEnd = await request(app.getHttpServer())
-      .get(`/sensors/${sensorId}/data`)
-      .query({ end })
-      .expect(200);
+    const dataResponseEnd = await customRequest(app).get(`/sensors/${sensorId}/data`).query({ end }).expect(200);
 
     expect(dataResponseStartEnd.body.length).toBe(1);
     expect(dataResponseStart.body.length).toBe(2);
@@ -176,13 +174,13 @@ describe('SensorData Module', () => {
   });
 
   it('updates sensordata', async () => {
-    const sensorResponse = await request(app.getHttpServer())
+    const sensorResponse = await customRequest(app)
       .post('/sensors')
       .send({ name: 'Sensor 6', type: 'temperature' })
       .expect(201);
 
     const sensorId = sensorResponse.body.id;
-    const dataResponse = await request(app.getHttpServer())
+    const dataResponse = await customRequest(app)
       .post(`/sensors/${sensorId}/data`)
       .send({
         value: 22,
@@ -196,7 +194,7 @@ describe('SensorData Module', () => {
     const updatedRawValue = 5135;
     const updatedTimestamp = new Date().toISOString();
 
-    await request(app.getHttpServer())
+    await customRequest(app)
       .patch(`/sensors/${sensorId}/data`)
       .send({
         id: dataId,
@@ -206,7 +204,7 @@ describe('SensorData Module', () => {
       })
       .expect(200);
 
-    const updatedDataResponse = await request(app.getHttpServer()).get(`/sensors/${sensorId}/data`).expect(200);
+    const updatedDataResponse = await customRequest(app).get(`/sensors/${sensorId}/data`).expect(200);
 
     const updatedDataEntries = updatedDataResponse.body;
     const updatedData = updatedDataEntries.find((entry) => entry.id === dataId);
@@ -218,14 +216,14 @@ describe('SensorData Module', () => {
   });
 
   it('deletes sensordata', async () => {
-    const sensorResponse = await request(app.getHttpServer())
+    const sensorResponse = await customRequest(app)
       .post('/sensors')
       .send({ name: 'Sensor 7', type: 'temperature' })
       .expect(201);
 
     const sensorId = sensorResponse.body.id;
 
-    const dataResponse = await request(app.getHttpServer())
+    const dataResponse = await customRequest(app)
       .post(`/sensors/${sensorId}/data`)
       .send({
         value: 25.0,
@@ -236,18 +234,18 @@ describe('SensorData Module', () => {
 
     const dataId = dataResponse.body.id;
 
-    await request(app.getHttpServer()).delete(`/sensors/${sensorId}/data/${dataId}`).expect(200);
+    await customRequest(app).delete(`/sensors/${sensorId}/data/${dataId}`).expect(200);
 
-    await request(app.getHttpServer()).delete(`/sensors/${sensorId}/data/${dataId}`).expect(404);
+    await customRequest(app).delete(`/sensors/${sensorId}/data/${dataId}`).expect(404);
   });
 
   it('returns 409 when attempting to update or delete sensor data for the wrong sensor', async () => {
-    const sensorResponse1 = await request(app.getHttpServer())
+    const sensorResponse1 = await customRequest(app)
       .post('/sensors')
       .send({ name: 'Sensor 8', type: 'temperature' })
       .expect(201);
 
-    const sensorResponse2 = await request(app.getHttpServer())
+    const sensorResponse2 = await customRequest(app)
       .post('/sensors')
       .send({ name: 'Sensor 9', type: 'humidity' })
       .expect(201);
@@ -255,7 +253,7 @@ describe('SensorData Module', () => {
     const sensorId1 = sensorResponse1.body.id;
     const sensorId2 = sensorResponse2.body.id;
 
-    const dataResponse = await request(app.getHttpServer())
+    const dataResponse = await customRequest(app)
       .post(`/sensors/${sensorId1}/data`)
       .send({
         value: 25.0,
@@ -266,7 +264,7 @@ describe('SensorData Module', () => {
 
     const dataId = dataResponse.body.id;
 
-    await request(app.getHttpServer())
+    await customRequest(app)
       .patch(`/sensors/${sensorId2}/data`)
       .send({
         id: dataId,
@@ -276,6 +274,6 @@ describe('SensorData Module', () => {
       })
       .expect(409);
 
-    await request(app.getHttpServer()).delete(`/sensors/${sensorId2}/data/${dataId}`).expect(409);
+    await customRequest(app).delete(`/sensors/${sensorId2}/data/${dataId}`).expect(409);
   });
 });

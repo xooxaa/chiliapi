@@ -5,6 +5,7 @@ import { SensorsService } from './sensors.service';
 import { Sensor } from './sensors.entity';
 import { CreateSensorDto } from './dtos/create-sensor.dto';
 import { UpdateSensorDto } from './dtos/update-sensor.dto';
+import { User } from '../users/users.entity';
 
 describe('SensorsService', () => {
   let sensorsService: SensorsService;
@@ -36,17 +37,22 @@ describe('SensorsService', () => {
       name: 'Sensor 1',
       type: 'temperature',
     };
+    const mockedUser = {
+      id: 'lll',
+      email: 'one@some.user',
+    } as User;
     const mockedResponse: Sensor = {
       id: 'aaa',
       name: 'Sensor 1',
       type: 'temperature',
       unit: 'Celsius',
       active: true,
+      userId: 'lll',
     } as Sensor;
 
     jest.spyOn(sensorRepository, 'create').mockReturnValue(mockedResponse);
     jest.spyOn(sensorRepository, 'save').mockResolvedValue(mockedResponse);
-    const result = await sensorsService.createSensor(createSensorDto);
+    const result = await sensorsService.createSensor(createSensorDto, mockedUser);
 
     expect(sensorRepository.create).toHaveBeenCalledWith(createSensorDto);
     expect(sensorRepository.save).toHaveBeenCalledWith(mockedResponse);

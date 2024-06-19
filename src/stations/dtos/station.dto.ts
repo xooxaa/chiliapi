@@ -29,4 +29,8 @@ export class StationDto {
   @ApiProperty()
   @Expose()
   createdAt: Date;
+
+  @ApiProperty()
+  @Expose()
+  userId: string;
 }

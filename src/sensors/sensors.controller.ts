@@ -1,13 +1,17 @@
-import { Controller, Get, Post, Patch, Delete, Body, Param, Query } from '@nestjs/common';
+import { Controller, Get, Post, Patch, Delete, Body, Param, Query, UseGuards } from '@nestjs/common';
 import { ApiTags, ApiCreatedResponse, ApiOkResponse, ApiNotFoundResponse } from '@nestjs/swagger';
 import { Serialize } from '../interceptors/serialize.interceptor';
+import { AuthGuard } from '../guards/auth.guard';
+import { User } from '../users/users.entity';
 import { SensorsService } from './sensors.service';
 import { SensorDto } from './dtos/sensor.dto';
 import { CreateSensorDto } from './dtos/create-sensor.dto';
 import { UpdateSensorDto } from './dtos/update-sensor.dto';
+import { CurrentUser } from '../users/decorators/current-user.decorator';
 
 @ApiTags('sensors')
 @Controller('sensors')
+@UseGuards(AuthGuard)
 @Serialize(SensorDto)
 export class SensorsController {
   constructor(private sensorsService: SensorsService) {}
@@ -38,8 +42,8 @@ export class SensorsController {
     description: 'The sensor has been successfully created.',
     type: SensorDto,
   })
-  async addSensor(@Body() body: CreateSensorDto) {
-    return await this.sensorsService.createSensor(body);
+  async addSensor(@Body() body: CreateSensorDto, @CurrentUser() user: User) {
+    return await this.sensorsService.createSensor(body, user);
   }
 
   @Patch('/:sensorId')

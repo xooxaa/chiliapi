@@ -4,6 +4,7 @@ import { Repository } from 'typeorm';
 import { Station } from './stations.entity';
 import { CreateStationDto } from './dtos/create-station.dto';
 import { UpdateStationDto } from './dtos/update-station.dto';
+import { User } from '../users/users.entity';
 
 @Injectable()
 export class StationsService {
@@ -34,8 +35,9 @@ export class StationsService {
     return station.sensors;
   }
 
-  async createStation(createStationDto: CreateStationDto) {
+  async createStation(createStationDto: CreateStationDto, user: User) {
     const station = this.stationRepo.create(createStationDto);
+    station.userId = user.id;
 
     return this.stationRepo.save(station);
   }

@@ -5,6 +5,7 @@ import { Station } from './stations.entity';
 import { Sensor } from '../sensors/sensors.entity';
 import { CreateStationDto } from './dtos/create-station.dto';
 import { UpdateStationDto } from './dtos/update-station.dto';
+import { User } from '../users/users.entity';
 
 describe('StationsController', () => {
   let stationsController: StationsController;
@@ -43,17 +44,22 @@ describe('StationsController', () => {
       name: 'Station 1',
       description: 'Station 1',
     };
+    const mockedUser = {
+      id: 'lll',
+      email: 'one@some.user',
+    } as User;
     const mockedResponse: Station = {
       id: 'aaa',
       name: 'Station 1',
       description: 'Station 1',
       active: true,
+      userId: 'lll',
     } as Station;
 
     jest.spyOn(stationsService, 'createStation').mockResolvedValue(mockedResponse);
-    const result = await stationsController.addStation(createStationDto);
+    const result = await stationsController.addStation(createStationDto, mockedUser);
 
-    expect(stationsService.createStation).toHaveBeenCalledWith(createStationDto);
+    expect(stationsService.createStation).toHaveBeenCalledWith(createStationDto, mockedUser);
     expect(result).toEqual(mockedResponse);
   });
 

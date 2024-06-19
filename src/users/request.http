@@ -1,16 +1,11 @@
-### Who Am I
-GET http://localhost:3000/auth/whoami
-
-### Sign out current user
-POST http://localhost:3000/auth/signout
-
 ### Create a new User
 PUT http://localhost:3000/auth/signup
 Content-Type: application/json
 
 {
-    "email": "Threee@some.user",
-    "password": "aaa"
+    "name": "User Three",
+    "email": "three@some.user",
+    "password": "aahg437879h(/HT/)($Ha"
 }
 
 ### Signin a registered User
@@ -18,21 +13,24 @@ POST http://localhost:3000/auth/signin
 Content-Type: application/json
 
 {
-    "email": "Three@some.user",
-    "password": "aaa"
+    "email": "one@some.user",
+    "password": "aahg437879h(/HT/)($Ha"
 }
 
+### Sign out current user
+POST http://localhost:3000/auth/signout
+
 ### Find a user with a given ID
-GET http://localhost:3000/auth/68f77579-2872-49d8-b7a9-67a6b459bc30
+GET http://localhost:3000/auth/4bff9d2e-021c-4de0-b532-71f0a96baf23
 
 
 ### Remove a user with a given ID
-DELETE http://localhost:3000/auth/68f77579-2872-49d8-b7a9-67a6b459bc30
+DELETE http://localhost:3000/auth/4bff9d2e-021c-4de0-b532-71f0a96baf23
 
 ### Update a user with a given ID
-PATCH http://localhost:3000/auth/68f77579-2872-49d8-b7a9-67a6b459bc30
+PATCH http://localhost:3000/auth/4bff9d2e-021c-4de0-b532-71f0a96baf23
 Content-Type: application/json
 
 {
-    "password": "aaa"
+    "password": "aahg437879h(/HT/)($Ha"
 }

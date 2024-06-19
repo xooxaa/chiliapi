@@ -1,14 +1,18 @@
-import { Controller, Get, Post, Patch, Delete, Body, Param } from '@nestjs/common';
+import { Controller, Get, Post, Patch, Delete, Body, Param, UseGuards } from '@nestjs/common';
 import { ApiTags, ApiCreatedResponse, ApiOkResponse, ApiNotFoundResponse } from '@nestjs/swagger';
 import { Serialize } from '../interceptors/serialize.interceptor';
+import { AuthGuard } from '../guards/auth.guard';
+import { CurrentUser } from '../users/decorators/current-user.decorator';
+import { SensorDto } from '../sensors/dtos/sensor.dto';
+import { User } from '../users/users.entity';
 import { StationsService } from './stations.service';
 import { StationDto } from './dtos/station.dto';
 import { CreateStationDto } from './dtos/create-station.dto';
 import { UpdateStationDto } from './dtos/update-station.dto';
-import { SensorDto } from '../sensors/dtos/sensor.dto';
 
 @ApiTags('stations')
 @Controller('stations')
+@UseGuards(AuthGuard)
 export class StationsController {
   constructor(private stationService: StationsService) {}
 
@@ -54,8 +58,8 @@ export class StationsController {
     description: 'The station has been successfully created.',
     type: StationDto,
   })
-  async addStation(@Body() body: CreateStationDto) {
-    return await this.stationService.createStation(body);
+  async addStation(@Body() body: CreateStationDto, @CurrentUser() user: User) {
+    return await this.stationService.createStation(body, user);
   }
 
   @Patch('/:stationId')

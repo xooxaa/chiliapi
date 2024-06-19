@@ -1,5 +1,7 @@
-import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, OneToMany } from 'typeorm';
 import { AfterInsert, AfterRemove, AfterUpdate, AfterLoad } from 'typeorm';
+import { Station } from '../stations/stations.entity';
+import { Sensor } from '../sensors/sensors.entity';
 
 @Entity()
 export class User {
@@ -26,6 +28,12 @@ export class User {
 
   @UpdateDateColumn({ type: 'date' })
   updatedAt: Date;
+
+  @OneToMany(() => Station, (station) => station.user)
+  stations: Station[];
+
+  @OneToMany(() => Sensor, (sensor) => sensor.user)
+  sensors: Sensor[];
 
   @AfterInsert()
   logInsert() {
