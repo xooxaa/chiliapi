@@ -14,11 +14,11 @@ Content-Type: application/json
 {
     "name": "Sensor 3",
     "type": "temperature",
-    "stationId": "722a7778-5d94-4302-b53b-c0d7c80f28a3"
+    "stationId": "c080520a-5e43-4e79-a9ac-3073d2166da7"
 }
 
 ### Get all sensors for a station
-GET http://localhost:3000/stations/722a7778-5d94-4302-b53b-c0d7c80f28a3/sensors
+GET http://localhost:3000/stations/c080520a-5e43-4e79-a9ac-3073d2166da7/sensors
 
 
-### Station ID: 722a7778-5d94-4302-b53b-c0d7c80f28a3
+### Station ID: c080520a-5e43-4e79-a9ac-3073d2166da7
