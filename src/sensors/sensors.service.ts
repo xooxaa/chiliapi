@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Sensor } from './sensors.entity';
@@ -38,8 +38,9 @@ export class SensorsService {
     return this.sensorRepo.save(sensor);
   }
 
-  async updateSensorById(sensorId: string, updateSensor: UpdateSensorDto) {
+  async updateSensorById(sensorId: string, updateSensor: UpdateSensorDto, user: User) {
     const sensor = await this.findSensorById(sensorId);
+    this.sensorBelongsToCurrentUser(sensor, user.id);
     if (updateSensor.type) {
       const sensorTypeInfo = SensorTypes.fromType(updateSensor.type);
       sensor.unit = sensorTypeInfo.unit;
@@ -49,9 +50,18 @@ export class SensorsService {
     return this.sensorRepo.save(sensor);
   }
 
-  async removeSensorById(sensorId: string) {
+  async removeSensorById(sensorId: string, user: User) {
     const sensor = await this.findSensorById(sensorId);
+    this.sensorBelongsToCurrentUser(sensor, user.id);
 
     return this.sensorRepo.remove(sensor);
+  }
+
+  async sensorBelongsToCurrentUser(sensor: Sensor, userId: string) {
+    if (sensor.userId !== userId) {
+      throw new ForbiddenException('User is not the owner of that sensor');
+    }
+
+    return true;
   }
 }

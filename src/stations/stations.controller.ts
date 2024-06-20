@@ -68,8 +68,12 @@ export class StationsController {
     description: 'The station has been successfully patched.',
     type: StationDto,
   })
-  async updateStationById(@Param('stationId') stationId: string, @Body() body: UpdateStationDto) {
-    return await this.stationService.updateStationById(stationId, body);
+  async updateStationById(
+    @Param('stationId') stationId: string,
+    @Body() body: UpdateStationDto,
+    @CurrentUser() user: User,
+  ) {
+    return await this.stationService.updateStationById(stationId, body, user);
   }
 
   @Delete('/:stationId')
@@ -78,7 +82,7 @@ export class StationsController {
     description: 'The station has been successfully deleted.',
     type: StationDto,
   })
-  async deleteStationById(@Param('stationId') stationId: string) {
-    return await this.stationService.removeStationById(stationId);
+  async deleteStationById(@Param('stationId') stationId: string, @CurrentUser() user: User) {
+    return await this.stationService.removeStationById(stationId, user);
   }
 }

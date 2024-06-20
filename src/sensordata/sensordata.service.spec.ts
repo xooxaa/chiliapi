@@ -7,12 +7,19 @@ import { SensorData } from './sensordata.entity';
 import { CreateSensorDataDto } from './dtos/create-sensordata.dto';
 import { UpdateSensorDataDto } from './dtos/update-sensordata.dto';
 import { GetSensorDataByIntervalDto } from './dtos/get-sensor-data-by.dto';
+import { User } from '../users/users.entity';
 
 describe('SensorDataService', () => {
   let sensorDataService: SensorDataService;
   let sensorDataRepository: Repository<SensorData>;
+
   const now = new Date(Date.now());
-  const testSensor: Sensor = {
+  const mockedUser = {
+    id: 'lll',
+    name: 'User One',
+    email: 'one@some.user',
+  } as User;
+  const mockedSensor: Sensor = {
     id: 'aaa',
     name: 'Sensor 1',
     type: 'temperature',
@@ -53,7 +60,7 @@ describe('SensorDataService', () => {
 
     jest.spyOn(sensorDataRepository, 'create').mockReturnValue(mockedResponse);
     jest.spyOn(sensorDataRepository, 'save').mockResolvedValue(mockedResponse);
-    const result = await sensorDataService.createSensorData(testSensor.id, createSensorDataDto);
+    const result = await sensorDataService.createSensorData(mockedSensor.id, createSensorDataDto);
 
     expect(sensorDataRepository.create).toHaveBeenCalledWith(createSensorDataDto);
     expect(sensorDataRepository.save).toHaveBeenCalledWith(mockedResponse);
@@ -81,7 +88,7 @@ describe('SensorDataService', () => {
     };
 
     jest.spyOn(sensorDataRepository, 'createQueryBuilder').mockImplementation(() => createQueryBuilderMock as any);
-    const result = await sensorDataService.findAllSensorDataInInterval(testSensor.id, interval);
+    const result = await sensorDataService.findAllSensorDataInInterval(mockedSensor.id, interval);
 
     expect(createQueryBuilderMock.where).toHaveBeenCalledWith('sensorId = :sensorId', { sensorId: 'aaa' });
     expect(createQueryBuilderMock.orderBy).toHaveBeenCalledWith('sensorData.timestamp', 'ASC');
@@ -104,7 +111,7 @@ describe('SensorDataService', () => {
     };
 
     jest.spyOn(sensorDataRepository, 'createQueryBuilder').mockImplementation(() => createQueryBuilderMock as any);
-    const result = await sensorDataService.findLatestSensorData(testSensor.id);
+    const result = await sensorDataService.findLatestSensorData(mockedSensor.id);
 
     expect(createQueryBuilderMock.where).toHaveBeenCalledWith('sensorId = :sensorId', { sensorId: 'aaa' });
     expect(createQueryBuilderMock.orderBy).toHaveBeenCalledWith('sensorData.timestamp', 'DESC');
@@ -132,7 +139,7 @@ describe('SensorDataService', () => {
 
     jest.spyOn(sensorDataRepository, 'findOneBy').mockResolvedValue(mockedResponseBeforeUpdate);
     jest.spyOn(sensorDataRepository, 'save').mockResolvedValue(mockedResponseAfterUpdate);
-    const result = await sensorDataService.updateSensorDataById(testSensor.id, updateSensorDataDto);
+    const result = await sensorDataService.updateSensorDataById(mockedSensor.id, updateSensorDataDto);
 
     expect(sensorDataRepository.findOneBy).toHaveBeenCalledWith({ id: updateSensorDataDto.id });
     expect(sensorDataRepository.save).toHaveBeenCalledWith(mockedResponseBeforeUpdate);
@@ -150,7 +157,7 @@ describe('SensorDataService', () => {
 
     jest.spyOn(sensorDataRepository, 'findOneBy').mockResolvedValue(mockedResponse);
     jest.spyOn(sensorDataRepository, 'remove').mockResolvedValue(mockedResponse);
-    const result = await sensorDataService.removeSensorDataById(testSensor.id, sensorDataId);
+    const result = await sensorDataService.removeSensorDataById(mockedSensor.id, sensorDataId);
 
     expect(sensorDataRepository.findOneBy).toHaveBeenCalledWith({ id: sensorDataId });
     expect(sensorDataRepository.remove).toHaveBeenCalledWith(mockedResponse);

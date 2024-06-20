@@ -51,8 +51,12 @@ export class SensorsController {
     description: 'The sensor has been successfully patched.',
     type: SensorDto,
   })
-  async updateSensorById(@Param('sensorId') sensorId: string, @Body() body: UpdateSensorDto) {
-    return await this.sensorsService.updateSensorById(sensorId, body);
+  async updateSensorById(
+    @Param('sensorId') sensorId: string,
+    @Body() body: UpdateSensorDto,
+    @CurrentUser() user: User,
+  ) {
+    return await this.sensorsService.updateSensorById(sensorId, body, user);
   }
 
   @Delete('/:sensorId')
@@ -60,7 +64,7 @@ export class SensorsController {
     description: 'The sensor has been successfully deleted.',
     type: SensorDto,
   })
-  async deleteSensorById(@Param('sensorId') sensorId: string) {
-    return await this.sensorsService.removeSensorById(sensorId);
+  async deleteSensorById(@Param('sensorId') sensorId: string, @CurrentUser() user: User) {
+    return await this.sensorsService.removeSensorById(sensorId, user);
   }
 }

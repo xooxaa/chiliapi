@@ -2,6 +2,7 @@ import { Controller, Get, Post, Patch, Delete, Body, Param, Query, UseIntercepto
 import { ApiTags, ApiFoundResponse, ApiCreatedResponse, ApiOkResponse } from '@nestjs/swagger';
 import { Serialize } from '../interceptors/serialize.interceptor';
 import { SensorExists } from '../interceptors/sensor-exists.interceptor';
+import { SensorBelongsToUser } from '../interceptors/sensor-belongs-to-user.interceptor';
 import { SensorDataService } from './sensordata.service';
 import { SensorDataDto } from './dtos/sensordata.dto';
 import { CreateSensorDataDto } from './dtos/create-sensordata.dto';
@@ -34,6 +35,7 @@ export class SensorDataController {
   }
 
   @Post('')
+  @UseInterceptors(SensorBelongsToUser)
   @ApiCreatedResponse({
     description: 'The sensordata has been successfully added to the sensor.',
     type: SensorDataDto,
@@ -43,6 +45,7 @@ export class SensorDataController {
   }
 
   @Patch('')
+  @UseInterceptors(SensorBelongsToUser)
   @ApiOkResponse({
     description: 'The sensordata has been successfully patched.',
     type: SensorDataDto,
@@ -52,6 +55,7 @@ export class SensorDataController {
   }
 
   @Delete('/:sensorDataId')
+  @UseInterceptors(SensorBelongsToUser)
   @ApiOkResponse({
     description: 'The sensordata has been successfully deleted.',
     type: SensorDataDto,

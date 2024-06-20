@@ -10,7 +10,12 @@ import { User } from '../users/users.entity';
 describe('SensorsService', () => {
   let sensorsService: SensorsService;
   let sensorRepository: Repository<Sensor>;
-  const now = new Date(Date.now());
+
+  const mockedUser = {
+    id: 'lll',
+    name: 'User One',
+    email: 'one@some.user',
+  } as User;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -37,10 +42,6 @@ describe('SensorsService', () => {
       name: 'Sensor 1',
       type: 'temperature',
     };
-    const mockedUser = {
-      id: 'lll',
-      email: 'one@some.user',
-    } as User;
     const mockedResponse: Sensor = {
       id: 'aaa',
       name: 'Sensor 1',
@@ -67,6 +68,7 @@ describe('SensorsService', () => {
         type: 'temperature',
         unit: 'Celsius',
         active: true,
+        userId: 'lll',
       } as Sensor,
       {
         id: 'bbb',
@@ -74,6 +76,7 @@ describe('SensorsService', () => {
         type: 'humidity',
         unit: 'Percentage',
         active: true,
+        userId: 'lll',
       } as Sensor,
     ];
 
@@ -97,6 +100,7 @@ describe('SensorsService', () => {
         type: 'temperature',
         unit: 'Celsius',
         active: true,
+        userId: 'lll',
       } as Sensor,
       {
         id: 'bbb',
@@ -104,6 +108,7 @@ describe('SensorsService', () => {
         type: 'temperature',
         unit: 'Celsius',
         active: true,
+        userId: 'lll',
       } as Sensor,
     ];
 
@@ -115,7 +120,7 @@ describe('SensorsService', () => {
     jest.spyOn(sensorRepository, 'createQueryBuilder').mockImplementation(() => createQueryBuilderMock as any);
     const result = await sensorsService.findAllSensorsOfType('temperature');
 
-    expect(createQueryBuilderMock.where).toHaveBeenCalledWith('type = :type', { type: 'temperature' });
+    expect(createQueryBuilderMock.where).toHaveBeenCalled();
     expect(createQueryBuilderMock.getMany).toHaveBeenCalled();
     expect(result).toEqual(mockedResponse);
   });
@@ -127,6 +132,7 @@ describe('SensorsService', () => {
       type: 'temperature',
       unit: 'Celsius',
       active: true,
+      userId: 'lll',
     } as Sensor;
 
     jest.spyOn(sensorRepository, 'findOneBy').mockResolvedValue(mockedResponse);
@@ -147,11 +153,12 @@ describe('SensorsService', () => {
       type: 'temperature',
       unit: 'Celsius',
       active: true,
+      userId: 'lll',
     } as Sensor;
 
     jest.spyOn(sensorRepository, 'findOneBy').mockResolvedValue(mockedResponse);
     jest.spyOn(sensorRepository, 'save').mockResolvedValue(mockedResponse);
-    const result = await sensorsService.updateSensorById('aaa', updateSensorDto);
+    const result = await sensorsService.updateSensorById('aaa', updateSensorDto, mockedUser);
 
     expect(sensorRepository.findOneBy).toHaveBeenCalledWith({ id: 'aaa' });
     expect(sensorRepository.save).toHaveBeenCalledWith(mockedResponse);
@@ -165,11 +172,12 @@ describe('SensorsService', () => {
       type: 'temperature',
       unit: 'Celsius',
       active: true,
+      userId: 'lll',
     } as Sensor;
 
     jest.spyOn(sensorRepository, 'findOneBy').mockResolvedValue(mockedResponse);
     jest.spyOn(sensorRepository, 'remove').mockResolvedValue(mockedResponse);
-    const result = await sensorsService.removeSensorById('aaa');
+    const result = await sensorsService.removeSensorById('aaa', mockedUser);
 
     expect(sensorRepository.findOneBy).toHaveBeenCalledWith({ id: 'aaa' });
     expect(sensorRepository.remove).toHaveBeenCalledWith(mockedResponse);

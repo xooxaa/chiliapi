@@ -11,6 +11,11 @@ describe('StationsController', () => {
   let stationsController: StationsController;
   let stationsService: StationsService;
 
+  const mockedUser = {
+    id: 'lll',
+    email: 'one@some.user',
+  } as User;
+
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [StationsController],
@@ -44,10 +49,6 @@ describe('StationsController', () => {
       name: 'Station 1',
       description: 'Station 1',
     };
-    const mockedUser = {
-      id: 'lll',
-      email: 'one@some.user',
-    } as User;
     const mockedResponse: Station = {
       id: 'aaa',
       name: 'Station 1',
@@ -70,12 +71,14 @@ describe('StationsController', () => {
         name: 'Station 1',
         description: 'Station 1',
         active: true,
+        userId: 'lll',
       } as Station,
       {
         id: 'bbb',
         name: 'Station 2',
         description: 'Station 2',
         active: true,
+        userId: 'lll',
       } as Station,
     ];
 
@@ -92,6 +95,7 @@ describe('StationsController', () => {
       name: 'Station 1',
       description: 'Station 1',
       active: true,
+      userId: 'lll',
     } as Station;
 
     jest.spyOn(stationsService, 'findStationById').mockResolvedValue(mockedResponse);
@@ -109,6 +113,7 @@ describe('StationsController', () => {
         type: 'temperature',
         unit: 'Celsius',
         active: true,
+        userId: 'lll',
       } as Sensor,
       {
         id: 'sss',
@@ -116,6 +121,7 @@ describe('StationsController', () => {
         type: 'temperature',
         unit: 'Celsius',
         active: true,
+        userId: 'lll',
       } as Sensor,
     ];
 
@@ -136,12 +142,13 @@ describe('StationsController', () => {
       name: 'Station 1',
       description: 'Station 1 Update',
       active: true,
+      userId: 'lll',
     } as Station;
 
     jest.spyOn(stationsService, 'updateStationById').mockResolvedValue(mockedResponse);
-    const result = await stationsController.updateStationById('aaa', updateStationDto);
+    const result = await stationsController.updateStationById('aaa', updateStationDto, mockedUser);
 
-    expect(stationsService.updateStationById).toHaveBeenCalledWith('aaa', updateStationDto);
+    expect(stationsService.updateStationById).toHaveBeenCalledWith('aaa', updateStationDto, mockedUser);
     expect(result).toEqual(mockedResponse);
   });
 
@@ -151,12 +158,13 @@ describe('StationsController', () => {
       name: 'Station 1',
       description: 'Station 1',
       active: true,
+      userId: 'lll',
     } as Station;
 
     jest.spyOn(stationsService, 'removeStationById').mockResolvedValue(mockedResponse);
-    const result = await stationsController.deleteStationById('aaa');
+    const result = await stationsController.deleteStationById('aaa', mockedUser);
 
-    expect(stationsService.removeStationById).toHaveBeenCalledWith('aaa');
+    expect(stationsService.removeStationById).toHaveBeenCalledWith('aaa', mockedUser);
     expect(result).toEqual(mockedResponse);
   });
 });

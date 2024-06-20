@@ -6,14 +6,19 @@ import { Sensor } from '../sensors/sensors.entity';
 import { SensorData } from './sensordata.entity';
 import { CreateSensorDataDto } from './dtos/create-sensordata.dto';
 import { GetSensorDataByIntervalDto } from './dtos/get-sensor-data-by.dto';
+import { User } from '../users/users.entity';
 
 describe('SensordataController', () => {
   let sensorDataController: SensorDataController;
-  let sensorsService: SensorsService;
   let sensorDataService: SensorDataService;
 
   const now = new Date(Date.now());
-  const testSensor: Sensor = {
+  const mockedUser = {
+    id: 'lll',
+    name: 'User One',
+    email: 'one@some.user',
+  } as User;
+  const mockedSensor: Sensor = {
     id: 'aaa',
     name: 'Sensor 1',
     type: 'temperature',
@@ -30,6 +35,7 @@ describe('SensordataController', () => {
           provide: SensorsService,
           useValue: {
             findSensorById: jest.fn(),
+            sensorBelongsToCurrentUser: jest.fn(),
           },
         },
         {
@@ -46,13 +52,11 @@ describe('SensordataController', () => {
     }).compile();
 
     sensorDataController = module.get<SensorDataController>(SensorDataController);
-    sensorsService = module.get<SensorsService>(SensorsService);
     sensorDataService = module.get<SensorDataService>(SensorDataService);
   });
 
   it('should be defined', () => {
     expect(sensorDataController).toBeDefined();
-    expect(sensorsService).toBeDefined();
     expect(sensorDataService).toBeDefined();
   });
 
@@ -68,9 +72,9 @@ describe('SensordataController', () => {
     } as SensorData;
 
     jest.spyOn(sensorDataService, 'createSensorData').mockResolvedValue(mockedResponse);
-    const result = await sensorDataController.addSensorData(testSensor.id, createSensorDataDto);
+    const result = await sensorDataController.addSensorData(mockedSensor.id, createSensorDataDto);
 
-    expect(sensorDataService.createSensorData).toHaveBeenCalledWith(testSensor.id, createSensorDataDto);
+    expect(sensorDataService.createSensorData).toHaveBeenCalledWith(mockedSensor.id, createSensorDataDto);
     expect(result).toEqual(mockedResponse);
   });
 
@@ -88,9 +92,9 @@ describe('SensordataController', () => {
     ];
 
     jest.spyOn(sensorDataService, 'findAllSensorDataInInterval').mockResolvedValue(mockedResponse);
-    const result = await sensorDataController.getSensorData(testSensor.id, interval);
+    const result = await sensorDataController.getSensorData(mockedSensor.id, interval);
 
-    expect(sensorDataService.findAllSensorDataInInterval).toHaveBeenCalledWith(testSensor.id, interval);
+    expect(sensorDataService.findAllSensorDataInInterval).toHaveBeenCalledWith(mockedSensor.id, interval);
     expect(result).toEqual(mockedResponse);
   });
 
@@ -101,9 +105,9 @@ describe('SensordataController', () => {
     } as SensorData;
 
     jest.spyOn(sensorDataService, 'findLatestSensorData').mockResolvedValue(mockedResponse);
-    const result = await sensorDataController.getLatestSensorData(testSensor.id);
+    const result = await sensorDataController.getLatestSensorData(mockedSensor.id);
 
-    expect(sensorDataService.findLatestSensorData).toHaveBeenCalledWith(testSensor.id);
+    expect(sensorDataService.findLatestSensorData).toHaveBeenCalledWith(mockedSensor.id);
     expect(result).toEqual(mockedResponse);
   });
 
@@ -120,9 +124,9 @@ describe('SensordataController', () => {
     } as SensorData;
 
     jest.spyOn(sensorDataService, 'updateSensorDataById').mockResolvedValue(mockedResponse);
-    const result = await sensorDataController.updateSensorDataById(testSensor.id, updateSensorDataDto);
+    const result = await sensorDataController.updateSensorDataById(mockedSensor.id, updateSensorDataDto);
 
-    expect(sensorDataService.updateSensorDataById).toHaveBeenCalledWith(testSensor.id, updateSensorDataDto);
+    expect(sensorDataService.updateSensorDataById).toHaveBeenCalledWith(mockedSensor.id, updateSensorDataDto);
     expect(result).toEqual(mockedResponse);
   });
 
@@ -138,9 +142,9 @@ describe('SensordataController', () => {
     } as SensorData;
 
     jest.spyOn(sensorDataService, 'removeSensorDataById').mockResolvedValue(mockedResponse);
-    const result = await sensorDataController.deleteSensorDataById(testSensor.id, sensorDataId);
+    const result = await sensorDataController.deleteSensorDataById(mockedSensor.id, sensorDataId);
 
-    expect(sensorDataService.removeSensorDataById).toHaveBeenCalledWith(testSensor.id, sensorDataId);
+    expect(sensorDataService.removeSensorDataById).toHaveBeenCalledWith(mockedSensor.id, sensorDataId);
     expect(result).toEqual(mockedResponse);
   });
 });
