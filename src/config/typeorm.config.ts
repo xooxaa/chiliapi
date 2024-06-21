@@ -19,11 +19,12 @@ export class TypeOrmConfigService implements TypeOrmOptionsFactory {
         host: this.configService.get<string>('DB_HOST'),
         port: this.configService.get<number>('DB_PORT'),
         username: this.configService.get<string>('DB_USERNAME'),
-        password: 'abcd',
+        password: this.configService.get<string>('DB_PASSWORD'),
         database: this.configService.get<string>('DB_DATABASE'),
         synchronize: false,
         autoLoadEntities: true,
         migrationsRun: true,
+        migrations: [__dirname + '/migrations/*.ts'],
         keepConnectionAlive: true,
       };
     } else if (dbType === 'sqlite') {
