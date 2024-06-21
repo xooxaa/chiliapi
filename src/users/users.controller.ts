@@ -1,10 +1,9 @@
-import { Controller, Get, Post, Put, Patch, Delete, Session, Body, Param, Query } from '@nestjs/common';
+import { Controller, Get, Post, Put, Patch, Delete, Session, Body, Param } from '@nestjs/common';
 import { UseGuards } from '@nestjs/common';
 import { ApiCreatedResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { Serialize } from '../interceptors/serialize.interceptor';
 import { AuthGuard } from '../guards/auth.guard';
 import { UserDto } from './dtos/user.dto';
-import { CurrentUser } from './decorators/current-user.decorator';
 import { UsersService } from './users.service';
 import { AuthService } from './auth.service';
 import { CreateUserDto } from './dtos/create-user.dto';
@@ -20,17 +19,17 @@ export class UsersController {
     private usersService: UsersService,
   ) {}
 
-  @Put('/signup')
-  @ApiOkResponse({
-    description: 'The user has been successfully signed up.',
-    type: UserDto,
-  })
-  async signupUser(@Body() createUserDto: CreateUserDto, @Session() session: any) {
-    const user = await this.authService.signupUser(createUserDto);
-    session.userId = user.id;
+  // @Put('/signup')
+  // @ApiOkResponse({
+  //   description: 'The user has been successfully signed up.',
+  //   type: UserDto,
+  // })
+  // async signupUser(@Body() createUserDto: CreateUserDto, @Session() session: any) {
+  //   const user = await this.authService.signupUser(createUserDto);
+  //   session.userId = user.id;
 
-    return user;
-  }
+  //   return user;
+  // }
 
   @Post('/signin')
   @ApiCreatedResponse({

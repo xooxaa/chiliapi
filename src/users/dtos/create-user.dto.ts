@@ -14,3 +14,10 @@ export class CreateUserDto {
   @IsStrongPassword()
   password: string;
 }
+
+// IsStronPassword default parameters
+// minLength: 12,
+// minLowercase: 2,
+// minUppercase: 2,
+// minNumbers: 2,
+// minSymbols: 2,

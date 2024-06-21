@@ -24,7 +24,6 @@ export class TypeOrmConfigService implements TypeOrmOptionsFactory {
         synchronize: false,
         autoLoadEntities: true,
         migrationsRun: true,
-        migrations: [__dirname + '/migrations/*.ts'],
         keepConnectionAlive: true,
       };
     } else if (dbType === 'sqlite') {
@@ -33,7 +32,7 @@ export class TypeOrmConfigService implements TypeOrmOptionsFactory {
         database: this.configService.get<string>('DB_DATABASE'),
         synchronize: nodeEnvIsTest(),
         autoLoadEntities: true,
-        migrationsRun: !nodeEnvIsTest(),
+        migrationsRun: false,
         keepConnectionAlive: false,
       };
     } else {

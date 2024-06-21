@@ -4,7 +4,7 @@ Content-Type: application/json
 
 {
     "name": "User Three",
-    "email": "three@some.user",
+    "email": "two@some.user",
     "password": "aahg437879h(/HT/)($Ha"
 }
 
@@ -13,7 +13,7 @@ POST http://localhost:3000/auth/signin
 Content-Type: application/json
 
 {
-    "email": "three@some.user",
+    "email": "two@some.user",
     "password": "aahg437879h(/HT/)($Ha"
 }
 
@@ -41,6 +41,15 @@ Content-Type: application/json
 
 {
     "name": "Jan",
+    "email": "j-suhrheinrich@gmx.de",
+    "password": "jjW<3mzBS2$p6R&2CY$hE"
+}
+
+### Signin a registered User
+POST http://212.132.64.11/auth/signin
+Content-Type: application/json
+
+{
     "email": "j-suhrheinrich@gmx.de",
     "password": "jjW<3mzBS2$p6R&2CY$hE"
 }

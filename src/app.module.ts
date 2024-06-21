@@ -37,9 +37,7 @@ const cookieSession = require('cookie-session');
   ],
 })
 export class AppModule {
-  constructor(private configService: ConfigService) {
-    console.log(process.env.NODE_ENV);
-  }
+  constructor(private configService: ConfigService) {}
 
   configure(consumer: MiddlewareConsumer) {
     consumer
