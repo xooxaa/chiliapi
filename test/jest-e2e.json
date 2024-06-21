@@ -8,7 +8,7 @@
   },
   "coverageDirectory": "<rootDir>/test/coverage-e2e",
   "collectCoverageFrom": ["<rootDir>/src/**/*.(t|j)s"],
-  "coveragePathIgnorePatterns": ["/node_modules/", "main.ts", ".*.module.ts", ".dto.ts", ".spec.ts"],
+  "coveragePathIgnorePatterns": ["/node_modules/", "/migrations/", "main.ts", ".*.module.ts", ".dto.ts", ".spec.ts", ".config.ts", "data-source.ts", "data-source-prod.ts"],
   "coverageReporters": ["text"],
   "setupFilesAfterEnv": ["<rootDir>/test/setup-e2e.ts"]
 }
