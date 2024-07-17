@@ -10,6 +10,11 @@ export class UpdateSensorDto {
   @ApiProperty({ required: false })
   @IsOptional()
   @IsString()
+  description?: string;
+
+  @ApiProperty({ required: false })
+  @IsOptional()
+  @IsString()
   type?: string;
 
   @ApiProperty({ required: false })

@@ -7,18 +7,21 @@ Content-Type: application/json
     "description": "My Station 1"
 }
 
+### Get all stations
+GET http://localhost:3000/stations
+
 ### Create a sensor
 POST http://localhost:3000/sensors
 Content-Type: application/json
 
 {
-    "name": "Sensor 3",
+    "name": "Sensor 1",
     "type": "temperature",
-    "stationId": "c080520a-5e43-4e79-a9ac-3073d2166da7"
+    "stationId": "3241b399-e0bc-42f7-836b-6cc77a01963e"
 }
 
 ### Get all sensors for a station
-GET http://localhost:3000/stations/c080520a-5e43-4e79-a9ac-3073d2166da7/sensors
+GET http://localhost:3000/stations/3241b399-e0bc-42f7-836b-6cc77a01963e/sensors
 
 
 ### Station ID: c080520a-5e43-4e79-a9ac-3073d2166da7

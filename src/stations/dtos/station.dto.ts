@@ -1,5 +1,6 @@
 import { Expose } from 'class-transformer';
 import { ApiProperty } from '@nestjs/swagger';
+import { SensorDto } from 'src/sensors/dtos/sensor.dto';
 
 export class StationDto {
   @ApiProperty()
@@ -33,4 +34,8 @@ export class StationDto {
   @ApiProperty()
   @Expose()
   userId: string;
+
+  @ApiProperty()
+  @Expose()
+  sensors: SensorDto[];
 }

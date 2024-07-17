@@ -30,7 +30,7 @@ export class TypeOrmConfigService implements TypeOrmOptionsFactory {
       return {
         type: 'sqlite',
         database: this.configService.get<string>('DB_DATABASE'),
-        synchronize: nodeEnvIsTest(),
+        synchronize: !nodeEnvIsTest(),
         autoLoadEntities: true,
         migrationsRun: false,
         keepConnectionAlive: false,

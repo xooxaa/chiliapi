@@ -6,6 +6,11 @@ export class CreateSensorDto {
   @IsString()
   name: string;
 
+  @ApiProperty({ required: false })
+  @IsOptional()
+  @IsString()
+  description?: string;
+
   @ApiProperty()
   @IsString()
   type: string;

@@ -12,12 +12,12 @@ export class UpdateStationDto {
   @IsString()
   description?: string;
 
-  @ApiProperty({ required: false })
+  @ApiProperty({ required: false, minimum: -90, maximum: 90 })
   @IsOptional()
   @IsNumber()
   latitude?: number;
 
-  @ApiProperty({ required: false })
+  @ApiProperty({ required: false, minimum: -180, maximum: 180 })
   @IsOptional()
   @IsNumber()
   longitude?: number;

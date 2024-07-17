@@ -11,7 +11,7 @@ export class StationsService {
   constructor(@InjectRepository(Station) private readonly stationRepo: Repository<Station>) {}
 
   async findAllStations() {
-    return await this.stationRepo.find();
+    return await this.stationRepo.find({ relations: { sensors: true } });
   }
 
   async findStationById(stationId: string) {

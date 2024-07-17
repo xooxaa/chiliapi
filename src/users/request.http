@@ -3,9 +3,9 @@ PUT http://localhost:3000/auth/signup
 Content-Type: application/json
 
 {
-    "name": "User Three",
-    "email": "two@some.user",
-    "password": "aahg437879h(/HT/)($Ha"
+    "name": "Gardener420",
+    "email": "gardener@420.com",
+    "password": "fh4387h78f34/HRd32/(D32"
 }
 
 ### Signin a registered User
@@ -13,9 +13,19 @@ POST http://localhost:3000/auth/signin
 Content-Type: application/json
 
 {
-    "email": "two@some.user",
-    "password": "aahg437879h(/HT/)($Ha"
+    "email": "gardener@420.com",
+    "password": "fh4387h78f34/HRd32/(D32"
 }
+
+### Signin a registered User
+POST http://localhost:3000/auth/signin
+Content-Type: application/json
+
+{
+    "email": "gardener@420.com",
+    "password": "fh4387h78f34/HRd32/(D32"
+}
+
 
 ### Sign out current user
 POST http://localhost:3000/auth/signout
@@ -53,3 +63,14 @@ Content-Type: application/json
     "email": "j-suhrheinrich@gmx.de",
     "password": "jjW<3mzBS2$p6R&2CY$hE"
 }
+
+### Create a new sensor
+POST http://212.132.64.11/sensors
+Content-Type: application/json
+
+{
+    "name": "Sensor 1",
+    "type": "nfsruinigd"
+}
+
+### Sensor 1 ID: 5b48fc72-af8e-4ce4-9bf0-66c7901ffbbe

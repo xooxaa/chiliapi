@@ -40,6 +40,7 @@ describe('SensorsService', () => {
   it('should create a sensor', async () => {
     const createSensorDto: CreateSensorDto = {
       name: 'Sensor 1',
+      description: '',
       type: 'temperature',
     };
     const mockedResponse: Sensor = {

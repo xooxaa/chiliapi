@@ -12,6 +12,10 @@ export class SensorDto {
 
   @ApiProperty()
   @Expose()
+  description: string;
+
+  @ApiProperty()
+  @Expose()
   type: string;
 
   @ApiProperty()
