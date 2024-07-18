@@ -20,10 +20,6 @@ export class SensorDto {
 
   @ApiProperty()
   @Expose()
-  unit: string;
-
-  @ApiProperty()
-  @Expose()
   active: boolean;
 
   @ApiProperty()

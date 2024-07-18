@@ -5,6 +5,7 @@ import { AuthGuard } from '../guards/auth.guard';
 import { User } from '../users/users.entity';
 import { SensorsService } from './sensors.service';
 import { SensorDto } from './dtos/sensor.dto';
+import { SensorTypeDto } from './dtos/sensor-type.dto';
 import { CreateSensorDto } from './dtos/create-sensor.dto';
 import { UpdateSensorDto } from './dtos/update-sensor.dto';
 import { CurrentUser } from '../users/decorators/current-user.decorator';
@@ -12,11 +13,11 @@ import { CurrentUser } from '../users/decorators/current-user.decorator';
 @ApiTags('sensors')
 @Controller('sensors')
 @UseGuards(AuthGuard)
-@Serialize(SensorDto)
 export class SensorsController {
   constructor(private sensorsService: SensorsService) {}
 
   @Get()
+  @Serialize(SensorDto)
   @ApiOkResponse({
     description: 'Sensors have been successfully found.',
     type: [SensorDto],
@@ -25,7 +26,18 @@ export class SensorsController {
     return await this.sensorsService.findAllSensorsOfType(type);
   }
 
+  @Get('/types')
+  @Serialize(SensorTypeDto)
+  @ApiOkResponse({
+    description: 'Sensor types have been successfully found.',
+    type: [SensorTypeDto],
+  })
+  async getSensorTypes() {
+    return await this.sensorsService.returnSensorTypes();
+  }
+
   @Get('/:sensorId')
+  @Serialize(SensorDto)
   @ApiOkResponse({
     description: 'Sensor has been successfully found.',
     type: SensorDto,
@@ -38,6 +50,7 @@ export class SensorsController {
   }
 
   @Post()
+  @Serialize(SensorDto)
   @ApiCreatedResponse({
     description: 'The sensor has been successfully created.',
     type: SensorDto,
@@ -47,6 +60,7 @@ export class SensorsController {
   }
 
   @Patch('/:sensorId')
+  @Serialize(SensorDto)
   @ApiOkResponse({
     description: 'The sensor has been successfully patched.',
     type: SensorDto,
@@ -60,6 +74,7 @@ export class SensorsController {
   }
 
   @Delete('/:sensorId')
+  @Serialize(SensorDto)
   @ApiOkResponse({
     description: 'The sensor has been successfully deleted.',
     type: SensorDto,

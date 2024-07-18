@@ -32,7 +32,6 @@ export class SensorsService {
   async createSensor(createSensorDto: CreateSensorDto, user: User) {
     const sensor = this.sensorRepo.create(createSensorDto);
     const sensorTypeInfo = SensorTypes.fromType(createSensorDto.type);
-    sensor.unit = sensorTypeInfo.unit;
     sensor.userId = user.id;
 
     return this.sensorRepo.save(sensor);
@@ -43,7 +42,6 @@ export class SensorsService {
     this.sensorBelongsToCurrentUser(sensor, user.id);
     if (updateSensor.type) {
       const sensorTypeInfo = SensorTypes.fromType(updateSensor.type);
-      sensor.unit = sensorTypeInfo.unit;
     }
     Object.assign(sensor, updateSensor);
 
@@ -63,5 +61,11 @@ export class SensorsService {
     }
 
     return true;
+  }
+
+  async returnSensorTypes() {
+    console.log(SensorTypes.ALL_TYPES);
+
+    return SensorTypes.ALL_TYPES;
   }
 }
