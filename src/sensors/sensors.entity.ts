@@ -28,9 +28,6 @@ export class Sensor {
   @Column()
   type: string;
 
-  // @Column()
-  // unit: string;
-
   @Column({ default: true })
   active: boolean;
 

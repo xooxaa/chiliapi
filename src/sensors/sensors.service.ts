@@ -64,8 +64,6 @@ export class SensorsService {
   }
 
   async returnSensorTypes() {
-    console.log(SensorTypes.ALL_TYPES);
-
     return SensorTypes.ALL_TYPES;
   }
 }
