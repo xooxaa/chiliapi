@@ -19,17 +19,17 @@ export class UsersController {
     private usersService: UsersService,
   ) {}
 
-  // @Put('/signup')
-  // @ApiOkResponse({
-  //   description: 'The user has been successfully signed up.',
-  //   type: UserDto,
-  // })
-  // async signupUser(@Body() createUserDto: CreateUserDto, @Session() session: any) {
-  //   const user = await this.authService.signupUser(createUserDto);
-  //   session.userId = user.id;
+  @Put('/signup')
+  @ApiOkResponse({
+    description: 'The user has been successfully signed up.',
+    type: UserDto,
+  })
+  async signupUser(@Body() createUserDto: CreateUserDto, @Session() session: any) {
+    const user = await this.authService.signupUser(createUserDto);
+    session.userId = user.id;
 
-  //   return user;
-  // }
+    return user;
+  }
 
   @Post('/signin')
   @ApiCreatedResponse({
