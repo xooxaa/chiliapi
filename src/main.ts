@@ -16,6 +16,7 @@ async function bootstrap() {
 
   app.enableCors({
     origin: 'https://growdu.de',
+    // origin: 'http://localhost:4200',
     credentials: true,
   });
 

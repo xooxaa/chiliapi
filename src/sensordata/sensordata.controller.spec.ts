@@ -22,7 +22,6 @@ describe('SensordataController', () => {
     id: 'aaa',
     name: 'Sensor 1',
     type: 'temperature',
-    unit: 'Celsius',
     active: true,
   } as Sensor;
 

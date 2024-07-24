@@ -52,7 +52,6 @@ describe('SensorsController', () => {
       id: 'aaa',
       name: 'Sensor 1',
       type: 'temperature',
-      unit: 'Celsius',
       active: true,
       userId: 'lll',
     } as Sensor;
@@ -70,7 +69,6 @@ describe('SensorsController', () => {
         id: 'aaa',
         name: 'Sensor 1',
         type: 'temperature',
-        unit: 'Celsius',
         active: true,
         userId: 'lll',
       } as Sensor,
@@ -78,7 +76,6 @@ describe('SensorsController', () => {
         id: 'bbb',
         name: 'Sensor 2',
         type: 'humidity',
-        unit: 'Percentage',
         active: true,
         userId: 'lll',
       } as Sensor,
@@ -97,7 +94,6 @@ describe('SensorsController', () => {
         id: 'aaa',
         name: 'Sensor 1',
         type: 'temperature',
-        unit: 'Celsius',
         active: true,
         userId: 'lll',
       } as Sensor,
@@ -105,7 +101,6 @@ describe('SensorsController', () => {
         id: 'bbb',
         name: 'Sensor 2',
         type: 'temperature',
-        unit: 'Celsius',
         active: true,
         userId: 'lll',
       } as Sensor,
@@ -123,7 +118,6 @@ describe('SensorsController', () => {
       id: 'aaa',
       name: 'Sensor 1',
       type: 'temperature',
-      unit: 'Celsius',
       active: true,
       userId: 'lll',
     } as Sensor;
@@ -144,7 +138,6 @@ describe('SensorsController', () => {
       id: 'aaa',
       name: 'Sensor 1',
       type: 'temperature',
-      unit: 'Celsius',
       active: true,
       userId: 'lll',
     } as Sensor;
@@ -161,7 +154,6 @@ describe('SensorsController', () => {
       id: 'aaa',
       name: 'Sensor 1',
       type: 'temperature',
-      unit: 'Celsius',
       active: true,
       userId: 'lll',
     } as Sensor;

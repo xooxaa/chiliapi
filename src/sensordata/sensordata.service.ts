@@ -18,7 +18,7 @@ export class SensorDataService {
 
     const queryBuilder = this.sensorDataRepo
       .createQueryBuilder('sensorData')
-      .where('sensorId = :sensorId', { sensorId });
+      .where('sensorData.sensorId = :sensorId', { sensorId });
 
     if (start && end) {
       queryBuilder.andWhere('sensorData.timestamp BETWEEN :start AND :end', { start, end });
@@ -34,7 +34,7 @@ export class SensorDataService {
   async findLatestSensorData(sensorId: string) {
     return this.sensorDataRepo
       .createQueryBuilder('sensorData')
-      .where('sensorId = :sensorId', { sensorId })
+      .where('sensorData.sensorId = :sensorId', { sensorId })
       .orderBy('sensorData.timestamp', 'DESC')
       .getOne();
   }
