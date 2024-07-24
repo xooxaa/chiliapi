@@ -14,13 +14,13 @@ export class SensorData {
   rawValue: number;
 
   //TODO make indexed
-  @Column({ type: 'timestamp' })
+  @Column({ type: 'timestamp with time zone' })
   timestamp: Date;
 
-  @CreateDateColumn({ type: 'timestamp' })
+  @CreateDateColumn({ type: 'timestamp with time zone' })
   createdAt: Date;
 
-  @UpdateDateColumn({ type: 'timestamp' })
+  @UpdateDateColumn({ type: 'timestamp with time zone' })
   updatedAt: Date;
 
   @ManyToOne(() => Sensor, (sensor) => sensor.sensorData)

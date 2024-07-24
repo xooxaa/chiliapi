@@ -31,10 +31,10 @@ export class Sensor {
   @Column({ default: true })
   active: boolean;
 
-  @CreateDateColumn({ type: 'date' })
+  @CreateDateColumn({ type: 'timestamp with time zone' })
   createdAt: Date;
 
-  @UpdateDateColumn({ type: 'date' })
+  @UpdateDateColumn({ type: 'timestamp with time zone' })
   updatedAt: Date;
 
   @ManyToOne(() => Station, (station) => station.sensors)
