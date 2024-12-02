@@ -32,13 +32,9 @@
 $ npm install
 ```
 
-Create .env files for production, development and test
+### Create .env files for production, development and test
 
-### Production
-
-.env.production
-
-```bash
+```bash .env.production
 NODE_ENV=production
 DB_TYPE=postgres
 DB_HOST=localhost
@@ -49,21 +45,13 @@ DB_DATABASE=your_database_name
 COOKIE_KEY=your_cookie_key
 ```
 
-### Development
-
-.env.development
-
-```bash
+```bash .env.development
 DB_TYPE=sqlite
 DB_DATABASE=db.sqlite
 COOKIE_KEY=somerandomcharacters
 ```
 
-### Test
-
-.env.test
-
-```bash
+```bash .env.test
 DB_TYPE=sqlite
 DB_DATABASE=test.sqlite
 COOKIE_KEY=somerandomcharacters
