@@ -38,7 +38,7 @@ Create .env files for production, development and test
 
 .env.production
 
-´´´bash
+```bash
 NODE_ENV=production
 DB_TYPE=postgres
 DB_HOST=localhost
@@ -47,27 +47,27 @@ DB_USERNAME=your_username
 DB_PASSWORD=your_password
 DB_DATABASE=your_database_name
 COOKIE_KEY=your_cookie_key
-´´´
+```
 
 ### Development
 
 .env.development
 
-´´´bash
+```bash
 DB_TYPE=sqlite
 DB_DATABASE=db.sqlite
 COOKIE_KEY=somerandomcharacters
-´´´
+```
 
 ### Test
 
 .env.test
 
-´´´bash
+```bash
 DB_TYPE=sqlite
 DB_DATABASE=test.sqlite
 COOKIE_KEY=somerandomcharacters
-´´´
+```
 
 ## Running the app
 
