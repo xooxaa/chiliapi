@@ -15,8 +15,8 @@ async function bootstrap() {
   SwaggerModule.setup('api', app, document);
 
   app.enableCors({
-    origin: 'https://growdu.de',
-    // origin: 'http://localhost:4200',
+    // origin: 'https://growdu.de',
+    origin: 'http://localhost:4200',
     credentials: true,
   });
 

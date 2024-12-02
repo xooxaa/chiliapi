@@ -14,6 +14,9 @@ import { SensorData } from '../sensordata/sensordata.entity';
 import { Station } from '../stations/stations.entity';
 import { User } from '../users/users.entity';
 
+const isDev = process.env.NODE_ENV === 'development' ? true : false;
+const isTest = process.env.NODE_ENV === 'test' ? true : false;
+
 @Entity()
 export class Sensor {
   @PrimaryGeneratedColumn('uuid')
@@ -31,10 +34,10 @@ export class Sensor {
   @Column({ default: true })
   active: boolean;
 
-  @CreateDateColumn({ type: 'timestamp with time zone' })
+  @CreateDateColumn({ type: isDev || isTest ? 'date' : 'timestamp with time zone' })
   createdAt: Date;
 
-  @UpdateDateColumn({ type: 'timestamp with time zone' })
+  @UpdateDateColumn({ type: isDev || isTest ? 'date' : 'timestamp with time zone' })
   updatedAt: Date;
 
   @ManyToOne(() => Station, (station) => station.sensors)

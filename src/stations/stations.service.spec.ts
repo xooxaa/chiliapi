@@ -114,7 +114,7 @@ describe('StationsService', () => {
           unit: 'Celsius',
           active: true,
           userId: 'lll',
-        } as Sensor,
+        } as unknown as Sensor,
         {
           id: 'sss',
           name: 'Sensor 2',
@@ -122,7 +122,7 @@ describe('StationsService', () => {
           unit: 'Celsius',
           active: true,
           userId: 'lll',
-        } as Sensor,
+        } as unknown as Sensor,
       ],
     } as Station;
 

@@ -3,6 +3,9 @@ import { AfterInsert, AfterRemove, AfterUpdate, AfterLoad } from 'typeorm';
 import { Station } from '../stations/stations.entity';
 import { Sensor } from '../sensors/sensors.entity';
 
+const isDev = process.env.NODE_ENV === 'development' ? true : false;
+const isTest = process.env.NODE_ENV === 'test' ? true : false;
+
 @Entity()
 export class User {
   @PrimaryGeneratedColumn('uuid')
@@ -23,10 +26,10 @@ export class User {
   @Column({ default: true })
   active: boolean;
 
-  @CreateDateColumn({ type: 'timestamp with time zone' })
+  @CreateDateColumn({ type: isDev || isTest ? 'date' : 'timestamp with time zone' })
   createdAt: Date;
 
-  @UpdateDateColumn({ type: 'timestamp with time zone' })
+  @UpdateDateColumn({ type: isDev || isTest ? 'date' : 'timestamp with time zone' })
   updatedAt: Date;
 
   @OneToMany(() => Station, (station) => station.user)

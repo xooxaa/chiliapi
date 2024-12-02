@@ -89,7 +89,7 @@ describe('SensorDataService', () => {
     jest.spyOn(sensorDataRepository, 'createQueryBuilder').mockImplementation(() => createQueryBuilderMock as any);
     const result = await sensorDataService.findAllSensorDataInInterval(mockedSensor.id, interval);
 
-    expect(createQueryBuilderMock.where).toHaveBeenCalledWith('sensorId = :sensorId', { sensorId: 'aaa' });
+    expect(createQueryBuilderMock.where).toHaveBeenCalledWith('sensorData.sensorId = :sensorId', { sensorId: 'aaa' });
     expect(createQueryBuilderMock.orderBy).toHaveBeenCalledWith('sensorData.timestamp', 'ASC');
     expect(createQueryBuilderMock.getMany).toHaveBeenCalled();
     expect(result).toEqual(mockedResponse);
@@ -112,7 +112,7 @@ describe('SensorDataService', () => {
     jest.spyOn(sensorDataRepository, 'createQueryBuilder').mockImplementation(() => createQueryBuilderMock as any);
     const result = await sensorDataService.findLatestSensorData(mockedSensor.id);
 
-    expect(createQueryBuilderMock.where).toHaveBeenCalledWith('sensorId = :sensorId', { sensorId: 'aaa' });
+    expect(createQueryBuilderMock.where).toHaveBeenCalledWith('sensorData.sensorId = :sensorId', { sensorId: 'aaa' });
     expect(createQueryBuilderMock.orderBy).toHaveBeenCalledWith('sensorData.timestamp', 'DESC');
     expect(createQueryBuilderMock.getOne).toHaveBeenCalled();
     expect(result).toEqual(mockedResponse);
