@@ -39,7 +39,6 @@ export class SensorsService {
 
   async updateSensorById(sensorId: string, updateSensor: UpdateSensorDto, user: User) {
     const sensor = await this.findSensorById(sensorId);
-    this.sensorBelongsToCurrentUser(sensor, user.id);
     if (updateSensor.type) {
       const sensorTypeInfo = SensorTypes.fromType(updateSensor.type);
     }
@@ -50,17 +49,8 @@ export class SensorsService {
 
   async removeSensorById(sensorId: string, user: User) {
     const sensor = await this.findSensorById(sensorId);
-    this.sensorBelongsToCurrentUser(sensor, user.id);
 
     return this.sensorRepo.remove(sensor);
-  }
-
-  async sensorBelongsToCurrentUser(sensor: Sensor, userId: string) {
-    if (sensor.userId !== userId) {
-      throw new ForbiddenException('User is not the owner of that sensor');
-    }
-
-    return true;
   }
 
   async returnSensorTypes() {

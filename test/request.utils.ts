@@ -17,10 +17,11 @@ const customRequest = (app: INestApplication) => {
 const signUpTestUser = async (app: INestApplication, email: string) => {
   const userResponse = await request(app.getHttpServer())
     .put('/auth/signup')
-    .send({ name: 'Test User', email, password: 'p9ghg4/D§F&/54gbG§$dgbT$%' })
+    .send({ name: `Test User${email.length}`, email, password: 'p9ghg4/D§F&/54gbG§$dgbT$%' })
     .expect(200);
 
   cookie = userResponse.get('Set-Cookie');
+  console.log(cookie);
 };
 
 export { customRequest, signUpTestUser };

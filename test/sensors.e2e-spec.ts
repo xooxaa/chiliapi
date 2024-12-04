@@ -50,8 +50,25 @@ describe('Sensors Module', () => {
       });
   });
 
+  it('retrieves a sensors by id', async () => {
+    const sensorResponse = await customRequest(app)
+      .post('/sensors')
+      .send({ name: 'Sensor 2', description: '', type: 'temperature' })
+      .expect(201);
+
+    const sensorId = sensorResponse.body.id;
+    const requestURL = `/sensors/${sensorId}`;
+    const response = await customRequest(app).get(requestURL).expect(200);
+
+    const sensor = response.body;
+    expect(sensor).toHaveProperty('id');
+    expect(sensor).toHaveProperty('name');
+    expect(sensor).toHaveProperty('type');
+    expect(sensor).toHaveProperty('active');
+  });
+
   it('retrieves all sensors', async () => {
-    await customRequest(app).post('/sensors').send({ name: 'Sensor 2', description: '', type: 'humidity' }).expect(201);
+    await customRequest(app).post('/sensors').send({ name: 'Sensor 3', description: '', type: 'humidity' }).expect(201);
 
     const response = await customRequest(app).get('/sensors').expect(200);
 
@@ -154,5 +171,22 @@ describe('Sensors Module', () => {
 
     await customRequest(app).delete(`/sensors/${sensorId}`).expect(200);
     await customRequest(app).get(`/sensors/${sensorId}`).expect(404);
+  });
+
+  it('fails to update a sensor from another user', async () => {
+    const sensorResponse = await customRequest(app)
+      .post('/sensors')
+      .send({ name: 'Sensor 6', description: '', type: 'temperature' })
+      .expect(201);
+
+    const sensorId = sensorResponse.body.id;
+    expect(sensorId).toBeDefined();
+
+    await signUpTestUser(app, 'theother@sensor.user');
+
+    await customRequest(app)
+      .patch(`/sensors/${sensorId}`)
+      .send({ name: 'Updated Sensor 6', type: 'temperature' })
+      .expect(403);
   });
 });

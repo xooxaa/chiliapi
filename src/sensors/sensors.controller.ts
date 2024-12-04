@@ -1,8 +1,9 @@
-import { Controller, Get, Post, Patch, Delete, Body, Param, Query, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Patch, Delete, Body, Param, Query, UseGuards, UseInterceptors } from '@nestjs/common';
 import { ApiTags, ApiCreatedResponse, ApiOkResponse, ApiNotFoundResponse } from '@nestjs/swagger';
 import { Serialize } from '../interceptors/serialize.interceptor';
 import { AuthGuard } from '../guards/auth.guard';
 import { User } from '../users/users.entity';
+import { SensorBelongsToUser } from '../interceptors/sensor-belongs-to-user.interceptor';
 import { SensorsService } from './sensors.service';
 import { SensorDto } from './dtos/sensor.dto';
 import { SensorTypeDto } from './dtos/sensor-type.dto';
@@ -60,6 +61,7 @@ export class SensorsController {
   }
 
   @Patch('/:sensorId')
+  @UseInterceptors(SensorBelongsToUser)
   @Serialize(SensorDto)
   @ApiOkResponse({
     description: 'The sensor has been successfully patched.',
@@ -74,6 +76,7 @@ export class SensorsController {
   }
 
   @Delete('/:sensorId')
+  @UseInterceptors(SensorBelongsToUser)
   @Serialize(SensorDto)
   @ApiOkResponse({
     description: 'The sensor has been successfully deleted.',
