@@ -141,4 +141,21 @@ describe('Stations Module', () => {
       expect(sensor.stationId).toEqual(stationId);
     });
   });
+
+  it('fails to update a station from another user', async () => {
+    const stationResponse = await customRequest(app)
+      .post('/stations')
+      .send({ name: 'Station 6', description: 'My Station 6' })
+      .expect(201);
+
+    const stationId = stationResponse.body.id;
+    expect(stationId).toBeDefined();
+
+    await signUpTestUser(app, 'theother@station.user');
+
+    await customRequest(app)
+      .patch(`/stations/${stationId}`)
+      .send({ name: 'Updated Station 6', description: 'My Updated Station 3' })
+      .expect(403);
+  });
 });
