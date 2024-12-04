@@ -1,4 +1,4 @@
-import { ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Station } from './stations.entity';
@@ -44,25 +44,14 @@ export class StationsService {
 
   async updateStationById(stationId: string, updateStationDto: UpdateStationDto, user: User) {
     const station = await this.findStationById(stationId);
-    if (this.stationBelongsToCurrentUser(station, user.id)) {
-      Object.assign(station, updateStationDto);
+    Object.assign(station, updateStationDto);
 
-      return this.stationRepo.save(station);
-    }
+    return this.stationRepo.save(station);
   }
 
   async removeStationById(stationId: string, user: User) {
     const station = await this.findStationById(stationId);
-    if (this.stationBelongsToCurrentUser(station, user.id)) {
-      return this.stationRepo.remove(station);
-    }
-  }
 
-  async stationBelongsToCurrentUser(station: Station, userId: string) {
-    if (station.userId !== userId) {
-      throw new ForbiddenException('User is not the owner of that station');
-    }
-
-    return true;
+    return this.stationRepo.remove(station);
   }
 }

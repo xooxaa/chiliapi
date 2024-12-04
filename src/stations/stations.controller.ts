@@ -1,10 +1,11 @@
-import { Controller, Get, Post, Patch, Delete, Body, Param, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Patch, Delete, Body, Param, UseGuards, UseInterceptors } from '@nestjs/common';
 import { ApiTags, ApiCreatedResponse, ApiOkResponse, ApiNotFoundResponse } from '@nestjs/swagger';
 import { Serialize } from '../interceptors/serialize.interceptor';
 import { AuthGuard } from '../guards/auth.guard';
 import { CurrentUser } from '../users/decorators/current-user.decorator';
 import { SensorDto } from '../sensors/dtos/sensor.dto';
 import { User } from '../users/users.entity';
+import { StationBelongsToUser } from '../interceptors/station-belongs-to-user.interceptor';
 import { StationsService } from './stations.service';
 import { StationDto } from './dtos/station.dto';
 import { CreateStationDto } from './dtos/create-station.dto';
@@ -63,6 +64,7 @@ export class StationsController {
   }
 
   @Patch('/:stationId')
+  @UseInterceptors(StationBelongsToUser)
   @Serialize(StationDto)
   @ApiOkResponse({
     description: 'The station has been successfully patched.',
@@ -77,6 +79,7 @@ export class StationsController {
   }
 
   @Delete('/:stationId')
+  @UseInterceptors(StationBelongsToUser)
   @Serialize(StationDto)
   @ApiOkResponse({
     description: 'The station has been successfully deleted.',
