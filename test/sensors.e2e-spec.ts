@@ -20,6 +20,15 @@ describe('Sensors Module', () => {
     await app.close();
   });
 
+  it('gets the sensor types', async () => {
+    await customRequest(app)
+      .get(`/sensors/types`)
+      .expect(200)
+      .then((res) => {
+        expect(res.body.length > 0);
+      });
+  });
+
   it('returns an empty list if no sensors are in the database', async () => {
     await customRequest(app)
       .get(`/sensors/`)
