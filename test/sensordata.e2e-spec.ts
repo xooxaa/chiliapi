@@ -31,7 +31,7 @@ describe('SensorData Module', () => {
   it('returns an empty list if no sensordata was found for a given sensor', async () => {
     const sensorResponse = await customRequest(app)
       .post('/sensors')
-      .send({ name: 'Sensor 1', type: 'temperature' })
+      .send({ name: 'Sensor 1', description: '', type: 'temperature' })
       .expect(201);
 
     const sensorId = sensorResponse.body.id;
@@ -42,7 +42,7 @@ describe('SensorData Module', () => {
   it('returns 404 when attempting to find non-existent sensor data', async () => {
     const sensorResponse = await customRequest(app)
       .post('/sensors')
-      .send({ name: 'Sensor 2', type: 'temperature' })
+      .send({ name: 'Sensor 2', description: '', type: 'temperature' })
       .expect(201);
 
     const sensorId = sensorResponse.body.id;
@@ -56,7 +56,7 @@ describe('SensorData Module', () => {
   it('adds and retrieves sensordata', async () => {
     const sensorResponse = await customRequest(app)
       .post('/sensors')
-      .send({ name: 'Sensor 3', type: 'pressure' })
+      .send({ name: 'Sensor 3', description: '', type: 'pressure' })
       .expect(201);
 
     const sensorId = sensorResponse.body.id;
@@ -82,7 +82,7 @@ describe('SensorData Module', () => {
   it('adds and retrieves the latest sensordata', async () => {
     const sensorResponse = await customRequest(app)
       .post('/sensors')
-      .send({ name: 'Sensor 4', type: 'pressure' })
+      .send({ name: 'Sensor 4', description: '', type: 'pressure' })
       .expect(201);
 
     const sensorId = sensorResponse.body.id;
@@ -123,7 +123,7 @@ describe('SensorData Module', () => {
   it('adds and retrieves sensordata within a given interval', async () => {
     const sensorResponse = await customRequest(app)
       .post('/sensors')
-      .send({ name: 'Sensor 5', type: 'humidity' })
+      .send({ name: 'Sensor 5', description: '', type: 'humidity' })
       .expect(201);
 
     const sensorId = sensorResponse.body.id;
@@ -176,7 +176,7 @@ describe('SensorData Module', () => {
   it('updates sensordata', async () => {
     const sensorResponse = await customRequest(app)
       .post('/sensors')
-      .send({ name: 'Sensor 6', type: 'temperature' })
+      .send({ name: 'Sensor 6', description: '', type: 'temperature' })
       .expect(201);
 
     const sensorId = sensorResponse.body.id;
@@ -218,7 +218,7 @@ describe('SensorData Module', () => {
   it('deletes sensordata', async () => {
     const sensorResponse = await customRequest(app)
       .post('/sensors')
-      .send({ name: 'Sensor 7', type: 'temperature' })
+      .send({ name: 'Sensor 7', description: '', type: 'temperature' })
       .expect(201);
 
     const sensorId = sensorResponse.body.id;
@@ -242,12 +242,12 @@ describe('SensorData Module', () => {
   it('returns 409 when attempting to update or delete sensor data for the wrong sensor', async () => {
     const sensorResponse1 = await customRequest(app)
       .post('/sensors')
-      .send({ name: 'Sensor 8', type: 'temperature' })
+      .send({ name: 'Sensor 8', description: '', type: 'temperature' })
       .expect(201);
 
     const sensorResponse2 = await customRequest(app)
       .post('/sensors')
-      .send({ name: 'Sensor 9', type: 'humidity' })
+      .send({ name: 'Sensor 9', description: '', type: 'humidity' })
       .expect(201);
 
     const sensorId1 = sensorResponse1.body.id;

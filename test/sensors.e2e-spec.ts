@@ -39,20 +39,19 @@ describe('Sensors Module', () => {
   it('creates a new sensor', () => {
     return customRequest(app)
       .post('/sensors')
-      .send({ name: 'Sensor 1', type: 'temperature' })
+      .send({ name: 'Sensor 1', description: '', type: 'temperature' })
       .expect(201)
       .then((res) => {
-        const { id, name, type, unit, active } = res.body;
+        const { id, name, type, active } = res.body;
         expect(id).toBeDefined();
         expect(name).toEqual('Sensor 1');
         expect(type).toEqual('temperature');
-        expect(unit).toEqual('Celsius');
         expect(active).toEqual(true);
       });
   });
 
   it('retrieves all sensors', async () => {
-    await customRequest(app).post('/sensors').send({ name: 'Sensor 2', type: 'humidity' }).expect(201);
+    await customRequest(app).post('/sensors').send({ name: 'Sensor 2', description: '', type: 'humidity' }).expect(201);
 
     const response = await customRequest(app).get('/sensors').expect(200);
 
@@ -62,17 +61,25 @@ describe('Sensors Module', () => {
       expect(sensor).toHaveProperty('id');
       expect(sensor).toHaveProperty('name');
       expect(sensor).toHaveProperty('type');
-      expect(sensor).toHaveProperty('unit');
       expect(sensor).toHaveProperty('active');
     });
   });
 
   it('retrieves all sensors of a given type', async () => {
-    await customRequest(app).post('/sensors').send({ name: 'Temperature Sensor 1', type: 'temperature' }).expect(201);
+    await customRequest(app)
+      .post('/sensors')
+      .send({ name: 'Temperature Sensor 1', description: '', type: 'temperature' })
+      .expect(201);
 
-    await customRequest(app).post('/sensors').send({ name: 'Temperature Sensor 2', type: 'temperature' }).expect(201);
+    await customRequest(app)
+      .post('/sensors')
+      .send({ name: 'Temperature Sensor 2', description: '', type: 'temperature' })
+      .expect(201);
 
-    await customRequest(app).post('/sensors').send({ name: 'Humidity Sensor 1', type: 'humidity' }).expect(201);
+    await customRequest(app)
+      .post('/sensors')
+      .send({ name: 'Humidity Sensor 1', description: '', type: 'humidity' })
+      .expect(201);
 
     const response = await customRequest(app).get('/sensors?type=temperature').expect(200);
 
@@ -83,7 +90,6 @@ describe('Sensors Module', () => {
       expect(sensor).toHaveProperty('id');
       expect(sensor).toHaveProperty('name');
       expect(sensor).toHaveProperty('type');
-      expect(sensor).toHaveProperty('unit');
       expect(sensor).toHaveProperty('active');
     });
   });
@@ -102,7 +108,7 @@ describe('Sensors Module', () => {
   it('updates a sensor', async () => {
     const sensorResponse = await customRequest(app)
       .post('/sensors')
-      .send({ name: 'Sensor 4', type: 'temperature' })
+      .send({ name: 'Sensor 4', description: '', type: 'temperature' })
       .expect(201);
 
     const sensorId = sensorResponse.body.id;
@@ -113,24 +119,17 @@ describe('Sensors Module', () => {
       .send({ name: 'Updated Sensor 4', type: 'temperature' })
       .expect(200);
 
-    const {
-      id,
-      name: updatedName,
-      type: updatedType,
-      unit: updatedUnit,
-      active: updatedActive,
-    } = updatedSensorResponse.body;
+    const { id, name: updatedName, type: updatedType, active: updatedActive } = updatedSensorResponse.body;
     expect(id).toEqual(sensorId);
     expect(updatedName).toEqual('Updated Sensor 4');
     expect(updatedType).toEqual('temperature');
-    expect(updatedUnit).toEqual('Celsius');
     expect(updatedActive).toEqual(true);
   });
 
   it('returns 400 when trying to update a sensor to an unsupported type', async () => {
     const createResponse = await customRequest(app)
       .post('/sensors')
-      .send({ name: 'Valid Sensor', type: 'temperature' })
+      .send({ name: 'Valid Sensor', description: '', type: 'temperature' })
       .expect(201);
 
     const { id: sensorId } = createResponse.body;
@@ -147,7 +146,7 @@ describe('Sensors Module', () => {
   it('deletes a sensor', async () => {
     const sensorResponse = await customRequest(app)
       .post('/sensors')
-      .send({ name: 'Sensor 5', type: 'humidity' })
+      .send({ name: 'Sensor 5', description: '', type: 'humidity' })
       .expect(201);
 
     const sensorId = sensorResponse.body.id;

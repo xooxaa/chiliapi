@@ -117,11 +117,11 @@ describe('Stations Module', () => {
 
     const sensor1Response = await customRequest(app)
       .post('/sensors')
-      .send({ name: 'Sensor 1', type: 'temperature', stationId })
+      .send({ name: 'Sensor 1', description: '', type: 'temperature', stationId })
       .expect(201);
     const sensor2Response = await customRequest(app)
       .post('/sensors')
-      .send({ name: 'Sensor 2', type: 'humidity', stationId })
+      .send({ name: 'Sensor 2', description: '', type: 'humidity', stationId })
       .expect(201);
 
     const sensor1Id = sensor1Response.body.id;
