@@ -1,4 +1,3 @@
-import { BadRequestException } from '@nestjs/common';
 import {
   Entity,
   PrimaryGeneratedColumn,
@@ -8,14 +7,12 @@ import {
   OneToMany,
   ManyToOne,
 } from 'typeorm';
-import { BeforeInsert, BeforeUpdate, AfterInsert, AfterRemove, AfterUpdate, AfterLoad } from 'typeorm';
-import { SensorTypes } from './sensors.types';
+import { AfterInsert, AfterRemove, AfterUpdate, AfterLoad } from 'typeorm';
 import { SensorData } from '../sensordata/sensordata.entity';
 import { Station } from '../stations/stations.entity';
 import { User } from '../users/users.entity';
 
-const isDev = process.env.NODE_ENV === 'development' ? true : false;
-const isTest = process.env.NODE_ENV === 'test' ? true : false;
+const isProd = process.env.NODE_ENV === 'production' ? true : false;
 
 @Entity()
 export class Sensor {
@@ -34,10 +31,10 @@ export class Sensor {
   @Column({ default: true })
   active: boolean;
 
-  @CreateDateColumn({ type: isDev || isTest ? 'date' : 'timestamp with time zone' })
+  @CreateDateColumn({ type: isProd ? 'timestamp with time zone' : 'date' })
   createdAt: Date;
 
-  @UpdateDateColumn({ type: isDev || isTest ? 'date' : 'timestamp with time zone' })
+  @UpdateDateColumn({ type: isProd ? 'timestamp with time zone' : 'date' })
   updatedAt: Date;
 
   @ManyToOne(() => Station, (station) => station.sensors)
@@ -54,15 +51,6 @@ export class Sensor {
 
   @Column()
   userId: string;
-
-  // @BeforeInsert()
-  // @BeforeUpdate()
-  // validateTypeAndUnit() {
-  //   const sensorTypeInfo = SensorTypes.fromType(this.type);
-  //   if (this.unit !== sensorTypeInfo.unit) {
-  //     throw new BadRequestException(`Invalid unit for type ${this.type}. Expected: ${sensorTypeInfo.unit}`);
-  //   }
-  // }
 
   @AfterInsert()
   logInsert() {

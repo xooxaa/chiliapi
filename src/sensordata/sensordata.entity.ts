@@ -2,8 +2,7 @@ import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, CreateDateColumn, Up
 import { AfterInsert, AfterRemove, AfterUpdate, AfterLoad } from 'typeorm';
 import { Sensor } from '../sensors/sensors.entity';
 
-const isDev = process.env.NODE_ENV === 'development' ? true : false;
-const isTest = process.env.NODE_ENV === 'test' ? true : false;
+const isProd = process.env.NODE_ENV === 'production' ? true : false;
 
 @Entity()
 export class SensorData {
@@ -17,13 +16,13 @@ export class SensorData {
   rawValue: number;
 
   //TODO make indexed
-  @Column({ type: isDev || isTest ? 'date' : 'timestamp with time zone' })
+  @Column({ type: isProd ? 'timestamp with time zone' : 'date' })
   timestamp: Date;
 
-  @CreateDateColumn({ type: isDev || isTest ? 'date' : 'timestamp with time zone' })
+  @CreateDateColumn({ type: isProd ? 'timestamp with time zone' : 'date' })
   createdAt: Date;
 
-  @UpdateDateColumn({ type: isDev || isTest ? 'date' : 'timestamp with time zone' })
+  @UpdateDateColumn({ type: isProd ? 'timestamp with time zone' : 'date' })
   updatedAt: Date;
 
   @ManyToOne(() => Sensor, (sensor) => sensor.sensorData)
